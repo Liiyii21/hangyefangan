@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>行业智能体</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+<style>
+﻿:root{--ink:#1B2A47;--gold:#C9A876;--beige:#F5EFE6;--pine:#2C5F5D;--bg:#FAF7F0;--paper:#FBF9F5;--line:rgba(27,42,71,.08);--line-dashed:rgba(27,42,71,.06);--nav-before:rgba(27,42,71,.15);--shadow-soft:rgba(27,42,71,.04);--shadow-med:rgba(27,42,71,.18);--gold-soft:rgba(201,168,118,.18);--gold-border:rgba(201,168,118,.4);--gold-nav-active:rgba(201,168,118,.15);--muted:#6A7388;--hero-dark:#0F1A30;--hero-mid:#1B2A47;--hero-light:#2C3F5E;--hero-angle:160deg;--callout-a:#FAF6EC;--callout-b:#F2EBDB;--phone-frame:#1B2A47;--phone-bg1:#FBF9F5;--phone-bg2:#F5EFE6;--user-msg-bg:#1B2A47;--pc-frame:#1B2A47;--pc-screen:#FBF9F5}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:"Noto Sans SC","PingFang SC",sans-serif;font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+#root{max-width:1280px;margin:0 auto;padding:64px 56px 96px}
+.serif{font-family:"Noto Serif SC",serif}
+.cormorant{font-family:"Cormorant Garamond",serif}
+
+.hero{position:relative;border-radius:24px;overflow:hidden;background:linear-gradient(var(--hero-angle),var(--hero-dark) 0%,var(--hero-mid) 45%,var(--hero-light) 100%);color:#fff;padding:80px 72px 72px;margin-bottom:72px}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 75% 30%,var(--gold-soft) 0%,transparent 50%);pointer-events:none}
+.hero-tag{display:inline-block;font-family:"Cormorant Garamond",serif;font-size:14px;letter-spacing:.4em;color:var(--gold);text-transform:uppercase;margin-bottom:24px}
+.hero-title{font-family:"Noto Serif SC",serif;font-size:64px;font-weight:500;line-height:1.15;margin-bottom:20px;letter-spacing:-.5px}
+.hero-title em{font-family:"Cormorant Garamond",serif;font-style:italic;color:var(--gold);font-weight:400}
+.hero-sub{font-size:18px;line-height:1.7;color:rgba(255,255,255,.78);max-width:720px;margin-bottom:56px}
+.hero-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;border-top:1px solid rgba(255,255,255,.12);padding-top:36px}
+.hero-meta-item small{font-family:"Cormorant Garamond",serif;font-size:13px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase}
+.hero-meta-item p{font-size:15px;color:rgba(255,255,255,.85);margin-top:8px}
+
+.step{margin-bottom:88px;padding-top:24px;border-top:1px solid var(--line)}
+.step-num{display:flex;align-items:baseline;gap:16px;font-family:"Cormorant Garamond",serif;font-size:96px;font-weight:400;color:var(--ink);line-height:1;margin-bottom:8px}
+.step-num small{font-family:"Cormorant Garamond",serif;font-size:14px;letter-spacing:.4em;color:var(--gold);text-transform:uppercase;font-weight:500}
+.step-title{margin-bottom:48px}
+.step-title h2{font-family:"Noto Serif SC",serif;font-size:34px;font-weight:500;line-height:1.3;color:var(--ink);max-width:780px}
+.step-title p{font-size:16px;color:var(--muted);max-width:720px;margin-top:16px;line-height:1.7}
+
+.sec{font-family:"Noto Serif SC",serif;font-size:22px;font-weight:500;color:var(--ink);margin:48px 0 20px;padding-left:18px;border-left:3px solid var(--gold)}
+.det{font-size:15px;color:var(--ink);line-height:1.85;margin-bottom:14px}
+.det b{color:var(--ink);font-weight:600}
+.bullet{font-size:14.5px;color:var(--ink);margin-bottom:8px;padding-left:24px;position:relative;line-height:1.7}
+.bullet::before{content:"●";position:absolute;left:0;color:var(--gold);font-size:11px;top:6px}
+
+.comp{background:#fff;border:1px solid var(--line);border-radius:16px;padding:32px 36px;margin:28px 0 32px;box-shadow:0 1px 3px var(--shadow-soft)}
+.comp h4{font-family:"Noto Serif SC",serif;font-size:17px;font-weight:600;color:var(--ink);margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.comp h4::before{content:"⚠";color:var(--gold);font-size:18px}
+.comp .row{display:flex;gap:18px;align-items:flex-start;margin-bottom:18px}
+.comp .row:last-child{margin-bottom:0}
+.comp .ic{flex:0 0 32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--ink),var(--hero-light));color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;font-family:"Cormorant Garamond",serif}
+.comp .row > div:nth-child(2){flex:1;font-size:14.5px;line-height:1.75;color:var(--ink)}
+.comp .row b{color:var(--ink);font-weight:600;display:inline-block;margin-right:8px}
+
+.tech-stack{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:24px 0 32px}
+.tech-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+.tech-card h5{font-family:"Cormorant Garamond",serif;font-size:13px;letter-spacing:.3em;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+.tech-card p{font-size:13.5px;color:var(--ink);line-height:1.7}
+.tech-card p b{color:var(--ink);font-weight:600}
+
+.callout{background:linear-gradient(135deg,var(--callout-a) 0%,var(--callout-b) 100%);border:1px solid var(--gold-border);border-radius:14px;padding:24px 28px;margin:24px 0;font-size:14.5px;line-height:1.75;color:var(--ink)}
+.callout b{color:var(--ink);font-weight:600}
+
+.phones{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin:32px 0 24px;padding:32px 0}
+.ph{position:relative;width:100%;aspect-ratio:9/19.5;background:linear-gradient(180deg,var(--phone-bg1) 0%,var(--phone-bg2) 100%);border-radius:36px;border:8px solid var(--phone-frame);box-shadow:0 12px 40px var(--shadow-med),inset 0 0 0 1px rgba(255,255,255,.4);overflow:hidden;display:flex;flex-direction:column}
+.ph .bar{display:flex;justify-content:space-between;align-items:center;padding:8px 18px 4px;font-size:11px;font-weight:600;color:var(--ink)}
+.ph .bar .dots{display:flex;gap:3px}
+.ph .bar .dots span{width:4px;height:4px;border-radius:50%;background:var(--ink)}
+.ph .body{flex:1;padding:14px 16px;overflow:hidden;font-size:11px;line-height:1.55;color:var(--ink)}
+.ph .nav{padding:6px 16px 12px;border-top:1px solid var(--line-dashed);display:flex;justify-content:space-around;font-size:9px;color:var(--muted)}
+.ph .nav span{display:flex;flex-direction:column;align-items:center;gap:2px}
+.ph .nav span::before{content:"";width:14px;height:14px;border-radius:3px;background:var(--nav-before)}
+.ph .nav span.active{color:var(--gold)}
+.ph .nav span.active::before{background:var(--gold)}
+.ph-cap{font-size:11.5px;color:var(--muted);text-align:center;margin-top:14px;letter-spacing:.05em}
+.ph-title{font-family:"Noto Serif SC",serif;font-size:14px;font-weight:600;color:var(--ink);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+.ph-row{display:flex;justify-content:space-between;padding:5px 0;font-size:11px;color:var(--ink);border-bottom:1px dashed var(--line-dashed)}
+.ph-row b{color:var(--ink);font-weight:600}
+.ph-msg{padding:8px 10px;border-radius:10px;margin-bottom:8px;font-size:10.5px;line-height:1.55}
+.ph-msg.user{background:var(--user-msg-bg);color:#fff;margin-left:24px;text-align:left}
+.ph-msg.ai{background:#fff;border:1px solid var(--line);margin-right:24px}
+.ph-msg.warn{background:var(--callout-a);border:1px solid var(--gold-border);color:var(--ink)}
+.ph-pill{display:inline-block;padding:3px 10px;border-radius:20px;background:var(--gold);color:#fff;font-size:10px;font-weight:600;margin-bottom:8px}
+.ph-score{text-align:center;padding:14px 0}
+.ph-score .num{font-family:"Cormorant Garamond",serif;font-size:42px;color:var(--ink);font-weight:600}
+.ph-score .lbl{font-size:10px;color:var(--muted);letter-spacing:.15em}
+.ph-bar{display:flex;justify-content:space-between;margin:6px 0;font-size:10.5px;color:var(--ink)}
+.ph-bar .fill{flex:1;height:4px;background:var(--line);margin:0 8px;border-radius:2px;align-self:center;position:relative;overflow:hidden}
+.ph-bar .fill i{position:absolute;left:0;top:0;height:100%;background:var(--gold);border-radius:2px}
+
+.pc{background:var(--pc-frame);border-radius:18px;padding:14px 14px 20px;margin:32px 0;box-shadow:0 16px 48px var(--shadow-med)}
+.pc-screen{background:var(--pc-screen);border-radius:10px;overflow:hidden;display:flex;min-height:560px}
+.pc-side{width:200px;background:var(--pc-frame);color:#fff;padding:24px 20px}
+.pc-side .logo{font-family:"Noto Serif SC",serif;font-size:17px;font-weight:600;color:var(--gold);margin-bottom:32px}
+.pc-side .nav-pc{display:flex;flex-direction:column;gap:14px}
+.pc-side .nav-pc a{color:rgba(255,255,255,.7);font-size:13px;padding:8px 12px;border-radius:6px;cursor:pointer;display:block}
+.pc-side .nav-pc a.active{background:var(--gold-nav-active);color:var(--gold)}
+.pc-main{flex:1;padding:32px 36px;font-size:13px;color:var(--ink);line-height:1.7}
+.pc-main h3{font-family:"Noto Serif SC",serif;font-size:20px;font-weight:600;margin-bottom:20px;color:var(--ink)}
+.pc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:14px 0}
+.pc-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px}
+.pc-card h6{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.2em;margin-bottom:8px}
+.pc-card .big{font-family:"Cormorant Garamond",serif;font-size:30px;color:var(--ink);font-weight:600}
+
+.trust{margin-top:96px;padding-top:48px;border-top:1px solid var(--line);display:grid;grid-template-columns:2fr 1fr 1fr;gap:48px;font-size:13px;color:var(--muted);line-height:1.8}
+.trust h6{font-family:"Cormorant Garamond",serif;font-size:13px;letter-spacing:.3em;color:var(--ink);text-transform:uppercase;margin-bottom:14px}
+.trust p b{color:var(--ink);font-weight:600}
+
+
+</style></head><body><div id="root">
+<header class="hero">
+  <span class="hero-tag">TradeNova · 跨境引力 · v1.0</span>
+  <h1 class="hero-title">让全球买家<br>主动找到<em>你的货</em></h1>
+  <p class="hero-sub">面向年营业额 50 万美元以上的中国跨境卖家、供应链工厂出海团队与独立站创业者。TradeNova AI 做选品洞察与流量诊断(不代运营、不垫资刷单),合规数据看板沉淀多平台经营视图,持牌跨境顾问 1V1 完成税务与海外仓决策。严格遵循平台服务协议、海关总署跨境电商监管办法与 GDPR 数据合规要求。</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><small>Audience</small><p>年营业额 50w USD+ 跨境卖家 / 工厂出海团队 / 独立站创业者</p></div>
+    <div class="hero-meta-item"><small>Boundary</small><p>不代运营 · 不垫资刷单 · 不违规测评 · 不替客户操作广告账户</p></div>
+    <div class="hero-meta-item"><small>Compliance</small><p>海关总署跨境电商监管 · GDPR · 各平台服务协议 · 反洗钱 AML</p></div>
+    <div class="hero-meta-item"><small>Stack</small><p>Claude Sonnet · GPT-4o · Serpapi · 亚马逊 SP-API · 等保二级</p></div>
+  </div>
+</header>
+<div class="step">
+  <div class="step-num">01<small>FOUNDATION</small></div>
+  <div class="step-title">
+    <h2>规划 · 人群 · 合规 · 技术栈</h2>
+    <p>跨境电商不是简单的"把货卖到海外",而是在多国监管、多平台规则与汇率波动三重夹击下构建可持续增长的全球生意。想清楚"为谁做 / 不碰什么 / 怎么合规",再搭第一块砖。</p>
+  </div>
+
+  <h3 class="sec">四类核心人群</h3>
+  <div class="bullet"><b>亚马逊 / 速卖通规模卖家　40%</b>　年营业额 50w-500w USD,团队 5-30 人,主诉:广告 ACoS 居高不下、跟卖侵权防不胜防、FBA 库存积压吃仓储费,急需 AI 选品预警与竞品价格监控替代人工盯盘</div>
+  <div class="bullet"><b>供应链工厂出海团队　30%</b>　年产值 1000w-5000w 元,主诉:ODM 转 DTC 不知如何建品牌、独立站冷启动烧钱、海外仓前置备货决策全靠直觉,需要数据驱动的选品与物流成本测算</div>
+  <div class="bullet"><b>独立站创业者　20%</b>　年营业额 10w-100w USD,Shopify / WooCommerce 建站,主诉:Meta 广告 ROAS 下滑、SEO 流量见效慢、支付拒付率超 2% 触发风控,需全链路诊断与 GMV 预测工具</div>
+  <div class="bullet"><b>品牌出海 / 跨境新玩家　10%</b>　国内品牌首次出海或转型 B2C,资金储备 200w-2000w 元,主诉:不了解目标国税务与 VAT 合规、不懂平台入驻资质要求、选品踩坑概率高,付费意愿最强,愿为"少走弯路"买单</div>
+
+  <h3 class="sec">合规红线</h3>
+  <div class="comp">
+    <h4>六条不可逾越的边界</h4>
+    <div class="row"><span class="ic">①</span><div><b>不操作用户账户</b>　平台严禁以任何形式代客登录、代投广告、代操作店铺后台,所有操作权限留存卖家本人(参照各平台服务协议 API 使用条款及《电子商务法》第 38 条平台责任界定)</div></div>
+    <div class="row"><span class="ic">②</span><div><b>不参与刷单测评</b>　禁止协助用户组织虚假订单、违规激励评论、刷好评等操控行为,AI 输出中涉及评价获取策略须自动过滤违规建议(亚马逊 Community Guidelines、《反不正当竞争法》第 8 条)</div></div>
+    <div class="row"><span class="ic">③</span><div><b>不承诺 GMV 增长</b>　禁用"保证翻倍""稳定 ROI xx%""无效退款"等承诺性话术,所有 AI 预测输出须附 90 天置信区间与数据局限性说明(《广告法》第 4 条真实性原则)</div></div>
+    <div class="row"><span class="ic">④</span><div><b>数据合规 · GDPR / CCPA</b>　处理欧盟用户数据须取得明确同意,数据最小化采集,用户有权随时申请删除,跨境数据传输须通过标准合同条款(SCC)或充分性认定(《个人信息保护法》第 38-40 条及 GDPR Art.6)</div></div>
+    <div class="row"><span class="ic">⑤</span><div><b>海关合规 · 申报真实</b>　平台不得协助用户低报货值、伪报品名、拆单逃税,AI 清关建议须以真实交易价格为基准(海关总署《跨境电子商务零售进出口商品监督管理办法》第 11 条)</div></div>
+    <div class="row"><span class="ic">⑥</span><div><b>知识产权边界</b>　选品分析模块不得建议用户仿制、贴牌已注册商标商品,AI 输出自动比对 USPTO / EUIPO 商标数据库,高风险品类触发合规警告(《商标法》第 57 条及亚马逊 Brand Registry 规则)</div></div>
+  </div>
+
+  <h3 class="sec">技术栈</h3>
+  <div class="tech-stack">
+    <div class="tech-card"><h5>Frontend</h5><p><b>Next.js 14</b> App Router + RSC<br><b>Tailwind CSS</b> · shadcn/ui<br>PWA + 微信小程序双端部署</p></div>
+    <div class="tech-card"><h5>Backend</h5><p><b>Node.js</b>(Hono 框架)<br><b>PostgreSQL 16</b> + pgvector<br>Redis · Supabase Realtime</p></div>
+    <div class="tech-card"><h5>AI</h5><p><b>Claude Sonnet</b>(选品洞察 / 诊断)<br><b>GPT-4o</b>(多语言文案 / 摘要)<br><b>BGE-M3</b>(语义搜索 / 竞品匹配)</p></div>
+    <div class="tech-card"><h5>数据</h5><p><b>亚马逊 SP-API</b> · 速卖通 Open API<br><b>Serpapi</b>(关键词排名抓取)<br>Jungle Scout 数据集成 · BI 看板</p></div>
+    <div class="tech-card"><h5>支付 / 汇兑</h5><p><b>Stripe</b>(订阅计费)<br><b>Wise Business API</b>(汇率监控)<br>Pingpong · 连连国际收款数据聚合</p></div>
+    <div class="tech-card"><h5>Compliance</h5><p><b>等保二级</b> · 个保法<br>GDPR SCC · KYC / AML<br>商标库实时比对 · 海关 HS 码校验</p></div>
+  </div>
+
+  <div class="callout"><b>关键差异化</b>　市场上 95% 的跨境 SaaS 工具只做单点功能(选品或广告或物流),TradeNova 刻意打通"选品 — 流量 — 合规 — 财务"四段数据,让卖家在一个看板里看到从 CTR 到净利润的完整链路。我们不碰运营代操作、不赚广告返点,只靠订阅费活着,换来的是卖家对数据中立性的彻底信任。</div>
+</div>
+<div class="step">
+  <div class="step-num">02<small>ARCHITECTURE</small></div>
+  <div class="step-title">
+    <h2>产品架构 · 五屏主线 · 视觉语言</h2>
+    <p>TradeNova 跨境引力的产品哲学只有一句话:数据在前,决策在后。五条核心路由围绕卖家从"发现机会"到"落袋为安"的完整作战链路设计,每一屏只做一件事,不堆功能、不造认知负担。</p>
+  </div>
+
+  <h3 class="sec">五屏产品主线</h3>
+  <div class="bullet"><b>1 · /discover 选品雷达</b>　AI 实时扫描亚马逊 / 速卖通 / TikTok Shop 三平台 BSR 榜单变动,结合 Google Trends 与 Serpapi 关键词搜索量曲线,输出"需求上升 × 竞争密度低 × 利润空间 ≥ 35%"三维评分卡,每日自动推送 Top 20 品类机会</div>
+  <div class="bullet"><b>2 · /dashboard 经营看板</b>　聚合 SP-API、速卖通 Open API、Stripe、Wise 四路数据源,单一视图呈现多店铺 GMV / 广告 ACoS / FBA 库存周转天数 / 净利润率,支持按站点 / SKU / 时间段下钻,P99 刷新延迟 ≤ 3 秒</div>
+  <div class="bullet"><b>3 · /ai-advisor AI 跨境顾问</b>　基于 Claude Sonnet 的财富树洞式对话,输入"我的 ACoS 从 18% 涨到 31%"即可获得归因分析与 A/B 测试建议;所有输出末尾自动追加平台合规免责声明,敏感词过滤器实时拦截刷单 / 承诺收益类建议</div>
+  <div class="bullet"><b>4 · /compliance 合规中心</b>　商标侵权预检(USPTO / EUIPO 实时比对)、HS 编码自动归类、目标国 VAT 税率计算器、GDPR 数据处理协议模板一键生成,高风险操作触发红色警告弹层并要求卖家二次确认，留存操作日志 5 年</div>
+  <div class="bullet"><b>5 · /advisor-1v1 持牌顾问约诊</b>　BGE-M3 语义匹配推荐最适合的持牌跨境税务师 / 海关律师 / CFP,日历可视化选时段,Agora SD-RTN 视频通话强制双录加密落库,咨询摘要由 GPT-4o 自动生成并在 24 小时内推送给卖家</div>
+
+  <h3 class="sec">主视觉关键词</h3>
+  <div class="comp">
+    <h4>Image / Video Generation Prompts</h4>
+    <div class="row"><span class="ic">A</span><div><b>Global Trade Grid</b>　"isometric world map with glowing supply chain routes connecting Shenzhen to Los Angeles, Rotterdam and Dubai, dark navy background, electric blue data-flow lines, floating SKU cards, ultra-clean SaaS aesthetic, 4K"</div></div>
+    <div class="row"><span class="ic">B</span><div><b>AI Insight Moment</b>　"close-up of a translucent holographic dashboard floating above a desk, seller's hands typing, real-time sales curves spiking green, Claude AI chat bubble appearing with product insight, cinematic depth of field, cool-toned studio light"</div></div>
+    <div class="row"><span class="ic">C</span><div><b>Compliance Shield</b>　"abstract geometric shield composed of interconnected data nodes, USPTO trademark rings, GDPR padlock icons, gradient from deep indigo to amber, minimal flat vector style, white background"</div></div>
+    <div class="row"><span class="ic">D</span><div><b>1V1 Expert Session</b>　"split screen: left side Chinese e-commerce seller at a standing desk with multi-monitor setup, right side professional advisor on video call, warm ambient office lighting, subtle TradeNova logo watermark, photorealistic"</div></div>
+  </div>
+
+  <h3 class="sec">前端架构技术栈</h3>
+  <div class="tech-stack">
+    <div class="tech-card"><h5>组件库</h5><p><b>shadcn/ui</b> + Radix UI<br>Tailwind CSS v3.4<br>CVA 变体管理 · 主题 Token 化</p></div>
+    <div class="tech-card"><h5>动效</h5><p><b>Framer Motion</b> v11<br>数据折线 SVG 动画<br>Lottie(加载 / 空态插画)<br>60fps 滚动视差</p></div>
+    <div class="tech-card"><h5>状态机</h5><p><b>Zustand</b>(全局店铺状态)<br><b>TanStack Query v5</b>(服务端缓存)<br>Immer · Jotai(局部原子状态)</p></div>
+    <div class="tech-card"><h5>路由 / 布局</h5><p><b>Next.js 14</b> App Router<br>Parallel Routes(看板分屏)<br>Intercepting Routes(弹层约诊)<br>Middleware 鉴权守卫</p></div>
+    <div class="tech-card"><h5>A11y / 国际化</h5><p><b>next-intl</b>(中 / 英 / 西)<br>WCAG 2.1 AA 对比度达标<br>focus-visible · aria-live<br>屏幕阅读器全覆盖测试</p></div>
+  </div>
+</div>
+<div class="phones">
+
+  <div class="ph">
+    <div class="bar"><span>9:41</span><div class="dots"><span></span><span></span><span></span></div></div>
+    <div class="body">
+      <div class="ph-pill">TradeNova · 跨境引力</div>
+      <div class="ph-title">全球卖家的<br>智能经营中枢</div>
+      <div class="ph-msg ai">数据在前，决策在后。接入 3 大平台，实时洞察跨境商机。</div>
+      <div class="ph-row"><span>月活卖家</span><span class="num">12,400+</span></div>
+      <div class="ph-row"><span>平均 ROI 提升</span><span class="num">38%</span></div>
+      <div class="ph-row"><span>合规预警准确率</span><span class="num">99.2%</span></div>
+      <div class="ph-pill">免费试用 14 天 · 无需绑卡</div>
+    </div>
+    <div class="nav"><span class="active">首页</span><span>发现</span><span>合规</span><span>我的</span></div>
+  </div>
+  <div class="ph-cap">SCREEN · /splash</div>
+
+  <div class="ph">
+    <div class="bar"><span>9:41</span><div class="dots"><span></span><span></span><span></span></div></div>
+    <div class="body">
+      <div class="ph-title">经营看板</div>
+      <div class="ph-row"><span>今日 GMV</span><span class="num">¥84,320</span></div>
+      <div class="ph-row"><span>广告 ACoS</span><span class="num">23.6%</span></div>
+      <div class="ph-row"><span>FBA 库存周转</span><span class="num">18 天</span></div>
+      <div class="ph-row"><span>净利润率</span><span class="num">31.4%</span></div>
+      <div class="ph-score">
+        <div class="num">87</div>
+        <div class="lbl">经营健康分</div>
+      </div>
+      <div class="ph-bar"><div class="fill"></div></div>
+      <div class="ph-msg ai">ACoS 较上周上升 5.2 pp，建议暂停低转化 ASIN 广告组，预计可节省预算 ¥1,200 / 周。</div>
+      <div class="ph-row"><span>数据刷新延迟</span><span class="num">P99 ≤ 3s</span></div>
+    </div>
+    <div class="nav"><span>首页</span><span class="active">发现</span><span>合规</span><span>我的</span></div>
+  </div>
+  <div class="ph-cap">SCREEN · /dashboard</div>
+
+  <div class="ph">
+    <div class="bar"><span>9:41</span><div class="dots"><span></span><span></span><span></span></div></div>
+    <div class="body">
+      <div class="ph-title">选品雷达</div>
+      <div class="ph-msg ai">正在扫描亚马逊 / 速卖通 / TikTok Shop 三平台 BSR 榜单，今日发现 20 个高潜品类。</div>
+      <div class="ph-row"><span>需求上升</span><span class="num">+42%</span></div>
+      <div class="ph-row"><span>竞争密度</span><span class="num">低</span></div>
+      <div class="ph-row"><span>预估利润空间</span><span class="num">≥ 35%</span></div>
+      <div class="ph-bar"><div class="fill"></div></div>
+      <div class="ph-row"><span>综合评分</span><span class="num">92 / 100</span></div>
+      <div class="ph-msg user">帮我分析"便携颈椎按摩仪"在德国站的竞争格局</div>
+      <div class="ph-msg ai">德国站该品类月搜索量约 68,000，Top 10 卖家平均评分 4.3 星，头部 ASIN Review 数 2,100+，新品切入建议定价 €39.9，广告起步预算 €800 / 月。</div>
+      <div class="warn">以上为数据参考，不构成投资建议，实际利润受汇率 / FBA 费率影响。</div>
+    </div>
+    <div class="nav"><span>首页</span><span class="active">发现</span><span>合规</span><span>我的</span></div>
+  </div>
+  <div class="ph-cap">SCREEN · /discover</div>
+
+  <div class="ph">
+    <div class="bar"><span>9:41</span><div class="dots"><span></span><span></span><span></span></div></div>
+    <div class="body">
+      <div class="ph-title">个人中心</div>
+      <div class="ph-pill">专业版会员 · 有效期至 2026-03-31</div>
+      <div class="ph-row"><span>店铺数</span><span class="num">3 个</span></div>
+      <div class="ph-row"><span>已接入平台</span><span class="num">亚马逊 · 速卖通</span></div>
+      <div class="ph-row"><span>本月 AI 对话</span><span class="num">147 次</span></div>
+      <div class="ph-row"><span>合规预警</span><span class="num">2 条待处理</span></div>
+      <div class="ph-score">
+        <div class="num">¥299</div>
+        <div class="lbl">/ 月 · 专业版</div>
+      </div>
+      <div class="ph-row"><span>持牌顾问约诊</span><span class="num">剩余 1 次</span></div>
+      <div class="ph-row"><span>数据留存</span><span class="num">5 年加密归档</span></div>
+      <div class="warn">KYC 实名认证已通过 · AML 评估有效期 365 天</div>
+    </div>
+    <div class="nav"><span>首页</span><span>发现</span><span>合规</span><span class="active">我的</span></div>
+  </div>
+  <div class="ph-cap">SCREEN · /profile</div>
+
+</div>
+<div class="step">
+  <div class="step-num">03<small>AI CORE</small></div>
+  <div class="step-title">
+    <h2>AI 核心模块 · 三层编排设计</h2>
+    <p>TradeNova 的 AI 不是单点问答，而是「感知—分析—围栏」三层闭环：选品雷达持续感知全球市场信号，经营顾问深度分析店铺健康，安全围栏在法律与专业边界处守门。三层之间通过统一的 Prompt 路由层衔接，任意一层失败均有明确降级路径，不对用户产生误导性输出。</p>
+  </div>
+
+  <h3 class="sec">模块一 · 选品雷达 AI（MarketRadar）</h3>
+  <div class="comp">
+    <h4>跨平台商机感知与选品决策辅助</h4>
+    <div class="row"><span class="ic">①</span><div><b>作用</b>　每日扫描亚马逊 / 速卖通 / TikTok Shop 三平台 BSR 榜单及搜索词趋势，自动聚合需求上升 ≥ 30%、竞争密度评级「低 / 中」、毛利空间预估 ≥ 25% 的品类，生成「今日 20 个高潜品类」简报，支持按站点 / 品类 / 价格带筛选。</div></div>
+    <div class="row"><span class="ic">②</span><div><b>Prompt 摘要</b>　系统提示词锁定角色为「跨境电商市场分析师」，输入变量包含：目标站点、用户历史选品偏好、当前在售 SKU 列表；要求输出结构化 JSON（品类名 / 需求指数 / 竞争指数 / 利润区间 / 切入建议）；禁止输出「一定能赚」「稳定收益」等承诺性表述；每条结果末尾强制附数据来源与采集时间戳。</div></div>
+    <div class="row"><span class="ic">③</span><div><b>失败兜底</b>　若第三方平台 API 返回超时（P99 阈值 5s），降级为展示 T-1 缓存数据并标注「数据更新于 xx 小时前」；若 Claude 推理超时，回退到规则引擎输出预设模板简报，不展示空白或错误态。</div></div>
+    <div class="row"><span class="ic">④</span><div><b>合规边界</b>　所有利润预估标注「仅供参考，实际利润受 FBA 费率、汇率波动、平台政策调整影响」，禁止在输出中引用未经核实的竞品店铺销售额数据，防止违反《反不正当竞争法》关于虚假宣传的相关条款。</div></div>
+  </div>
+
+  <h3 class="sec">模块二 · 经营顾问 AI（BizAdvisor）</h3>
+  <div class="comp">
+    <h4>店铺健康诊断与经营决策对话</h4>
+    <div class="row"><span class="ic">①</span><div><b>作用</b>　接入用户授权的店铺 API 数据（GMV / ACoS / 库存周转 / 净利润率），结合 BGE-M3 向量检索「最相似的 500 个历史店铺案例」，由 Claude Sonnet 生成个性化经营建议；支持自然语言提问，如「我的广告预算怎么分配」「FBA 备货量如何设置」，上下文窗口维持最近 20 轮对话。</div></div>
+    <div class="row"><span class="ic">②</span><div><b>Prompt 摘要</b>　系统提示词注入当前店铺实时指标快照（刷新间隔 ≤ 15 分钟）、用户会员等级（决定可调用的分析深度）、历史对话摘要（由 GPT-4o 每 10 轮压缩一次）；输出格式要求：建议条目 ≤ 5 条、每条附置信度（高 / 中 / 低）与预期影响量化值；禁止输出「你应该立刻」「必须」等强指令性语气。</div></div>
+    <div class="row"><span class="ic">③</span><div><b>失败兜底</b>　Claude 调用失败时，切换至 GPT-4o 备用通道，SLA 保障对话服务可用率 ≥ 99.5%；若两路模型均不可用，自动触发「人工顾问排队接入」提示，等待时长承诺 ≤ 4 小时（工作日）；所有降级事件写入审计日志，按月向用户披露。</div></div>
+    <div class="row"><span class="ic">④</span><div><b>合规边界</b>　平台不持有跨境电商经营许可，AI 建议定性为「经营参考」而非「专业咨询意见」；涉及税务申报、海关申报等法定事项，强制展示「建议咨询持牌税务师 / 报关行」提示，不替代专业资质判断（依据《电子商务法》第 38 条平台责任条款）。</div></div>
+  </div>
+
+  <h3 class="sec">模块三 · 行业安全围栏 AI（SafeGuard）</h3>
+  <div class="comp">
+    <h4>危机词识别 · 强制导流 · 转人工 · 不替代专业判断</h4>
+    <div class="row"><span class="ic">①</span><div><b>危机词识别</b>　维护一份动态危机词库（当前 1,240 条），涵盖：平台封号危机词（「刷单」「测评互换」「变体合并操控」）、法律风险词（「假冒品牌」「侵权链接」「洗钱」「逃税」）、极端情绪词（「崩了」「破产了」「活不下去」）；词库每周由合规团队人工复核更新，版本号可追溯；命中阈值：精确匹配即触发，语义相似度 ≥ 0.85 亦触发。</div></div>
+    <div class="row"><span class="ic">②</span><div><b>强制导流与转人工</b>　触发平台合规类危机词 → 自动中断 AI 对话，展示「该问题涉及平台政策风险，AI 无法作答，已为你匹配持牌跨境合规顾问，预约响应时效 ≤ 2 小时」；触发法律风险词 → 强制弹出法律顾问预约入口，同时向后台合规团队推送告警；触发极端情绪词 → 暂停经营建议输出，切换为「人文关怀」模式，展示心理援助热线（全国心理援助热线 400-161-9995）并通知客服主动外呼。</div></div>
+    <div class="row"><span class="ic">③</span><div><b>不替代专业判断声明</b>　每次会话开始前展示一次、每 30 轮对话强制重新确认：「TradeNova AI 提供经营数据分析与参考建议，不构成法律意见、税务意见或投资建议；平台不具备律师事务所、税务师事务所或投资顾问资质；具体决策请咨询持牌专业人员。」用户须点击「我已知晓」方可继续，确认行为写入操作日志留存 5 年。</div></div>
+    <div class="row"><span class="ic">④</span><div><b>输出二次审核</b>　SafeGuard 作为独立微服务，对 MarketRadar 与 BizAdvisor 的所有输出内容进行 100ms 内的实时过滤；过滤维度：违规承诺词 / 竞品诋毁词 / 虚假数据词 / 涉政敏感词；过滤命中率目标 ≥ 99.2%（以季度内测数据为基准），漏检事件 72 小时内人工复盘并更新词库。</div></div>
+  </div>
+
+  <div class="callout"><b>为什么这套 AI 编排可信赖</b>　三层模块各司其职且相互制衡：MarketRadar 只做「看见」，BizAdvisor 只做「分析」，SafeGuard 负责「守门」——任何一条输出在到达用户之前，都必须经过围栏层的二次审核。失败兜底路径覆盖率 100%，不存在「AI 崩了用户看到空白」的裸奔场景。更关键的是，平台在合规文件与用户协议中明确「AI 不替代专业判断」，将责任边界写进合同而非藏在角落，这才是跨境电商 SaaS 在《电子商务法》与《生成式人工智能服务管理暂行办法》双重框架下真正可持续运营的底气。</div>
+</div>
+<div class="phones">
+
+  <div class="ph">
+    <div class="bar"></div>
+    <div class="body">
+      <div class="ph-title">TradeNova · BizAdvisor</div>
+      <div class="ph-pill">AI 经营顾问已就绪 · 店铺数据已同步</div>
+      <div class="ph-msg ai">你好，我已读取你亚马逊美国站近 30 天数据：GMV $18,420，ACoS 34.7%，库存周转率 2.1x。目前广告成本偏高，你最想先聊哪个方向？</div>
+      <div class="ph-msg ai">可以从这三个切入：① 降低 ACoS 到 25% 以内的出价策略；② 主推 SKU 备货量测算；③ 站外流量补充路径。</div>
+    </div>
+    <div class="nav">
+      <div class="dots"><span class="active"></span><span></span><span></span><span></span></div>
+    </div>
+    <div class="ph-cap">屏 1 · AI 对话起点</div>
+  </div>
+
+  <div class="ph">
+    <div class="bar"></div>
+    <div class="body">
+      <div class="ph-title">BizAdvisor · 对话中</div>
+      <div class="ph-msg user">我的 ACoS 一直压不下来，关键词出价该怎么调？</div>
+      <div class="ph-msg ai">你的 Top 5 关键词平均 CPC $1.84，转化率 6.2%，目标 ACoS 25% 对应目标 CPC 上限约 $1.38。建议先对转化率低于 4% 的长尾词降价 20%，暂停 CVR 为 0 且曝光超 500 次的词。</div>
+      <div class="ph-msg user">FBA 备货量怎么定？Q4 旺季快到了。</div>
+      <div class="ph-msg ai">基于你近 90 天日均销量 14 单、补货 Lead Time 28 天、Q4 系数历史均值 2.3x，建议安全库存 = 14 × 28 × 2.3 ≈ 900 件；当前库存 560 件，缺口约 340 件，建议本周发货。置信度：中（Q4 系数波动区间 1.8x–2.8x）。</div>
+      <div class="ph-msg user">竞品 B07XXXXXX 销量是多少，能帮我查一下吗？</div>
+      <div class="ph-msg ai">竞品具体销售额数据平台无法核实引用，引用未经授权的第三方销售数据可能违反《反不正当竞争法》相关条款。我可以分析该 ASIN 的公开 BSR 趋势与评分分布，供你参考。</div>
+    </div>
+    <div class="nav">
+      <div class="dots"><span></span><span class="active"></span><span></span><span></span></div>
+    </div>
+    <div class="ph-cap">屏 2 · 专业对话交错</div>
+  </div>
+
+  <div class="ph">
+    <div class="bar"></div>
+    <div class="body">
+      <div class="ph-title">SafeGuard · 合规围栏</div>
+      <div class="ph-msg user">有没有办法做测评互换，快速冲评论数量？</div>
+      <div class="ph-msg warn">危机词命中：「测评互换」属亚马逊平台严禁操纵行为，违规可导致 ASIN 下架或店铺永久封号（依据亚马逊《社区准则》及《反操纵评论政策》）。AI 已中断本轮建议输出。</div>
+      <div class="ph-msg warn">已为你匹配持牌跨境合规顾问，可协助评估当前店铺合规风险并制定整改方案。预约响应时效 ≤ 2 小时（工作日）。如需心理援助请拨：400-161-9995。</div>
+      <div class="ph-row">
+        <span class="ph-pill">预约合规顾问</span>
+        <span class="ph-pill">查看风险自查清单</span>
+      </div>
+    </div>
+    <div class="nav">
+      <div class="dots"><span></span><span></span><span class="active"></span><span></span></div>
+    </div>
+    <div class="ph-cap">屏 3 · 合规围栏触发</div>
+  </div>
+
+  <div class="ph">
+    <div class="bar"></div>
+    <div class="body">
+      <div class="ph-title">BizAdvisor · 本次对话报告</div>
+      <div class="ph-score">
+        <div class="num">73</div>
+        <div class="lbl">店铺健康综合评分 · 满分 100</div>
+      </div>
+      <div class="ph-bar">
+        <span>广告效率（ACoS 34.7% → 目标 25%）</span>
+        <div class="fill" style="width:58%"></div>
+      </div>
+      <div class="ph-bar">
+        <span>库存健康（周转率 2.1x · 行业基准 3x）</span>
+        <div class="fill" style="width:70%"></div>
+      </div>
+      <div class="ph-bar">
+        <span>合规状态（本次触发围栏 1 次 · 已转人工）</span>
+        <div class="fill" style="width:45%"></div>
+      </div>
+      <div class="ph-msg ai">本次对话生成 3 条经营建议、1 次合规拦截。下次跟进建议：7 天后复查关键词出价调整效果，确认 ACoS 是否降至 30% 以内。所有建议仅供参考，不构成专业投资或法律意见。</div>
+    </div>
+    <div class="nav">
+      <div class="dots"><span></span><span></span><span></span><span class="active"></span></div>
+    </div>
+    <div class="ph-cap">屏 4 · 对话报告评分</div>
+  </div>
+
+</div>
+<div class="step">
+  <div class="step-num">04<small>PREMIUM</small></div>
+  <div class="step-title">
+    <h2>付费层设计 · 高客单价的信任经济学</h2>
+    <p>跨境电商 SaaS 的付费意愿天花板不在功能，在于「帮我省了多少钱 / 避了多大坑」。TradeNova 的定价逻辑不是按座位数分层，而是按决策复杂度分层——数据看板免费开放，专业判断必须付费，持牌人工服务按次定价。高客单价的核心是让用户在掏钱前就感受到「这个平台比我更懂我的店」。</p>
+  </div>
+
+  <h3 class="sec">四档定价</h3>
+
+  <div class="bullet"><b>Free · 数据驾驶舱</b>　¥0 / 月　连接 1 个亚马逊站点，同步近 30 天 GMV / ACoS / 库存周转基础面板；AI BizAdvisor 每月 20 次对话额度；MarketRadar 类目趋势摘要每周 1 次推送；无 1V1 顾问服务；适配：初次接触平台的新卖家、月 GMV ＜ $5,000 的个人店铺，验证产品价值的关键入口</div>
+
+  <div class="bullet"><b>Pro · 经营加速</b>　¥299 / 月（年付 ¥2,699，省 ¥889）　连接 3 个站点；AI 对话无限次；MarketRadar 实时价格与 BSR 告警；广告出价优化建议每日刷新；SafeGuard 合规自查报告每月 1 份；每月 1 次 30 分钟持牌跨境运营顾问视频咨询（双录存档）；适配：月 GMV $5,000–$50,000、1–3 人团队的成长期卖家</div>
+
+  <div class="bullet"><b>Business · 专业决策</b>　¥999 / 月（年付 ¥8,999，省 ¥2,989）　连接 10 个站点 + 多账号聚合视图；AI 对话无限次 + 优先队列（响应延迟 ≤ 3 秒）；MarketRadar 竞品深度追踪（最多 50 个 ASIN）；广告智能规则引擎（自动出价调整，每日执行窗口 2 次）；每月 3 次 45 分钟持牌顾问咨询（含税务师 / 合规律师各 1 次）；季度经营健康报告（PDF，≥ 15 页）；SLA：工单响应 ≤ 4 小时（工作日）；适配：月 GMV $50,000–$500,000、3–15 人跨境团队</div>
+
+  <div class="bullet"><b>Enterprise · 战略共生</b>　¥4,999 / 月起（定制报价，最低签约 12 个月）　站点与账号数量不限；专属客户成功经理（1V1，微信直达，响应 ≤ 1 小时）；AI 模型私有化部署可选（阿里云 / AWS 独立租户，数据物理隔离）；持牌顾问每月不限次咨询 + 季度线下战略复盘（北京 / 上海 / 深圳）；海外仓选址 / 品牌出海合规尽调专项报告（每年 2 份）；等保三级独立审计报告可提供；适配：月 GMV ＞ $500,000、品牌出海 / 供应链上市储备、对数据主权有强要求的企业客户</div>
+
+  <h3 class="sec">服务铁律</h3>
+  <div class="comp">
+    <h4>六条不可妥协的交付承诺</h4>
+    <div class="row"><span class="ic">①</span><div><b>SLA 分级兜底</b>　Free 工单响应目标 ≤ 48 小时；Pro ≤ 24 小时；Business ≤ 4 小时（工作日 9:00–18:00）；Enterprise ≤ 1 小时（7×24 小时）；SLA 未达标按比例返还当月服务费（具体比例见服务协议附件 A），承诺写入合同不走口头</div></div>
+    <div class="row"><span class="ic">②</span><div><b>7 日无理由退款</b>　付费后 7 个自然日内，无论任何原因，申请全额退款 1 个工作日到账；7 日后因平台故障导致核心功能（AI 对话 / 数据同步）不可用累计超 72 小时，按故障时长比例折算退款；年付套餐退款按剩余月数折算，不收违约金</div></div>
+    <div class="row"><span class="ic">③</span><div><b>数据归属与迁出权</b>　用户上传或经由平台生成的所有店铺数据、对话记录、报告文件，版权归用户所有，TradeNova 仅在用户授权期间处理；账户注销后 30 个自然日内提供完整数据导出包（CSV + PDF），逾期平台主动推送；数据不用于训练第三方模型（用户可签署数据不出境承诺函）</div></div>
+    <div class="row"><span class="ic">④</span><div><b>持牌顾问资质可查</b>　平台内所有 1V1 顾问的执照编号、所属机构、擅长领域、累计服务时长均公开展示；顾问资质每季度由合规团队复核，资质失效即下架，不接新单；用户可在咨询前查看顾问近 90 天评分（满分 5 分，低于 4.0 自动暂停接单）</div></div>
+    <div class="row"><span class="ic">⑤</span><div><b>双录存档与隐私保护</b>　所有 1V1 视频咨询强制双录（视频 + 音频），libsodium 加密后存入阿里云 OSS，留存 5 年；录像仅限当事用户与顾问调取，平台运营人员无权访问；用户可申请销毁 5 年留存期满后的录像，申请处理时效 ≤ 3 个工作日（依据《个人信息保护法》第 47 条）</div></div>
+    <div class="row"><span class="ic">⑥</span><div><b>合规免责边界清晰</b>　AI 输出的所有经营建议不构成法律意见、税务意见或证券投资建议；平台不承担因用户单独依赖 AI 建议操作而产生的损失（免责条款在注册时 + 每次升级套餐时强制二次确认，确认行为写入操作日志）；持牌顾问建议属于其执业范围内的专业意见，责任由顾问本人及其挂靠机构依执业规则承担</div></div>
+    <div class="row"><span class="ic">⑦</span><div><b>价格透明不暗调</b>　套餐价格调整须提前 60 个自然日以站内信 + 注册邮箱双渠道通知，调价前已购买的年付套餐在有效期内按原价执行；不设自动续费陷阱，续费前 14 天推送提醒，用户须主动确认方可扣款；无任何隐藏手续费（数据导出 / 报告下载 / 顾问档案查看均不额外收费）</div></div>
+  </div>
+
+  <div class="callout"><b>我们刻意不做的事</b>　TradeNova 不做「功能堆砌式升级」——我们不会为了拉高 ARPU 而把本应免费的基础数据锁在付费墙后，不会用「高级功能」的名义把合规告警设为 Business 专属，不会让 Free 用户感受到「故意残缺」。我们也不做「顾问介绍费分成」——平台向顾问收取的是固定月费入驻费，而非按咨询单数抽佣，杜绝顾问为提高收入而延长咨询时长或制造焦虑的动机。定价涨了可以谈，但信任的成本一旦失去，任何优惠都买不回来。</div>
+</div>
+<div class="phones">
+
+  <div class="ph">
+    <div class="bar">TradeNova · 选择套餐</div>
+    <div class="body">
+      <div class="ph-title">四档服务方案</div>
+      <div class="ph-row"><span>Free · 数据驾驶舱</span><span>¥0 / 月</span></div>
+      <div class="ph-row"><span>Pro · 经营加速</span><span>¥299 / 月</span></div>
+      <div class="ph-row">
+        <span>Business · 专业决策 <span class="ph-pill">推荐</span></span>
+        <span>¥999 / 月</span>
+      </div>
+      <div class="ph-row"><span>Enterprise · 战略共生</span><span>¥4,999 起</span></div>
+      <div class="ph-row"><span class="lbl">按年付费</span><span class="num">Business 年付 ¥8,999 · 省 ¥2,989</span></div>
+      <div class="ph-row"><span class="lbl">按月付费</span><span class="num">随时取消 · 7 日无理由退款</span></div>
+    </div>
+    <div class="nav">
+      <div class="dots"><span class="active"></span><span></span><span></span><span></span></div>
+    </div>
+    <div class="ph-cap">屏 1 · 定价页</div>
+  </div>
+
+  <div class="ph">
+    <div class="bar">TradeNova · 订单确认</div>
+    <div class="body">
+      <div class="ph-title">Business · 专业决策 — 年付</div>
+      <div class="ph-row"><span>站点连接数</span><span class="num">10 个站点</span></div>
+      <div class="ph-row"><span>AI 对话响应</span><span class="num">优先队列 ≤ 3 秒</span></div>
+      <div class="ph-row"><span>持牌顾问咨询</span><span class="num">每月 3 次 × 45 分钟</span></div>
+      <div class="ph-row"><span>季度健康报告</span><span class="num">PDF ≥ 15 页 · 共 4 份</span></div>
+      <div class="ph-row"><span>SLA 工单响应</span><span class="num">≤ 4 小时（工作日）</span></div>
+      <div class="ph-row"><span>原价</span><span class="num">¥11,988</span></div>
+      <div class="ph-row"><span>年付优惠</span><span class="num">- ¥2,989</span></div>
+      <div class="ph-score">
+        <span class="lbl">应付合计</span>
+        <span class="num">¥8,999</span>
+      </div>
+      <div class="ph-msg ai">付款即视为已阅读并同意《服务协议》及《免责声明》，本次确认行为写入操作日志。</div>
+    </div>
+    <div class="nav">
+      <div class="dots"><span></span><span class="active"></span><span></span><span></span></div>
+    </div>
+    <div class="ph-cap">屏 2 · 订单确认</div>
+  </div>
+
+  <div class="ph">
+    <div class="bar">TradeNova · 服务进行中</div>
+    <div class="body">
+      <div class="ph-title">本月服务状态</div>
+      <div class="ph-msg ai">持牌顾问咨询 · 第 2 次（共 3 次）</div>
+      <div class="ph-row"><span class="lbl">顾问</span><span>王明远 CFP · 评分 4.8 / 5.0</span></div>
+      <div class="ph-row"><span class="lbl">时长</span><span>45 分钟 · 双录进行中</span></div>
+      <div class="ph-row"><span class="lbl">状态</span><span class="ph-pill">进行中</span></div>
+      <div class="ph-row"><span class="lbl">预计完成</span><span>14:35（剩余约 22 分钟）</span></div>
+      <div class="ph-bar">
+        <span class="lbl">季度健康报告生成进度（Q2）</span>
+        <div class="fill" style="width:68%"></div>
+      </div>
+      <div class="ph-row"><span class="lbl">报告预计交付</span><span>2026-06-30 前</span></div>
+      <div class="ph-bar">
+        <span class="lbl">本月 AI 对话 SLA 达标率</span>
+        <div class="fill" style="width:97%"></div>
+      </div>
+      <div class="ph-row"><span class="lbl">响应达标</span><span class="num">97% · 平均 1.8 秒</span></div>
+    </div>
+    <div class="nav">
+      <div class="dots"><span></span><span></span><span class="active"></span><span></span></div>
+    </div>
+    <div class="ph-cap">屏 3 · 服务进行中</div>
+  </div>
+
+  <div class="ph">
+    <div class="bar">TradeNova · 服务完成</div>
+    <div class="body">
+      <div class="ph-title">咨询已完成 · 请评价本次服务</div>
+      <div class="ph-msg ai">本次咨询已完成，录像已加密存档（libsodium · 阿里云 OSS · 留存 5 年）。以下为服务摘要，供您存档参考。</div>
+      <div class="ph-row"><span class="lbl">顾问</span><span>王明远 CFP</span></div>
+      <div class="ph-row"><span class="lbl">时长</span><span>45 分钟（实际 47 分钟）</span></div>
+      <div class="ph-row"><span class="lbl">议题</span><span>广告 ACoS 优化 · 税务合规自查</span></div>
+      <div class="ph-score">
+        <span class="lbl">综合评分</span>
+        <span class="num">4.9 / 5.0</span>
+      </div>
+      <div class="ph-row"><span class="lbl">满意度</span><span><span class="ph-pill">非常满意</span></span></div>
+      <div class="ph-row"><span class="lbl">本次顾问评分</span><span class="num">5 星</span></div>
+      <div class="ph-row"><span class="lbl">如有异议</span><span><span class="ph-pill warn">申诉 / 投诉入口</span></span></div>
+      <div class="ph-msg user">申诉处理时效 ≤ 3 个工作日，结果以站内信 + 邮箱双渠道通知。</div>
+    </div>
+    <div class="nav">
+      <div class="dots"><span></span><span></span><span></span><span class="active"></span></div>
+    </div>
+    <div class="ph-cap">屏 4 · 服务完成与评价</div>
+  </div>
+
+</div>
+<div class="step">
+  <div class="step-num">05<small>GROWTH</small></div>
+  <div class="step-title">
+    <h2>增长飞轮 · 内容矩阵 · 订阅分层 · 北极星 KPI</h2>
+    <p>TradeNova 的增长不依赖投放烧钱，而是靠「内容建立信任 → 免费工具获客 → 订阅转化留存 → 顾问口碑裂变」形成自驱飞轮。每一条内容都是品牌资产，每一个免费用户都是潜在的 Business 客户。增长的终点不是 DAU，而是「跨境卖家圈子里，TradeNova 是默认的经营大脑」。</p>
+  </div>
+
+  <h3 class="sec">内容矩阵</h3>
+  <div class="comp">
+    <h4>四条内容主线 × IP 风格 × 投放渠道</h4>
+    <div class="row"><span class="ic">①</span><div><b>跨境经营拆解</b>　IP 风格：数据驱动、无废话、有结论；主题：亚马逊 ACoS 红线 / Shopify 选品模型 / TikTok Shop 类目合规；投放：LinkedIn 长文 + 微信公众号周更 + YouTube 短视频（≤3 分钟），目标单篇平均阅读 5,000+</div></div>
+    <div class="row"><span class="ic">②</span><div><b>税务合规实战</b>　IP 风格：持牌税务师 / 律师联合署名，权威背书；主题：VAT 注册时机 / 美国销售税 Nexus 判定 / 离岸架构常见坑；投放：知乎专栏 + 小红书图文 + 行业微信群精准触达，目标季度新增 500 个 SEO 长尾词收录</div></div>
+    <div class="row"><span class="ic">③</span><div><b>AI 经营案例库</b>　IP 风格：真实客户脱敏案例（用户授权）+ AI 对话全程截图；主题：AI 预警阻止爆仓 / 季度健康报告解读 / 顾问咨询前后数据对比；投放：Product Hunt + 独立站 SEO + 出海社群裂变，目标每季度新增 20 个案例，案例页转化率 ≥ 8%</div></div>
+    <div class="row"><span class="ic">④</span><div><b>政策速读周报</b>　IP 风格：24 小时内解读最新跨境政策（海关 / 税务 / 平台规则变更）；主题：亚马逊 FBA 新费率 / 欧盟 EPR 合规截止日 / 国内结汇新规；投放：邮件订阅（目标订阅用户 20,000+）+ 企业微信推送 + 微博话题，打开率目标 ≥ 35%</div></div>
+  </div>
+
+  <h3 class="sec">五档订阅分层</h3>
+  <div class="bullet"><b>Free · ¥0 / 月</b>　数据驾驶舱（3 店铺）+ AI 对话 20 次 / 月 + 政策周报订阅，永久免费，无时限</div>
+  <div class="bullet"><b>Starter · ¥29 / 月</b>　数据驾驶舱（5 店铺）+ AI 对话 100 次 / 月 + 基础合规告警，适合单品类新卖家</div>
+  <div class="bullet"><b>Pro · ¥99 / 月</b>　10 店铺 + AI 对话不限次 + 月度健康报告 1 份 + 优先工单响应 ≤ 8 小时</div>
+  <div class="bullet"><b>Business · ¥299 / 月</b>　20 店铺 + 持牌顾问咨询 2 次 / 月（每次 45 分钟）+ 季度报告 + SLA ≤ 4 小时</div>
+  <div class="bullet"><b>Enterprise · ¥1,999 / 月起</b>　站点不限 + 专属顾问团队（CFP + 律师 + 税务师）+ 定制化 BI 看板 + SLA ≤ 2 小时 + 年付享 8 折</div>
+
+  <h3 class="sec">北极星 KPI</h3>
+  <div class="comp">
+    <h4>12 个月核心目标（2026 年 6 月 → 2027 年 6 月）</h4>
+    <div class="row"><span class="ic">①</span><div><b>注册用户规模</b>　累计注册用户突破 50,000，其中 Free 用户 ≥ 35,000，付费转化率（Free → 任意付费档）≥ 12%，即付费用户 ≥ 6,000</div></div>
+    <div class="row"><span class="ic">②</span><div><b>月经常性收入 MRR</b>　第 12 个月 MRR 达到 ¥1,800,000（约合 250K USD），Business + Enterprise 合计贡献 ≥ 75% 收入；年付比例 ≥ 40%，降低现金流波动</div></div>
+    <div class="row"><span class="ic">③</span><div><b>留存与健康度</b>　付费用户月留存率 ≥ 88%，NPS ≥ 55，顾问咨询满意度 ≥ 4.7 / 5.0，AI 对话 SLA（≤3 秒）达标率 ≥ 99%，合规告警误报率 ≤ 2%</div></div>
+    <div class="row"><span class="ic">④</span><div><b>内容与口碑裂变</b>　自然流量（SEO + 社群分享）贡献新注册用户 ≥ 50%，内容矩阵累计曝光 5,000,000+，顾问入驻数 ≥ 80 位（覆盖 CFP / 律师 / 税务师 / 海关专家四类持牌资质）</div></div>
+  </div>
+
+  <div class="callout"><b>12 个月愿景</b>　2027 年 6 月，当一位年营业额 500 万美金的亚马逊卖家打开手机，他不会先问身边的朋友「这个税该怎么报」，而是先打开 TradeNova——不是因为我们功能最多，而是因为我们是他见过的第一个「不卖产品、不收佣金、只帮他把经营看清楚」的平台。那一刻，增长飞轮自己在转，我们只需要继续把品质做扎实。</div>
+</div>
+<div class="pc">
+  <div class="pc-screen">
+    <div class="pc-side">
+      <div class="logo">TradeNova</div>
+      <div class="nav-pc">
+        <a class="active">仪表盘</a>
+        <a>用户增长</a>
+        <a>内容矩阵</a>
+        <a>订阅/付费</a>
+        <a>合规中心</a>
+      </div>
+    </div>
+    <div class="pc-main">
+      <h3>今日运营概览 · 2026 年 05 月 12 日 星期二</h3>
+      <div class="pc-grid">
+        <div class="pc-card"><h6>DAU</h6><div class="big">8,240</div><p>同比 +23%　月活 41,300</p></div>
+        <div class="pc-card"><h6>付费转化</h6><div class="big">9.60%</div><p>上周 8.87%　目标 12%</p></div>
+        <div class="pc-card"><h6>付费 ARPU</h6><div class="big">¥218</div><p>MRR ¥873,600　目标 ¥1.8M</p></div>
+        <div class="pc-card"><h6>合规事件</h6><div class="big">3</div><p>未处理　本月累计 19 件</p></div>
+        <div class="pc-card"><h6>NPS</h6><div class="big">52</div><p>目标 ≥ 55　环比 +4</p></div>
+        <div class="pc-card"><h6>顾问满意度</h6><div class="big">4.8</div><p>本月咨询 1,204 次</p></div>
+        <div class="pc-card"><h6>月留存率</h6><div class="big">86.4%</div><p>目标 ≥ 88%　预警</p></div>
+        <div class="pc-card"><h6>内容曝光</h6><div class="big">2.31M</div><p>本月累计　目标 5M/年</p></div>
+      </div>
+      <h3>人工审查队列 · 待处理事项</h3>
+      <div class="pc-grid">
+        <div class="pc-card"><h6>2026-05-12 09:14　合规告警</h6><div class="big">1</div><p>AI 输出含"预期收益 18%" — 违规词过滤器命中，待合规专员复核，状态：<b>待审</b></p></div>
+        <div class="pc-card"><h6>2026-05-12 08:51　申诉工单</h6><div class="big">1</div><p>Business 用户 #U-38821 对顾问咨询结果提出异议，处理时效剩余 47 小时，状态：<b>处理中</b></p></div>
+        <div class="pc-card"><h6>2026-05-12 07:33　KYC 待核</h6><div class="big">1</div><p>新用户 #U-50114 境外资产模块触发加强尽调（AML 评分 72/100），待人工确认，状态：<b>待审</b></p></div>
+        <div class="pc-card"><h6>2026-05-11 22:07　SLA 超时预警</h6><div class="big">1</div><p>Pro 工单 #T-20963 响应时长已达 7.8 小时，逼近 8 小时 SLA 红线，状态：<b>紧急</b></p></div>
+        <div class="pc-card big"><h6>2026-05-11 18:40　订阅降级</h6><div class="big">14</div><p>本周 Business → Starter 降级 14 例，主因：店铺数超限未升级；建议触发站内信 + 专属顾问外呼，状态：<b>待跟进</b></p></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div></body></html>
