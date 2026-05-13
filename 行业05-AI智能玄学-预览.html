@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STELLAR · AI 智能玄学命理平台 — 完整开发提示词与 UI 预览</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+SC:wght@400;700;900&family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0F0A1F;--p:#2A1F4E;--p2:#3D2D6B;--pd:#1A124A;--pl:#4A3F7E;--gold:#C8A865;--goldL:#E8D078;--goldD:#9A7B40;--ver:#B8362F;--ver2:#8B2A2A;--moon:#F5F0E8;--cream:#FAF6EE;--paper:#EDE6D6;--line:#D9CFB8;--gray:#7A6F8C;--text:#1A1230;--star:#E8D078}
+*{box-sizing:border-box;-webkit-font-smoothing:antialiased}
+body{margin:0;font-family:Inter,'Noto Serif SC',serif;background:var(--cream);color:var(--text);line-height:1.7}
+
+.hero{background:radial-gradient(ellipse at 30% 20%,#3D2D6B 0%,#2A1F4E 40%,#0F0A1F 90%);color:#fff;padding:90px 24px 70px;position:relative;overflow:hidden;border-bottom:1px solid var(--gold)}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,rgba(232,208,120,.6),transparent),radial-gradient(1.5px 1.5px at 60% 70%,rgba(232,208,120,.5),transparent),radial-gradient(2px 2px at 80% 20%,rgba(232,208,120,.7),transparent),radial-gradient(1px 1px at 40% 80%,rgba(232,208,120,.4),transparent),radial-gradient(2.5px 2.5px at 90% 60%,rgba(232,208,120,.5),transparent),radial-gradient(1px 1px at 10% 60%,rgba(232,208,120,.6),transparent),radial-gradient(1.5px 1.5px at 50% 10%,rgba(232,208,120,.5),transparent);background-size:100% 100%;pointer-events:none}
+.hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:80px;background:linear-gradient(180deg,transparent,rgba(15,10,31,.6))}
+.hero-c{max-width:1180px;margin:0 auto;position:relative;z-index:2}
+.crest{display:inline-flex;align-items:center;gap:14px;padding:8px 22px 8px 8px;border:1px solid var(--gold);border-radius:30px;background:rgba(200,168,101,.06)}
+.crest .lg{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--goldL),var(--gold),var(--goldD));display:flex;align-items:center;justify-content:center;color:var(--ink);font-family:'Cinzel';font-weight:900;font-size:18px;box-shadow:0 0 22px rgba(232,208,120,.6),inset 0 1px 2px rgba(255,255,255,.4)}
+.crest span{font-family:'Cinzel';letter-spacing:4px;font-size:12px;color:var(--goldL)}
+.hero h1{font-family:'Cinzel','Noto Serif SC';font-weight:900;font-size:88px;letter-spacing:6px;margin:24px 0 12px;line-height:1.05;color:#fff;text-transform:uppercase}
+.hero h1 .gold{background:linear-gradient(180deg,var(--goldL) 0%,var(--gold) 50%,var(--goldD) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1 .cn{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:32px;display:block;margin-top:14px;letter-spacing:14px;color:var(--moon);text-transform:none}
+.hero p.sub{font-family:'Cormorant Garamond','Noto Serif SC',serif;font-size:16px;color:#C9C0DD;max-width:680px;margin:24px 0 32px;line-height:2}
+.hero p.sub b{color:var(--goldL);border-bottom:1px solid var(--goldD);font-style:italic;font-weight:600}
+.tags{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px}
+.tag-h{padding:7px 18px;background:rgba(255,255,255,.04);border:1px solid var(--gold);border-radius:30px;font-size:11px;color:#C9C0DD;font-family:'Cinzel';letter-spacing:2px}
+.tag-h b{color:var(--goldL);font-weight:700}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap}
+.cta-btn{padding:16px 38px;background:linear-gradient(180deg,var(--goldL) 0%,var(--gold) 50%,var(--goldD) 100%);color:var(--ink);border:none;border-radius:30px;font-family:'Cinzel';font-size:13px;letter-spacing:5px;cursor:pointer;font-weight:700;box-shadow:0 8px 24px rgba(200,168,101,.4),inset 0 1px 0 rgba(255,255,255,.4);text-transform:uppercase}
+.cta-btn.ghost{background:transparent;color:var(--goldL);border:1px solid var(--gold);box-shadow:none}
+
+.trust{background:#0A0617;padding:28px 24px;border-bottom:1px solid var(--pd)}
+.trust-c{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center}
+.trust-i{padding:6px;border-right:1px solid #1A124A}.trust-i:last-child{border-right:0}
+.trust-i .num{font-family:'Cinzel';font-size:32px;color:var(--gold);font-weight:700;line-height:1.1;letter-spacing:1px}
+.trust-i .lab{font-family:'Cinzel';font-size:10px;color:#7A6F8C;margin-top:6px;letter-spacing:3px}
+
+.doc{max-width:1180px;margin:0 auto;padding:64px 28px}
+.intro{padding:32px 36px;background:#fff;border:1px solid var(--gold);border-radius:2px;margin-bottom:50px;font-size:15px;line-height:2;color:var(--text);box-shadow:0 4px 24px rgba(42,31,78,.06);position:relative;font-family:'Noto Serif SC',serif}
+.intro::after{content:'☾ BRIEF';position:absolute;right:24px;top:-12px;font-family:'Cinzel';font-size:11px;letter-spacing:4px;color:var(--p);padding:4px 12px;background:var(--cream);border:1px solid var(--gold)}
+.intro b{color:var(--p);font-weight:700}
+.palette{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.pchip{display:flex;align-items:center;gap:8px;padding:5px 12px;background:var(--cream);border:1px solid var(--line);border-radius:20px;font-size:11px;font-family:'Cinzel';letter-spacing:1px}
+.pchip i{width:14px;height:14px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.1)}
+
+.step{margin:80px 0 36px;display:flex;align-items:flex-end;gap:30px;padding-bottom:18px;border-bottom:1px solid var(--gold);position:relative}
+.step::after{content:'';position:absolute;left:0;bottom:-1px;width:140px;height:3px;background:linear-gradient(90deg,var(--p),var(--gold))}
+.step-num{font-family:'Cinzel';font-size:84px;font-weight:900;color:var(--p);line-height:.85;letter-spacing:-2px;font-style:italic}
+.step-num small{font-family:'Cinzel';font-size:12px;letter-spacing:5px;color:var(--gray);display:block;margin-top:8px;font-weight:500;font-style:normal}
+.step-title h2{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:30px;color:var(--ink);margin:0;letter-spacing:4px}
+.step-title h2 .en{font-family:'Cinzel';color:var(--goldD);margin-left:14px;font-size:20px;letter-spacing:3px;font-weight:500}
+.step-title p{font-family:'Cormorant Garamond';font-style:italic;font-size:13px;color:var(--gray);margin:8px 0 0}
+
+.callout{background:#fff;border-left:3px solid var(--gold);padding:20px 26px 20px 32px;border-radius:0 4px 4px 0;font-size:14px;line-height:2;margin:18px 0;position:relative;box-shadow:0 2px 8px rgba(42,31,78,.05);font-family:'Noto Serif SC',serif}
+.callout .ico{position:absolute;left:-13px;top:18px;width:26px;height:26px;background:linear-gradient(135deg,var(--goldL),var(--goldD));color:var(--p);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-family:'Cinzel';font-weight:900;box-shadow:0 4px 12px rgba(200,168,101,.4)}
+.callout b{color:var(--p);font-weight:700}
+
+h3.sec{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:22px;font-weight:400;margin:36px 0 12px;color:var(--p);position:relative;padding-left:18px;letter-spacing:3px}
+h3.sec::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:3px;background:var(--gold)}
+h3.sec .desc{font-family:'Cinzel';font-size:13px;color:var(--gray);margin-left:10px;letter-spacing:1.5px}
+
+h4.page{font-size:15px;font-weight:800;margin:18px 0 4px;color:var(--ink);font-family:'Noto Serif SC'}
+h4.page .num{font-family:'Cinzel';color:var(--goldD);font-weight:700;margin-right:8px;font-size:18px;letter-spacing:1px}
+
+.det{font-size:13.5px;line-height:2;color:var(--text);margin:6px 0 14px;padding:14px 16px;border-left:1px solid var(--gold);background:#fff;border-radius:0 3px 3px 0;font-family:'Noto Serif SC',serif}
+.det b{color:var(--p);font-weight:700}
+.det .em{color:var(--goldD);font-weight:700;background:rgba(200,168,101,.14);padding:0 6px}
+.det .em-w{color:var(--ver);font-weight:700}
+
+.bullet{padding:5px 0 5px 24px;position:relative;font-size:14px;line-height:1.85;font-family:'Noto Serif SC',serif}
+.bullet::before{content:'☾';position:absolute;left:4px;top:5px;color:var(--gold);font-family:'Cinzel'}
+.bullet b{color:var(--p)}
+
+.tag{font-size:10px;padding:2px 8px;border-radius:30px;display:inline-block;font-weight:700;font-family:'Cinzel';letter-spacing:1.5px}
+
+/* Phones */
+.phones{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;padding:46px 18px;background:radial-gradient(ellipse at center,#3D2D6B 0%,#2A1F4E 50%,#0F0A1F 100%);border-radius:4px;margin:28px 0;position:relative;border:1px solid var(--gold);overflow:hidden}
+.phones::before{content:'';position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 15% 25%,rgba(232,208,120,.7),transparent),radial-gradient(2px 2px at 85% 75%,rgba(232,208,120,.6),transparent),radial-gradient(1px 1px at 50% 50%,rgba(232,208,120,.5),transparent),radial-gradient(2px 2px at 30% 80%,rgba(232,208,120,.5),transparent),radial-gradient(1.5px 1.5px at 70% 20%,rgba(232,208,120,.6),transparent);pointer-events:none}
+.phones::after{content:'☾ MOBILE PREVIEW';position:absolute;top:14px;left:24px;font-family:'Cinzel';font-size:11px;letter-spacing:4px;color:var(--goldL);opacity:.8}
+.phone{width:240px;height:520px;border-radius:36px;background:#0F0A1F;padding:6px;box-shadow:0 30px 60px -15px rgba(0,0,0,.7),0 0 0 1px rgba(200,168,101,.25);position:relative}
+.scr{height:100%;background:#fff;border-radius:30px;overflow:hidden;display:flex;flex-direction:column;font-size:11px;position:relative;font-family:'Noto Serif SC',serif}
+.notch{height:22px;background:#0F0A1F;position:relative}
+.notch::after{content:'';position:absolute;left:50%;top:6px;transform:translateX(-50%);width:80px;height:18px;background:#0F0A1F;border-radius:0 0 12px 12px}
+.sb{height:18px;font-size:9px;display:flex;justify-content:space-between;padding:0 14px;align-items:center;background:#fff;color:var(--p);font-weight:700;font-family:'Cinzel';letter-spacing:1px}
+.sb.dark{background:var(--p);color:var(--goldL)}
+.body{flex:1;overflow:hidden;position:relative}
+.cap{position:absolute;left:8px;bottom:8px;background:#0F0A1F;color:var(--gold);font-size:8.5px;padding:2px 8px;border-radius:30px;font-family:'Cinzel';letter-spacing:1.5px;z-index:5;border:1px solid var(--gold)}
+
+/* Splash */
+.splash{height:100%;background:radial-gradient(ellipse at center,#3D2D6B 0%,#2A1F4E 40%,#0F0A1F 90%);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.splash::before{content:'';position:absolute;inset:0;background-image:radial-gradient(1px 1px at 20% 30%,rgba(232,208,120,.8),transparent),radial-gradient(1.5px 1.5px at 70% 60%,rgba(232,208,120,.7),transparent),radial-gradient(1px 1px at 30% 80%,rgba(232,208,120,.6),transparent),radial-gradient(2px 2px at 80% 20%,rgba(232,208,120,.7),transparent),radial-gradient(1px 1px at 50% 50%,rgba(232,208,120,.6),transparent)}
+.splash-logo{width:84px;height:84px;border-radius:50%;background:linear-gradient(135deg,var(--goldL),var(--gold),var(--goldD));display:flex;align-items:center;justify-content:center;font-family:'Cinzel';font-size:34px;color:var(--ink);font-weight:900;box-shadow:0 0 60px rgba(232,208,120,.6),inset 0 2px 4px rgba(255,255,255,.4);position:relative;z-index:2}
+.splash-logo::before{content:'';position:absolute;inset:-8px;border:1px dashed var(--gold);border-radius:50%;opacity:.5}
+.splash h2{font-family:'Cinzel';font-size:28px;letter-spacing:8px;margin:24px 0 6px;z-index:2;font-weight:900;color:var(--goldL)}
+.splash .cn{font-family:'ZCOOL XiaoWei';font-size:13px;color:var(--moon);letter-spacing:14px;z-index:2;margin:0}
+.splash .div{margin-top:20px;width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);z-index:2;position:relative}
+.splash .div::after{content:'☾';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#1F154A;padding:0 10px;color:var(--gold);font-size:13px}
+.splash .quote{margin-top:14px;font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:11px;color:#A9A0BD;letter-spacing:4px;text-align:center;line-height:1.9;z-index:2;padding:0 30px}
+
+/* Service picker */
+.svc{height:100%;background:linear-gradient(180deg,#FAF6EE 0%,#EDE6D6 100%);overflow-y:auto}
+.svc-hd{padding:18px 14px 10px;text-align:center}
+.svc-hd .step-bar{display:flex;gap:4px;margin-bottom:10px}
+.svc-hd .step-bar i{flex:1;height:2px;background:var(--line)}
+.svc-hd .step-bar i.on{background:var(--gold)}
+.svc-hd h3{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:18px;margin:6px 0 2px;color:var(--p);letter-spacing:4px}
+.svc-hd small{font-family:'Cinzel';font-size:10px;color:var(--gray);letter-spacing:3px}
+.svc-bd{padding:10px 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.svc-card{background:#fff;border:1px solid var(--line);padding:14px 8px;border-radius:2px;text-align:center;position:relative}
+.svc-card .ic{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#FAF6EE,#EDE6D6);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto;font-family:'Cinzel';color:var(--p);font-size:18px;font-weight:900}
+.svc-card.on{border-color:var(--gold);background:linear-gradient(135deg,#fff,#FAF0DC);box-shadow:0 4px 14px rgba(200,168,101,.25)}
+.svc-card.on .ic{background:linear-gradient(135deg,var(--goldL),var(--goldD));color:#fff;box-shadow:0 0 14px rgba(200,168,101,.4)}
+.svc-card .t{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:12px;color:var(--ink);margin-top:8px;letter-spacing:2px}
+.svc-card .en{font-family:'Cinzel';font-size:8.5px;color:var(--gray);margin-top:1px;letter-spacing:1.5px}
+
+/* Home */
+.home{height:100%;background:var(--cream);overflow-y:auto;display:flex;flex-direction:column}
+.home-hd{padding:18px 14px 14px;background:radial-gradient(ellipse at top,#3D2D6B 0%,#2A1F4E 70%,#1A124A 100%);color:#fff;position:relative;overflow:hidden}
+.home-hd::before{content:'';position:absolute;inset:0;background-image:radial-gradient(1px 1px at 20% 30%,rgba(232,208,120,.7),transparent),radial-gradient(1.5px 1.5px at 70% 60%,rgba(232,208,120,.6),transparent),radial-gradient(1px 1px at 80% 20%,rgba(232,208,120,.6),transparent)}
+.home-hd .row{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2;margin-bottom:10px}
+.home-hd .greet{font-family:'Cinzel';font-size:10px;color:var(--goldL);letter-spacing:3px}
+.home-hd .who{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:14px;margin-top:2px;letter-spacing:2px}
+.home-hd .ic{width:28px;height:28px;background:rgba(255,255,255,.06);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--goldL);border:1px solid var(--gold);font-size:13px}
+.fortune{position:relative;z-index:2;background:rgba(0,0,0,.18);border:1px solid var(--gold);border-radius:2px;padding:10px 12px;margin-top:6px}
+.fortune::before{content:'';position:absolute;inset:4px;border:1px solid rgba(200,168,101,.3);pointer-events:none}
+.fortune .lab{font-family:'Cinzel';font-size:9px;color:var(--goldL);letter-spacing:2px;margin-bottom:3px}
+.fortune .row2{display:flex;justify-content:space-between;align-items:center;font-family:'ZCOOL XiaoWei';font-size:13px;color:#fff;letter-spacing:1px}
+.fortune .row2 .v{color:var(--goldL);font-family:'Cinzel';font-size:14px;font-weight:700;letter-spacing:1px}
+
+.cta-pri{margin:14px;padding:0;background:#fff;border:1px solid var(--gold);border-radius:2px;display:flex;align-items:center;color:var(--p);overflow:hidden;height:84px;position:relative}
+.cta-pri::before{content:'';position:absolute;inset:5px;border:1px solid var(--goldL);pointer-events:none}
+.cta-pri .img{width:84px;height:100%;background:linear-gradient(135deg,#3D2D6B,#1A124A);display:flex;align-items:center;justify-content:center;color:var(--goldL);font-size:28px;font-family:'Cinzel';flex-shrink:0;position:relative}
+.cta-pri .img::after{content:'';position:absolute;inset:6px;border:1px dashed rgba(200,168,101,.5)}
+.cta-pri .info{flex:1;padding:0 14px;position:relative;z-index:2}
+.cta-pri .ttl{font-family:'ZCOOL XiaoWei';font-weight:400;font-size:14px;letter-spacing:2px;color:var(--p)}
+.cta-pri .desc{font-family:'Cinzel';font-size:9.5px;color:var(--goldD);margin-top:3px;letter-spacing:2px}
+
+.sec-h{display:flex;justify-content:space-between;align-items:center;padding:0 14px;margin:6px 0 8px}
+.sec-h h4{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:14px;color:var(--ink);margin:0;letter-spacing:2px}
+.sec-h h4 small{font-family:'Cinzel';font-size:9px;color:var(--gray);margin-left:6px;letter-spacing:1.5px}
+.sec-h .more{font-family:'Cinzel';font-size:10px;color:var(--goldD);letter-spacing:1px}
+
+.master-row{display:flex;gap:8px;padding:0 14px 14px;overflow-x:auto}
+.master-c{min-width:120px;background:#fff;border:1px solid var(--line);border-radius:2px;padding:10px 8px;text-align:center;position:relative}
+.master-c::before{content:'';position:absolute;inset:4px;border:1px solid rgba(200,168,101,.3);pointer-events:none}
+.master-c .av{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#3D2D6B,#1A124A);margin:0 auto;display:flex;align-items:center;justify-content:center;color:var(--goldL);font-family:'Cinzel';font-size:16px;font-weight:700;border:1px solid var(--gold);position:relative;z-index:2}
+.master-c .nm{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:12px;color:var(--ink);margin-top:6px;letter-spacing:1px;position:relative;z-index:2}
+.master-c .ttl{font-family:'Cinzel';font-size:8.5px;color:var(--goldD);margin-top:1px;letter-spacing:1px;position:relative;z-index:2}
+.master-c .pri{font-family:'Cinzel';font-size:13px;color:var(--ver);margin-top:5px;font-weight:700;position:relative;z-index:2}
+
+.tabbar{display:flex;background:#fff;border-top:1px solid var(--line);padding:6px 0 8px;flex-shrink:0}
+.tabbar div{flex:1;text-align:center;font-size:8.5px;color:var(--gray);font-family:'Cinzel';letter-spacing:1.5px}
+.tabbar div.on{color:var(--p)}
+.tabbar div .ic{font-size:14px;display:block;margin-bottom:2px;font-style:normal}
+
+/* Birth input */
+.birth{height:100%;background:linear-gradient(180deg,#FAF6EE,#EDE6D6);overflow-y:auto}
+.birth-hd{padding:14px;background:radial-gradient(ellipse at top,#3D2D6B,#1A124A);color:#fff;text-align:center;border-bottom:1px solid var(--gold);position:relative;overflow:hidden}
+.birth-hd::before{content:'';position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 20% 50%,rgba(232,208,120,.6),transparent),radial-gradient(1px 1px at 80% 30%,rgba(232,208,120,.5),transparent)}
+.birth-hd h3{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:16px;margin:0;letter-spacing:4px;position:relative;z-index:2}
+.birth-hd small{font-family:'Cinzel';font-size:9.5px;color:var(--goldL);letter-spacing:3px;display:block;margin-top:2px;position:relative;z-index:2}
+.birth-bd{padding:14px}
+.birth-card{background:#fff;border:1px solid var(--gold);border-radius:2px;padding:14px;position:relative}
+.birth-card::before{content:'';position:absolute;inset:5px;border:1px solid rgba(200,168,101,.4);pointer-events:none}
+.birth-card .lab{font-family:'Cinzel';font-size:9px;color:var(--goldD);letter-spacing:2px;margin-bottom:5px;display:block;position:relative;z-index:2}
+.birth-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px dashed var(--line);font-size:11.5px;font-family:'ZCOOL XiaoWei','Noto Serif SC';position:relative;z-index:2}
+.birth-row:last-child{border-bottom:0}
+.birth-row .l{color:var(--gray);letter-spacing:1px}
+.birth-row .v{color:var(--p);font-weight:700;letter-spacing:1px;font-family:'Cinzel';font-size:12px}
+.birth-cta{margin:14px;padding:13px;background:radial-gradient(ellipse at center,#3D2D6B,#1A124A);color:var(--goldL);border-radius:2px;text-align:center;font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:13px;letter-spacing:6px;border:1px solid var(--gold);box-shadow:0 8px 20px rgba(42,31,78,.3);position:relative;overflow:hidden}
+.birth-cta::before{content:'';position:absolute;inset:4px;border:1px solid rgba(200,168,101,.4)}
+.birth-cta::after{content:'☾';position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--goldL);font-size:14px;font-family:'Cinzel'}
+
+/* Report ⭐ */
+.rpt{height:100%;background:linear-gradient(180deg,#FAF6EE,#EDE6D6);overflow-y:auto}
+.rpt-hd{padding:18px 14px;background:radial-gradient(ellipse at top,#3D2D6B,#0F0A1F);color:#fff;text-align:center;border-bottom:2px solid var(--gold);position:relative;overflow:hidden}
+.rpt-hd::before{content:'';position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 20% 50%,rgba(232,208,120,.6),transparent),radial-gradient(2px 2px at 80% 30%,rgba(232,208,120,.7),transparent),radial-gradient(1px 1px at 50% 80%,rgba(232,208,120,.5),transparent)}
+.rpt-hd::after{content:'';position:absolute;inset:8px;border:1px solid var(--gold);pointer-events:none}
+.rpt-hd .seal{font-family:'Cinzel';font-size:9px;color:var(--gold);letter-spacing:5px;margin-bottom:4px;position:relative;z-index:2}
+.rpt-hd h3{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:17px;margin:0;letter-spacing:5px;position:relative;z-index:2;color:#fff}
+.rpt-hd .sub{font-family:'Cinzel';font-size:10px;color:var(--goldL);margin-top:3px;letter-spacing:2px;position:relative;z-index:2}
+
+.rpt-chart{padding:12px;text-align:center;background:radial-gradient(ellipse at center,#FAF0DC 0%,#FAF6EE 60%,#EDE6D6 100%);border-bottom:1px solid var(--line);position:relative}
+.rpt-chart::before{content:'';position:absolute;inset:8px;border:1px solid var(--gold);pointer-events:none}
+.rpt-chart::after{content:'';position:absolute;inset:11px;border:1px dashed var(--goldD);pointer-events:none}
+
+/* 紫微斗数十二宫命盘 */
+.ziwei{width:200px;height:200px;margin:6px auto;display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);grid-template-areas:'p11 p12 p1 p2' 'p10 cc cc p3' 'p9 cc cc p4' 'p8 p7 p6 p5';gap:1px;background:var(--gold);padding:1.5px;position:relative;z-index:2;box-shadow:0 0 22px rgba(200,168,101,.35),inset 0 0 0 1px var(--goldD)}
+.zw-cell{background:linear-gradient(180deg,#FAF6EE,#FAF0DC);position:relative;padding:3px 2px;text-align:left;font-family:'ZCOOL XiaoWei','Noto Serif SC',serif;display:flex;flex-direction:column;justify-content:space-between}
+.zw-cell .gz{position:absolute;left:2px;bottom:1px;font-family:'Ma Shan Zheng','ZCOOL XiaoWei';font-size:9px;color:var(--goldD);letter-spacing:0;font-weight:400;line-height:1}
+.zw-cell .pl{position:absolute;right:2px;bottom:1px;font-family:'Cinzel';font-size:6.5px;color:var(--p);font-weight:700;letter-spacing:.3px}
+.zw-cell .star{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:8.5px;color:var(--p);font-weight:700;line-height:1.15;letter-spacing:.5px;text-align:left;padding-left:2px}
+.zw-cell .star em{color:var(--ver);font-style:normal;font-weight:700;display:inline-block;margin-left:1px;font-size:7px}
+.zw-cell .hua{font-family:'Cinzel';font-size:6px;color:var(--goldD);letter-spacing:.5px;text-align:right;padding-right:2px}
+.zw-cell.body-bg{background:linear-gradient(180deg,#FAF6EE,#F5E6CC);box-shadow:inset 0 0 0 1.5px var(--ver)}
+.zw-cell.body-bg .pl{color:var(--ver)}
+.zw-cell.p1{grid-area:p1}.zw-cell.p2{grid-area:p2}.zw-cell.p3{grid-area:p3}.zw-cell.p4{grid-area:p4}
+.zw-cell.p5{grid-area:p5}.zw-cell.p6{grid-area:p6}.zw-cell.p7{grid-area:p7}.zw-cell.p8{grid-area:p8}
+.zw-cell.p9{grid-area:p9}.zw-cell.p10{grid-area:p10}.zw-cell.p11{grid-area:p11}.zw-cell.p12{grid-area:p12}
+
+/* 中央命主区 */
+.zw-center{grid-area:cc;background:linear-gradient(135deg,#3D2D6B 0%,#1A124A 80%);color:var(--goldL);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px;position:relative;border:1px solid var(--gold);overflow:hidden}
+.zw-center::before{content:'';position:absolute;inset:3px;border:1px solid rgba(200,168,101,.5);pointer-events:none}
+.zw-center::after{content:'';position:absolute;inset:0;background-image:radial-gradient(1px 1px at 20% 20%,rgba(232,208,120,.6),transparent),radial-gradient(1.5px 1.5px at 80% 70%,rgba(232,208,120,.5),transparent);pointer-events:none}
+.zw-center .zc-name{font-family:'Ma Shan Zheng','ZCOOL XiaoWei';font-size:13px;color:#fff;letter-spacing:2px;font-weight:400;position:relative;z-index:2;margin-bottom:3px}
+.zw-center .zc-bz{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;width:100%;position:relative;z-index:2}
+.zw-center .zc-pillar{font-family:'Ma Shan Zheng','ZCOOL XiaoWei';font-size:10px;color:var(--goldL);text-align:center;line-height:1.15;letter-spacing:0;background:rgba(0,0,0,.3);padding:2px 0;border:1px solid rgba(200,168,101,.3)}
+.zw-center .zc-pillar small{display:block;font-family:'Cinzel';font-size:5.5px;color:var(--gold);letter-spacing:1px;margin-bottom:1px;font-weight:700}
+.zw-center .zc-info{margin-top:3px;font-family:'Cinzel';font-size:6.5px;color:var(--gold);letter-spacing:1.5px;position:relative;z-index:2}
+
+.rpt-chart .lab{font-family:'Cinzel';font-size:9px;color:var(--goldD);letter-spacing:3px;margin-top:6px;position:relative;z-index:2}
+
+.rpt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:12px}
+.rpt-cell{background:#fff;border:1px solid var(--line);padding:7px 4px;border-radius:2px;text-align:center}
+.rpt-cell .lab{font-family:'Cinzel';font-size:7.5px;color:var(--gray);letter-spacing:1px}
+.rpt-cell .v{font-family:'ZCOOL XiaoWei';font-size:13px;color:var(--p);font-weight:400;margin-top:2px;letter-spacing:1px}
+.rpt-cell.on{background:linear-gradient(135deg,#FAF0DC,#fff);border-color:var(--gold)}
+.rpt-cell.on .v{color:var(--ver);font-weight:700}
+
+.rpt-card{margin:0 14px 10px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);padding:12px;border-radius:0 2px 2px 0;position:relative}
+.rpt-card .lab{font-family:'Cinzel';font-size:9px;color:var(--goldD);letter-spacing:2px;margin-bottom:4px}
+.rpt-card .ttl{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:13px;color:var(--ink);margin-bottom:5px;letter-spacing:2px}
+.rpt-card .txt{font-size:10.5px;line-height:1.85;color:var(--text);font-family:'Noto Serif SC'}
+.rpt-card .txt b{color:var(--p);font-weight:700}
+.rpt-card .quote{margin-top:6px;padding:6px 8px;background:var(--cream);border:1px solid var(--line);font-size:9.5px;color:var(--p);font-family:'ZCOOL XiaoWei','Noto Serif SC';font-style:italic;letter-spacing:1px}
+
+.rpt-cta{margin:14px;padding:14px;background:radial-gradient(ellipse,#3D2D6B,#0F0A1F);border:1px solid var(--gold);border-radius:2px;color:#fff;text-align:center;position:relative;overflow:hidden}
+.rpt-cta::before{content:'';position:absolute;inset:5px;border:1px solid rgba(200,168,101,.4)}
+.rpt-cta::after{content:'';position:absolute;inset:0;background-image:radial-gradient(1px 1px at 20% 30%,rgba(232,208,120,.5),transparent),radial-gradient(1.5px 1.5px at 80% 70%,rgba(232,208,120,.6),transparent)}
+.rpt-cta .ttl{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:13px;color:var(--goldL);letter-spacing:3px;position:relative;z-index:2}
+.rpt-cta .desc{font-family:'Cinzel';font-size:9.5px;color:#A9A0BD;margin:4px 0 10px;line-height:1.6;letter-spacing:1.5px;position:relative;z-index:2}
+.rpt-cta button{padding:9px 22px;background:linear-gradient(180deg,var(--goldL),var(--goldD));color:var(--p);border:0;border-radius:30px;font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:12px;letter-spacing:4px;position:relative;z-index:2;font-weight:700}
+
+/* Master list */
+.mlist{height:100%;background:linear-gradient(180deg,#FAF6EE,#EDE6D6);overflow-y:auto}
+.mlist-hd{padding:14px;background:radial-gradient(ellipse at top,#3D2D6B,#1A124A);color:#fff;border-bottom:1px solid var(--gold);position:relative;overflow:hidden}
+.mlist-hd::before{content:'';position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 80% 50%,rgba(232,208,120,.6),transparent)}
+.mlist-hd h3{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:14px;margin:0;letter-spacing:3px;position:relative;z-index:2}
+.mlist-hd small{font-family:'Cinzel';font-size:9px;color:var(--goldL);display:block;margin-top:2px;letter-spacing:2px;position:relative;z-index:2}
+
+.mcard{margin:10px 14px;background:#fff;border:1px solid var(--line);border-radius:2px;padding:14px;position:relative;display:flex;gap:12px}
+.mcard::before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:3px;background:var(--gold)}
+.mcard .av{width:54px;height:64px;border-radius:2px;background:linear-gradient(135deg,#3D2D6B,#1A124A);display:flex;align-items:center;justify-content:center;color:var(--goldL);font-family:'ZCOOL XiaoWei';font-size:22px;font-weight:400;border:1px solid var(--gold);flex-shrink:0;letter-spacing:1px}
+.mcard .info{flex:1;min-width:0}
+.mcard .nm{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:14px;color:var(--ink);display:flex;align-items:center;gap:5px;letter-spacing:2px}
+.mcard .nm .v{font-family:'Cinzel';font-size:8.5px;background:var(--gold);color:#fff;padding:1px 6px;letter-spacing:1px;font-weight:700}
+.mcard .ttl{font-family:'Cinzel';font-size:9.5px;color:var(--goldD);margin-top:2px;letter-spacing:1px}
+.mcard .skills{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+.mcard .skills span{padding:1.5px 6px;background:var(--cream);color:var(--p);font-size:8.5px;border:1px solid var(--line);font-family:'ZCOOL XiaoWei','Noto Serif SC';letter-spacing:1px}
+.mcard .stats{display:flex;gap:10px;margin-top:7px;font-family:'Cinzel';font-size:9px;color:var(--gray);letter-spacing:.5px}
+.mcard .stats b{color:var(--p);font-weight:700}
+.mcard .pri{position:absolute;right:12px;bottom:12px;text-align:right}
+.mcard .pri .p{font-family:'Cinzel';font-size:16px;color:var(--ver);font-weight:700;line-height:1}
+.mcard .pri .u{font-family:'Cinzel';font-size:8.5px;color:var(--gray);letter-spacing:1px}
+.mcard .pri button{margin-top:5px;padding:5px 10px;background:linear-gradient(180deg,var(--goldL),var(--goldD));color:var(--p);border:0;border-radius:30px;font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:10px;font-weight:700;letter-spacing:1.5px}
+
+/* Pay */
+.pay{height:100%;background:radial-gradient(ellipse at center,#3D2D6B 0%,#1A124A 60%,#0F0A1F 100%);color:#fff;padding:20px 16px;text-align:center;position:relative;overflow:hidden}
+.pay::before{content:'';position:absolute;inset:0;background-image:radial-gradient(1px 1px at 20% 30%,rgba(232,208,120,.6),transparent),radial-gradient(1.5px 1.5px at 80% 60%,rgba(232,208,120,.7),transparent),radial-gradient(1px 1px at 50% 80%,rgba(232,208,120,.5),transparent)}
+.pay::after{content:'';position:absolute;inset:14px;border:1px solid var(--gold);pointer-events:none}
+.pay-seal{margin-top:8px;font-family:'Cinzel';font-size:10px;color:var(--gold);letter-spacing:6px;position:relative;z-index:2}
+.pay-ic{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--goldL),var(--goldD));margin:14px auto 14px;display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--p);box-shadow:0 0 40px rgba(232,208,120,.6);position:relative;z-index:2;font-weight:900;font-family:'Cinzel'}
+.pay-ic::before{content:'';position:absolute;inset:-5px;border:1px dashed var(--gold);border-radius:50%}
+.pay h3{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:16px;margin:0 0 6px;font-weight:400;letter-spacing:5px;position:relative;z-index:2}
+.pay .amt{font-family:'Cinzel';font-size:32px;color:var(--goldL);letter-spacing:2px;margin:6px 0;font-weight:700;position:relative;z-index:2}
+.pay .desc{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:11px;color:#C9C0DD;margin-bottom:10px;line-height:1.85;position:relative;z-index:2;letter-spacing:1.5px}
+.pay .desc b{color:var(--goldL);font-weight:700}
+.pay .qr-card{background:#fff;border:1px solid var(--gold);padding:14px;color:var(--ink);margin:6px;position:relative;z-index:2;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+.pay .qr-card::before{content:'';position:absolute;inset:5px;border:1px solid var(--goldL);pointer-events:none}
+.pay .qr-card .ttl{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:12px;font-weight:400;margin-bottom:3px;letter-spacing:3px;position:relative;z-index:2;color:var(--p)}
+.pay .qr-card .sub{font-family:'Cinzel';font-size:9px;color:var(--goldD);margin-bottom:10px;letter-spacing:2px;position:relative;z-index:2}
+.pay .qr{width:104px;height:104px;margin:0 auto;background:repeating-conic-gradient(#0F0A1F 0% 25%,#fff 0% 50%) 50% / 8px 8px,#fff;border:1px solid var(--gold);position:relative}
+.pay .qr::after{content:'☾';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:24px;height:24px;background:var(--p);color:var(--goldL);display:flex;align-items:center;justify-content:center;border:2px solid #fff;font-size:13px;font-family:'Cinzel'}
+.pay .save{font-family:'Cinzel';font-size:9px;color:var(--gold);margin-top:8px;letter-spacing:2px;position:relative;z-index:2}
+
+/* Talisman mall */
+.mall{height:100%;background:linear-gradient(180deg,#FAF6EE,#EDE6D6);overflow-y:auto}
+.mall-hd{padding:14px;background:radial-gradient(ellipse at top,#3D2D6B,#1A124A);color:#fff;border-bottom:1px solid var(--gold);position:relative;overflow:hidden}
+.mall-hd::before{content:'';position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 80% 30%,rgba(232,208,120,.6),transparent)}
+.mall-hd h3{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:14px;margin:0;letter-spacing:4px;position:relative;z-index:2}
+.mall-hd small{font-family:'Cinzel';font-size:9px;color:var(--goldL);display:block;margin-top:2px;letter-spacing:2px;position:relative;z-index:2}
+.mcard2{margin:10px 14px;background:#fff;border:1px solid var(--line);border-radius:2px;padding:14px;position:relative;display:flex;gap:12px}
+.mcard2::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
+.mcard2 .ic{width:50px;height:60px;background:linear-gradient(135deg,#3D2D6B,#1A124A);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--goldL);flex-shrink:0;font-family:'ZCOOL XiaoWei';font-weight:400}
+.mcard2 .info{flex:1}
+.mcard2 .ttl{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:13px;color:var(--ink);margin-bottom:3px;letter-spacing:2px}
+.mcard2 .desc{font-family:'Noto Serif SC';font-size:10px;color:var(--gray);line-height:1.6;margin-bottom:5px}
+.mcard2 .meta{display:flex;gap:8px;font-family:'Cinzel';font-size:9px;color:var(--goldD);letter-spacing:.5px}
+.mcard2 .meta b{color:var(--p);font-weight:700}
+.mcard2 .pri{position:absolute;right:14px;top:14px;text-align:right}
+.mcard2 .pri .p{font-family:'Cinzel';font-size:18px;color:var(--ver);font-weight:700;line-height:1}
+.mcard2 .pri button{margin-top:6px;padding:5px 10px;background:linear-gradient(180deg,var(--goldL),var(--goldD));color:var(--p);border:0;border-radius:30px;font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:10px;font-weight:700;letter-spacing:1.5px}
+
+/* My */
+.me{height:100%;background:linear-gradient(180deg,#FAF6EE,#EDE6D6);overflow-y:auto}
+.me-hd{padding:18px 14px;background:radial-gradient(ellipse at top,#3D2D6B,#0F0A1F);color:#fff;border-bottom:2px solid var(--gold);position:relative;overflow:hidden}
+.me-hd::before{content:'';position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 80% 30%,rgba(232,208,120,.7),transparent),radial-gradient(1px 1px at 30% 80%,rgba(232,208,120,.5),transparent)}
+.me-hd .row{display:flex;align-items:center;gap:12px;position:relative;z-index:2}
+.me-hd .av{width:48px;height:56px;border-radius:2px;background:linear-gradient(135deg,#3D2D6B,#1A124A);display:flex;align-items:center;justify-content:center;color:var(--goldL);font-family:'ZCOOL XiaoWei';font-size:18px;font-weight:400;border:1px solid var(--gold);letter-spacing:1px}
+.me-hd .nm{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-weight:400;font-size:14px;letter-spacing:2px}
+.me-hd .lvl{font-family:'Cinzel';font-size:10px;color:var(--goldL);margin-top:2px;letter-spacing:2px}
+.me-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:2px}
+.me-stats div{text-align:center}
+.me-stats .v{font-family:'Cinzel';font-size:20px;color:var(--p);font-weight:700;line-height:1}
+.me-stats .l{font-family:'Cinzel';font-size:9px;color:var(--gray);margin-top:3px;letter-spacing:1.5px}
+.me-list{margin:0 14px;padding-bottom:10px}
+.me-list .item{padding:11px 14px;background:#fff;border:1px solid var(--line);border-radius:2px;display:flex;align-items:center;gap:10px;margin-bottom:6px;font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:12px;letter-spacing:1.5px}
+.me-list .item .ic{width:26px;height:26px;border-radius:50%;background:var(--cream);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--p);font-size:12px;font-family:'Cinzel'}
+.me-list .item .t{flex:1;color:var(--ink)}
+.me-list .item .arr{font-family:'Cinzel';font-size:14px;color:var(--gray)}
+
+/* Flow */
+.flow-block{background:#fff;border:1px solid var(--gold);border-radius:2px;padding:24px 28px;margin:24px 0;position:relative}
+.flow-block::after{content:'☾ CRITICAL FLOW';position:absolute;right:24px;top:-12px;font-family:'Cinzel';font-size:11px;letter-spacing:3px;color:var(--p);padding:4px 12px;background:var(--cream);border:1px solid var(--gold)}
+.flow-block h4{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:16px;margin:0 0 14px;color:var(--ink);font-weight:400;letter-spacing:3px}
+.flow{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:11.5px;font-family:'ZCOOL XiaoWei','Noto Serif SC'}
+.flow span{padding:8px 14px;background:var(--cream);border:1px solid var(--line);font-weight:400;color:var(--gray);letter-spacing:1px}
+.flow span.key{background:var(--p);color:var(--goldL);border-color:var(--gold)}
+.flow span.cv{background:linear-gradient(180deg,var(--goldL),var(--goldD));color:var(--p);border-color:var(--gold);font-weight:700}
+.flow .ar{color:var(--gold);font-family:'Cinzel';font-size:14px;font-weight:700}
+
+/* PC backend */
+.pc{background:radial-gradient(ellipse at top,#3D2D6B,#0F0A1F);border-radius:2px;overflow:hidden;margin:24px 0;box-shadow:0 30px 60px rgba(0,0,0,.4);border:1px solid var(--gold)}
+.pc-bar{background:#000;padding:9px 14px;display:flex;align-items:center;gap:6px}
+.pc-bar i{width:10px;height:10px;border-radius:50%;background:#FF5F57}
+.pc-bar i:nth-child(2){background:#FFBD2E}
+.pc-bar i:nth-child(3){background:#27C93F}
+.pc-bar span{margin-left:14px;font-family:'Cinzel';font-size:11px;color:var(--gold);letter-spacing:2px}
+.pc-body{display:flex;height:380px}
+.pc-side{width:170px;background:#1A124A;border-right:1px solid var(--pd);padding:14px 0}
+.pc-side .logo{padding:0 14px 14px;color:var(--gold);font-family:'Cinzel';font-size:18px;letter-spacing:5px;border-bottom:1px solid var(--pd);margin-bottom:12px;font-weight:900}
+.pc-side .item{padding:10px 14px;font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:12px;color:#A9A0BD;display:flex;align-items:center;gap:8px;letter-spacing:1px}
+.pc-side .item.on{background:rgba(200,168,101,.12);color:var(--goldL);border-left:2px solid var(--gold)}
+.pc-side .item .ic{font-family:'Cinzel';font-size:11px;color:var(--gray);width:18px;letter-spacing:0}
+.pc-side .item.on .ic{color:var(--gold)}
+.pc-main{flex:1;background:#0F0A1F;padding:18px;color:#fff;overflow:hidden;position:relative}
+.pc-main::before{content:'';position:absolute;inset:0;background-image:radial-gradient(1px 1px at 80% 20%,rgba(232,208,120,.4),transparent),radial-gradient(1.5px 1.5px at 30% 70%,rgba(232,208,120,.4),transparent);pointer-events:none}
+.pc-main h3{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:14px;margin:0 0 14px;font-weight:400;letter-spacing:4px;color:var(--goldL);position:relative;z-index:2}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;position:relative;z-index:2}
+.kc{padding:12px;background:#1A124A;border:1px solid var(--pl);border-left:2px solid var(--gold);border-radius:0;position:relative}
+.kc .lab{font-family:'Cinzel';font-size:9px;color:var(--goldL);letter-spacing:1.5px}
+.kc .v{font-family:'Cinzel';font-size:22px;color:var(--gold);margin-top:4px;line-height:1;font-weight:700}
+.kc .d{font-family:'Cinzel';font-size:9px;color:#A9A0BD;margin-top:3px}
+table{width:100%;border-collapse:collapse;font-family:'Noto Serif SC';font-size:10.5px;position:relative;z-index:2}
+th{padding:8px;text-align:left;color:var(--goldL);font-weight:600;border-bottom:1px solid var(--pl);font-family:'Cinzel';letter-spacing:1.5px;font-size:10px}
+td{padding:8px;border-bottom:1px solid #1A124A;color:#C9C0DD}
+td b{color:#fff}
+td .gt{color:#9DD37E}
+td .ot{color:var(--goldL)}
+td .rt{color:var(--ver)}
+
+/* 后台筛选栏 */
+.pc-filter{display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap;position:relative;z-index:2}
+.pc-filter .seg{display:flex;background:#1A124A;border:1px solid var(--pl);overflow:hidden}
+.pc-filter .seg span{padding:5px 12px;font-family:'Cinzel';font-size:10px;color:var(--goldL);letter-spacing:1.5px;cursor:pointer;border-right:1px solid var(--pl)}
+.pc-filter .seg span:last-child{border-right:0}
+.pc-filter .seg span.on{background:linear-gradient(180deg,var(--goldL),var(--gold));color:#0F0A1F;font-weight:700}
+.pc-filter input{background:#1A124A;border:1px solid var(--pl);color:var(--goldL);padding:5px 10px;font-family:'Noto Serif SC';font-size:11px;outline:none;min-width:200px}
+.pc-filter input::placeholder{color:#7A6F8C}
+.pc-filter .btn{padding:5px 14px;background:linear-gradient(180deg,var(--goldL),var(--gold));color:#0F0A1F;font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:10px;font-weight:700;letter-spacing:2px;border:0;cursor:pointer}
+/* 后台图表 */
+.pc-charts{display:grid;grid-template-columns:1.6fr 1fr;gap:10px;margin-bottom:14px;position:relative;z-index:2}
+.pc-ch{background:#1A124A;border:1px solid var(--pl);padding:12px;position:relative;border-left:2px solid var(--gold)}
+.pc-ch h4{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:11px;color:var(--goldL);letter-spacing:2px;margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;font-weight:400}
+.pc-ch h4 small{font-family:'Cinzel';font-size:8.5px;color:#7A6F8C;font-weight:500;letter-spacing:1px}
+.pc-bars{display:flex;align-items:flex-end;gap:5px;height:88px;padding:0 4px}
+.pc-bars .b{flex:1;background:linear-gradient(180deg,var(--pl),var(--p));position:relative;border-top:1px solid var(--pl);min-height:6px;border-radius:1px 1px 0 0}
+.pc-bars .b.hl{background:linear-gradient(180deg,var(--goldL),var(--gold));border-top-color:var(--goldL);box-shadow:0 0 12px rgba(232,208,120,.5)}
+.pc-bars .b::after{content:attr(data-d);position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);font-family:'Cinzel';font-size:7.5px;color:#7A6F8C;letter-spacing:.3px;white-space:nowrap}
+.pc-bars .b::before{content:attr(data-v);position:absolute;left:50%;top:-11px;transform:translateX(-50%);font-family:'Cinzel';font-size:7.5px;color:var(--goldL);letter-spacing:.3px;white-space:nowrap}
+.pc-ring{position:relative;width:96px;height:96px;margin:6px auto 0;border-radius:50%;background:conic-gradient(var(--gold) 0% 32%,var(--ver) 32% 56%,var(--pl) 56% 78%,#9DD37E 78% 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(232,208,120,.3)}
+.pc-ring::after{content:'';position:absolute;inset:14px;border-radius:50%;background:#1A124A}
+.pc-ring .v{position:relative;z-index:2;text-align:center}
+.pc-ring .v b{font-family:'Cinzel';font-size:18px;color:var(--goldL);font-weight:700;letter-spacing:1px;display:block;line-height:1}
+.pc-ring .v small{font-family:'Cinzel';font-size:7px;color:#7A6F8C;letter-spacing:1.5px}
+.pc-leg{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;margin-top:10px;font-family:'Cinzel';font-size:8px;color:var(--goldL);letter-spacing:.5px}
+.pc-leg div{display:flex;align-items:center;gap:5px}
+.pc-leg i{width:8px;height:8px;display:inline-block;flex-shrink:0}
+.pc-leg b{margin-left:auto;color:#fff;font-family:'Cinzel';font-weight:700}
+.pc-tbl{background:#1A124A;border:1px solid var(--pl);padding:10px 12px;border-left:2px solid var(--gold);margin-bottom:10px;position:relative;z-index:2}
+.pc-tbl h4{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:11px;color:var(--goldL);letter-spacing:2px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center;font-weight:400}
+.pc-tbl h4 small{font-family:'Cinzel';font-size:8.5px;color:#7A6F8C;letter-spacing:1px;font-weight:500}
+/* 内联代码 */
+.det code,.callout code{font-family:'JetBrains Mono',Consolas,monospace;font-size:.86em;background:rgba(232,208,120,.1);color:var(--gold);padding:1px 7px;border-radius:3px;border:1px solid rgba(232,208,120,.3);font-weight:600;letter-spacing:.2px;white-space:nowrap}
+/* 代码片段 */
+.code-snip{background:#0F0A1F;border:1px solid var(--pl);border-left:3px solid var(--gold);margin:18px 0;font-family:'JetBrains Mono','Cascadia Code',Consolas,monospace;font-size:12px;line-height:1.85;overflow:hidden;box-shadow:0 4px 16px rgba(15,10,31,.12);position:relative}
+.code-snip::after{content:'';position:absolute;inset:0;background-image:radial-gradient(1px 1px at 80% 30%,rgba(232,208,120,.3),transparent),radial-gradient(1px 1px at 20% 70%,rgba(232,208,120,.25),transparent);pointer-events:none}
+.code-snip .bar{background:#0A0617;padding:8px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--pl);position:relative;z-index:2}
+.code-snip .bar i{width:8px;height:8px;border-radius:50%;background:#FF5F57;display:inline-block}
+.code-snip .bar i:nth-child(2){background:#FFBD2E}
+.code-snip .bar i:nth-child(3){background:#27C93F}
+.code-snip .bar span{margin-left:14px;font-family:'Cinzel';font-size:11px;color:var(--gold);letter-spacing:1.5px}
+.code-snip .bar em{margin-left:auto;font-family:'Cinzel';font-style:italic;font-size:10px;color:#7A6F8C;letter-spacing:1px}
+.code-snip pre{margin:0;padding:14px 18px;color:#C9C0DD;overflow-x:auto;background:transparent;white-space:pre;position:relative;z-index:2}
+.code-snip .k{color:var(--goldL)}
+.code-snip .s{color:#9DD37E}
+.code-snip .c{color:#7A6F8C;font-style:italic}
+.code-snip .f{color:#D4B5E0}
+.code-snip .v{color:var(--gold)}
+.code-snip .n{color:var(--ver)}
+.pc-body{height:auto !important}
+.pc-main{min-height:380px}
+
+/* Footer */
+.foot{background:#0A0617;color:#7A6F8C;padding:48px 24px 30px;border-top:1px solid var(--gold);position:relative;overflow:hidden}
+.foot::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--p),var(--gold),var(--p))}
+.foot::after{content:'';position:absolute;inset:0;background-image:radial-gradient(1.5px 1.5px at 30% 50%,rgba(232,208,120,.4),transparent),radial-gradient(1px 1px at 70% 30%,rgba(232,208,120,.3),transparent);pointer-events:none}
+.foot-c{max-width:1180px;margin:0 auto;text-align:center;position:relative;z-index:2}
+.foot-mark{font-family:'Cinzel';font-size:42px;color:var(--gold);letter-spacing:8px;margin-bottom:14px;font-weight:900}
+.foot-mark .cn{font-family:'ZCOOL XiaoWei','Noto Serif SC';font-size:18px;display:block;color:var(--goldL);letter-spacing:14px;margin-top:6px;font-weight:400}
+.foot p{font-family:'Noto Serif SC';font-size:12px;line-height:2;margin:6px 0}
+.foot p b{color:var(--goldL)}
+.foot .div{height:1px;background:var(--p);margin:24px 0;position:relative}
+.foot .div::before{content:'☾';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#0A0617;padding:0 14px;color:var(--gold);font-size:14px;font-family:'Cinzel'}
+.foot .copyright{font-family:'Cinzel';font-size:11px;color:#444;letter-spacing:2px}
+
+@media(max-width:720px){
+  .hero h1{font-size:50px;letter-spacing:3px}.hero h1 .cn{font-size:18px;letter-spacing:6px}
+  .step{flex-direction:column;align-items:flex-start;gap:10px}.step-num{font-size:60px}
+  .trust-c{grid-template-columns:repeat(2,1fr)}.pc-body{height:auto;flex-direction:column}.pc-side{width:100%;display:flex;overflow-x:auto}
+  .rpt-grid{grid-template-columns:repeat(5,1fr)}
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-c">
+    <div class="crest"><div class="lg">S</div><span>STELLAR · DESTINY READING</span></div>
+    <h1>STEL<span class="gold">LAR</span><span class="cn">星 命 · AI 智慧命理</span></h1>
+    <p class="sub">用一份完整的开发提示词，从 0 到 1 构建一款 <b>AI 八字 / 紫微 / 塔罗解读 + 命理大师 1V1 解盘 + 改运法器开光</b> 的玄学命理产品。古今合璧，星辰为引，让命理从神秘走向数字化体验。</p>
+    <div class="tags">
+      <div class="tag-h"><b>05</b> Chapters</div>
+      <div class="tag-h"><b>10</b> Screens</div>
+      <div class="tag-h"><b>Metaphysics</b> Edition</div>
+      <div class="tag-h"><b>AI</b> Bazi · Ziwei · Tarot</div>
+    </div>
+    <div class="cta-row">
+      <button class="cta-btn">Start Building →</button>
+      <button class="cta-btn ghost">View UI Kit</button>
+    </div>
+  </div>
+</section>
+
+<div class="trust"><div class="trust-c">
+  <div class="trust-i"><div class="num">28,486</div><div class="lab">Charts Read</div></div>
+  <div class="trust-i"><div class="num">860</div><div class="lab">Verified Masters</div></div>
+  <div class="trust-i"><div class="num">96.4%</div><div class="lab">Satisfaction</div></div>
+  <div class="trust-i"><div class="num">4.9 / 5</div><div class="lab">Client Rating</div></div>
+</div></div>
+
+<div class="doc">
+
+  <div class="intro">
+    <b>关于本提示词</b>　这是一份用于 AI 自动开发 <b>智能玄学命理行业 C 端产品</b> 的完整提示词。围绕"出生信息录入 → AI 命盘排盘 → 命理报告 → 大师 1V1 解盘 → 加助理微信 + 法器开光"这条核心增长闭环展开。本文档将命理玄学工业化、可视化、可复购化。
+    <div class="palette">
+      <div class="pchip"><i style="background:#2A1F4E"></i>星辰墨紫 / Starry Purple</div>
+      <div class="pchip"><i style="background:#C8A865"></i>鎏金箔 / Gold Leaf</div>
+      <div class="pchip"><i style="background:#B8362F"></i>朱砂红 / Vermillion</div>
+      <div class="pchip"><i style="background:#F5F0E8"></i>月白 / Moon</div>
+      <div class="pchip"><i style="background:#0F0A1F"></i>暗夜 / Night</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">01<small>STEP ONE</small></div>
+    <div class="step-title"><h2>项目规划<span class="en">/ Project Plan</span></h2><p>// positioning · users · scope · stack · compliance</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">i</div>本步骤目标：让 AI 准确理解一款"<b>AI 智能玄学命理 C 端 App</b>"的产品定位、目标人群、核心服务体系与 <b>合规边界（不算命凶 · 引导积极）</b>。</div>
+
+  <div class="det"><b>// 工程脚手架</b> · 通过 <code>pnpm create next-app@latest</code> 初始化，配 <code>App Router</code> + <code>TypeScript strict</code> + <code>TailwindCSS v3</code> + <code>shadcn/ui</code>，命盘绘制走 <code>SVG + Framer Motion</code>，毛笔字效果用 <code>ZCOOL XiaoWei</code> 字体 + <code>text-shadow</code> 萤光，排盘内核 <code>lunar-typescript</code> 已 <code>tree-shaking</code> 减包至 18KB，填充争议内容走 <code>Sentry</code> 实时上报保证合规边界。</div>
+
+  <h3 class="sec">1.1 产品定位 <span class="desc">// one sentence</span></h3>
+  <div class="det">面向 <b>22-45 岁都市女性与高知人群</b> 的 <span class="em">AI 八字 / 紫微 / 塔罗 / 姓名学命盘解读 + 命理大师 1V1 解盘 + 改运法器开光</span> 平台。用户输入出生信息或抽取塔罗牌，60 秒生成结构化命理报告（含五行 / 性格 / 财 / 情 / 健康 / 大运），可一键预约 <span class="em">860+ 认证命理师</span> 进行视频解盘，并选购改运法器、定制开光物件。</div>
+
+  <h3 class="sec">1.2 核心服务模块 <span class="desc">// 5 services</span></h3>
+  <div class="bullet"><b>八字命盘</b>：四柱八字 + 五行强弱 + 十神 + 大运流年</div>
+  <div class="bullet"><b>紫微斗数</b>：天盘、地盘、人盘 + 命宫十二宫 + 主星副星</div>
+  <div class="bullet"><b>塔罗牌阵</b>：牌阵选择（单张 / 三张 / 凯尔特十字）+ AI 解读</div>
+  <div class="bullet"><b>姓名学</b>：三才五格 + 五行喜忌 + 起名 / 改名建议</div>
+  <div class="bullet"><b>风水占卜</b>：家居风水 / 办公风水 / 流年方位</div>
+
+  <h3 class="sec">1.3 合规底线 <span class="desc">// must-have</span></h3>
+  <div class="det"><b>显著标注</b>："命理仅作参考，命运掌握在自己手中"。<b>禁止凶煞</b>断言（不出现"短命""破财"等绝对负面用语）。<b>禁止</b>夸大宣传"包灵验""百分百准"。<b>用户隐私</b>：出生信息加密存储，不对外公开。<span class="em-w">广告法</span>：不出现"最准""第一""唯一"等绝对化用语。</div>
+
+  <h3 class="sec">1.4 技术栈 <span class="desc">// stack</span></h3>
+  <div class="det"><b>前端</b>：Next.js 14 · TypeScript · TailwindCSS · Framer Motion · D3.js（命盘绘制）<br><b>AI</b>：通义千问 / DeepSeek 命理专项微调 · 八字排盘算法 · 紫微斗数算法库 · 塔罗 78 牌图像库<br><b>后端</b>：Next.js API · Supabase · 微信支付 · 农历转换库（lunar-javascript）· 经纬度数据库</div>
+
+  <div class="step">
+    <div class="step-num">02<small>STEP TWO</small></div>
+    <div class="step-title"><h2>页面架构<span class="en">/ Architecture</span></h2><p>// info hierarchy · navigation · entry pages</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">i</div>底部 Tab 4 项：<b>命盘 / 大师 / 法器 / 我的</b>。视觉以 <b>星辰墨紫 + 鎏金箔</b> 为主，配 <b>毛笔楷书</b>（ZCOOL XiaoWei / Ma Shan Zheng）+ Cinzel 古典英文，构建"古朴东方占星感"。</div>
+
+  <div class="det"><b>// 路由 / 状态 / 主题</b> · 路由按 <code>app/(divine)/</code>、<code>app/(master)/</code>、<code>app/(charm)/</code> 三大动线分组，命盘草稿走 <code>Zustand persist</code> 本地存储，星空背景走 <code>Canvas</code> 粒子动画，按钮 hover 走 <code>CSS conic-gradient</code> 旋转鎏金光晕，全程兼容 <code>prefers-reduced-motion</code>。</div>
+
+  <div class="flow-block">
+    <h4>核心动线 · 从录入到完成转化</h4>
+    <div class="flow">
+      <span>启动</span><span class="ar">→</span>
+      <span>选服务</span><span class="ar">→</span>
+      <span class="key">出生信息录入</span><span class="ar">→</span>
+      <span class="key">AI 命盘报告</span><span class="ar">→</span>
+      <span>大师匹配</span><span class="ar">→</span>
+      <span>预约解盘</span><span class="ar">→</span>
+      <span class="cv">支付 + 加助理微信</span>
+    </div>
+  </div>
+
+  <h3 class="sec">2.1 入口与首页（4 屏） <span class="desc">// onboarding & home</span></h3>
+
+  <h4 class="page"><span class="num">P01</span>启动页 Splash</h4>
+  <div class="det">星空墨紫渐变 + 闪烁星点 + 鎏金圆形 LOGO（中心 S 字 + 外环虚线圆）+ Cinzel 大字 STELLAR + 毛笔楷书"星命"+ 装饰线 + 一句东方智慧"<span class="em">天命有常 · 运在我心</span>"。气质神秘、典雅、有仪式感。</div>
+
+  <h4 class="page"><span class="num">P02</span>选择服务 Service Picker</h4>
+  <div class="det">2×3 服务卡片：<b>八字 / 紫微 / 塔罗 / 姓名 / 风水 / 起名</b>。每卡片圆形鎏金图标（中心古朴汉字"易""紫""塔"）+ 毛笔楷书中文 + Cinzel 英文。选中态：金色双框 + 内卡片金箔渐变。</div>
+
+  <h4 class="page"><span class="num">P03</span>首页 Home</h4>
+  <div class="det"><b>顶栏</b>：星空墨紫渐变 + 闪烁星点 + 用户问候。<br><b>当日运势条</b>：金色描边 + "今日运势"+ 毛笔字"宜：远行 谋事"+ 鎏金"忌：争执 借贷"。<br><b>主 CTA</b>：左侧深紫方块（古朴大字"☾"+ 圆形虚线）+ "AI 命盘排盘 · 60 秒生成详报"。<br><b>推荐大师横滑</b>：圆形头像（金色描边）+ 毛笔楷书姓名 + 流派 + ¥/次。</div>
+
+  <h4 class="page"><span class="num">P04</span>出生信息录入 Birth Input <span class="tag" style="background:var(--p);color:var(--goldL);border:1px solid var(--gold)">CRITICAL</span></h4>
+  <div class="det"><b>顶部</b>：星空紫底 + 鎏金描边 + 毛笔楷书"录入八字信息"。<br><b>主表单</b>：白色双金边卡片 + 金色斜体小标签 + 5 行表单（姓名 / 性别 / 公历或农历 / 出生日期时分 / 出生地经纬度）+ 毛笔楷书展示选中值。<br><b>底部 CTA</b>：星空紫渐变长按钮"☾ 开始 AI 排盘 · 60 秒生成命书"，毛笔楷书 + 双金边 + 仪式感。</div>
+
+  <div class="phones">
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body splash">
+      <div class="splash-logo">S</div>
+      <h2>STELLAR</h2>
+      <p class="cn">星 命</p>
+      <div class="div"></div>
+      <div class="quote">天命有常 · 运在我心<br>FATE GUIDES · WILL DECIDES</div>
+    </div><div class="cap">P01 SPLASH</div></div></div>
+
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body svc">
+      <div class="svc-hd">
+        <div class="step-bar"><i class="on"></i><i class="on"></i><i></i></div>
+        <h3>选 择 命 理 流 派</h3>
+        <small>SELECT YOUR DIVINATION</small>
+      </div>
+      <div class="svc-bd">
+        <div class="svc-card on"><div class="ic">易</div><div class="t">八字命盘</div><div class="en">BAZI</div></div>
+        <div class="svc-card"><div class="ic">紫</div><div class="t">紫微斗数</div><div class="en">ZIWEI</div></div>
+        <div class="svc-card"><div class="ic">塔</div><div class="t">塔罗占卜</div><div class="en">TAROT</div></div>
+        <div class="svc-card"><div class="ic">名</div><div class="t">姓名学</div><div class="en">NAME</div></div>
+        <div class="svc-card"><div class="ic">风</div><div class="t">风水勘宅</div><div class="en">FENGSHUI</div></div>
+        <div class="svc-card"><div class="ic">起</div><div class="t">起名定名</div><div class="en">NAMING</div></div>
+      </div>
+    </div><div class="cap">P02 PICKER</div></div></div>
+
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body home">
+      <div class="home-hd">
+        <div class="row"><div><div class="greet">GOOD EVENING</div><div class="who">沈小姐 · 庚午年生</div></div><div class="ic">☾</div></div>
+        <div class="fortune">
+          <div class="lab">TODAY · 五月初八 · 戊辰日</div>
+          <div class="row2"><span>宜　远行 · 谋事 · 议婚</span><span class="v">大吉</span></div>
+        </div>
+      </div>
+      <div class="cta-pri"><div class="img">☾</div><div class="info"><div class="ttl">AI 智 慧 排 盘</div><div class="desc">60 SEC · DESTINY REPORT</div></div></div>
+      <div class="sec-h"><h4>名 师 推 荐<small>MASTERS</small></h4><span class="more">VIEW ALL ›</span></div>
+      <div class="master-row">
+        <div class="master-c"><div class="av">玄</div><div class="nm">玄机子</div><div class="ttl">紫微 · 12Y</div><div class="pri">¥888</div></div>
+        <div class="master-c"><div class="av">青</div><div class="nm">青莲师</div><div class="ttl">八字 · 8Y</div><div class="pri">¥588</div></div>
+        <div class="master-c"><div class="av">月</div><div class="nm">月明居士</div><div class="ttl">塔罗 · 6Y</div><div class="pri">¥388</div></div>
+      </div>
+      <div class="tabbar">
+        <div class="on"><span class="ic">☾</span>HOME</div>
+        <div><span class="ic">易</span>READ</div>
+        <div><span class="ic">⚱</span>SHOP</div>
+        <div><span class="ic">◉</span>ME</div>
+      </div>
+    </div><div class="cap">P03 HOME</div></div></div>
+
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body birth">
+      <div class="birth-hd"><h3>录 入 八 字 信 息</h3><small>BIRTH INFORMATION</small></div>
+      <div class="birth-bd">
+        <div class="birth-card">
+          <span class="lab">PERSONAL CHART INPUT</span>
+          <div class="birth-row"><div class="l">姓 名</div><div class="v">沈晚晴</div></div>
+          <div class="birth-row"><div class="l">性 别</div><div class="v">坤 / 女</div></div>
+          <div class="birth-row"><div class="l">日 历</div><div class="v">公历 SOLAR</div></div>
+          <div class="birth-row"><div class="l">出生日期</div><div class="v">1990 . 06 . 18</div></div>
+          <div class="birth-row"><div class="l">出生时辰</div><div class="v">寅时 03:48</div></div>
+          <div class="birth-row"><div class="l">出 生 地</div><div class="v">浙江 · 杭州</div></div>
+        </div>
+      </div>
+      <div class="birth-cta">开 始 AI 排 盘 · 60 秒</div>
+    </div><div class="cap">P04 INPUT</div></div></div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">03<small>STEP THREE</small></div>
+    <div class="step-title"><h2>核心闭环 · AI 命盘报告<span class="en">/ AI Core</span></h2><p>// the moment of trust</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">★</div>这是产品最关键的"<b>价值时刻</b>"——用户在 60 秒内拿到一份印章感强、东方韵味十足的 AI 命盘报告。<b>报告越像古籍命书、越仪式感、越懂用户，付费转化率越高。</b></div>
+
+  <div class="det"><b>// AI 排盘实现</b> · 用户填完出生信息后，前端调用 <code>POST /api/destiny/bazi</code>，后端以 <code>lunar-typescript</code> 作为内核完成公历 ⇄ 农历转换与干支排盘，同步完成 <code>紫微 12 宫安星</code>，得到年、月、日、时四柱与日主五行；随后交予外接中医 / 古籍语料微调的 <code>DeepSeek-Destiny</code> 模型，通过 <code>Server-Sent Events</code> 流式输出性格 / 财运 / 感情 / 事业 / 健康五大章节，输出同步走 <code>敏感词过滤</code> 以规避封建迷信表述，全程 60 秒内完成。</div>
+
+  <h4 class="page"><span class="num">P05</span>AI 命盘报告 Destiny Report <span class="tag" style="background:var(--gold);color:var(--p)">⭐ KEY</span></h4>
+  <div class="det"><b>顶部封面</b>：星空紫渐变 + 双金框 + 闪烁星点 + Cinzel"☾ STELLAR DESTINY REPORT"+ 毛笔大字"沈小姐 · 命书"+ 报告编号 + 庚午年戊午月戊辰日。<br><b>核心命盘</b>：白色卡片 + 130×130 金色双圆环（外圆虚线 + 内圆实线）+ 中心紫色圆形写"<span class="em">坤</span>"+ 6 个圆形八卦节点（乾坎艮震巽离）。<br><b>五行五宫格</b>：金 木 水 火 土，命主属土者高亮金色。<br><b>详细分析卡片</b>：3 张（性格特质 / 财运 / 感情），每张毛笔楷书引用 + 鎏金小框。<br><b>底部 CTA</b>：紫底金边按钮"<span class="em">预约名师亲解 · 深度解盘</span>"，营造"AI 给方向，大师指迷津"的转化路径。</div>
+
+  <div class="phones">
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body rpt">
+      <div class="rpt-hd">
+        <div class="seal">☾ STELLAR · DESTINY</div>
+        <h3>沈 小 姐 · 命 书</h3>
+        <div class="sub">RPT-20260508 · 庚午年生 · 戊辰日</div>
+      </div>
+      <div class="rpt-chart">
+        <div class="ziwei">
+          <div class="zw-cell p1"><div class="star">太阳<em>化禄</em></div><span class="gz">巳</span><span class="pl">财帛</span></div>
+          <div class="zw-cell p2"><div class="star">破军</div><span class="gz">午</span><span class="pl">子女</span></div>
+          <div class="zw-cell p3"><div class="star">天机</div><span class="gz">未</span><span class="pl">夫妻</span></div>
+          <div class="zw-cell p4 body-bg"><div class="star">紫微<em>化权</em></div><span class="gz">申</span><span class="pl">兄弟</span></div>
+          <div class="zw-cell p5"><div class="star">太阴</div><span class="gz">酉</span><span class="pl">命宫</span></div>
+          <div class="zw-cell p6"><div class="star">贪狼<em>化禄</em></div><span class="gz">戌</span><span class="pl">父母</span></div>
+          <div class="zw-cell p7"><div class="star">巨门</div><span class="gz">亥</span><span class="pl">福德</span></div>
+          <div class="zw-cell p8"><div class="star">天相</div><span class="gz">子</span><span class="pl">田宅</span></div>
+          <div class="zw-cell p9"><div class="star">天梁</div><span class="gz">丑</span><span class="pl">官禄</span></div>
+          <div class="zw-cell p10"><div class="star">七杀</div><span class="gz">寅</span><span class="pl">交友</span></div>
+          <div class="zw-cell p11"><div class="star">府相</div><span class="gz">卯</span><span class="pl">迁移</span></div>
+          <div class="zw-cell p12"><div class="star">天同<em>化忌</em></div><span class="gz">辰</span><span class="pl">疾厄</span></div>
+          <div class="zw-center">
+            <div class="zc-name">沈 晚 晴</div>
+            <div class="zc-bz">
+              <div class="zc-pillar"><small>YEAR</small>庚<br>午</div>
+              <div class="zc-pillar"><small>MONTH</small>壬<br>午</div>
+              <div class="zc-pillar"><small>DAY</small>戊<br>辰</div>
+              <div class="zc-pillar"><small>HOUR</small>甲<br>寅</div>
+            </div>
+            <div class="zc-info">戊土 · 阳女 · 嶂峰土</div>
+          </div>
+        </div>
+        <div class="lab">紫微斗数 · 十二宫命盘</div>
+      </div>
+      <div class="rpt-grid">
+        <div class="rpt-cell"><div class="lab">金</div><div class="v">弱</div></div>
+        <div class="rpt-cell"><div class="lab">木</div><div class="v">中</div></div>
+        <div class="rpt-cell"><div class="lab">水</div><div class="v">弱</div></div>
+        <div class="rpt-cell"><div class="lab">火</div><div class="v">中</div></div>
+        <div class="rpt-cell on"><div class="lab">土</div><div class="v">旺</div></div>
+      </div>
+      <div class="rpt-card">
+        <div class="lab">☾ PERSONALITY</div>
+        <div class="ttl">性 格 特 质</div>
+        <div class="txt">命主<b>戊土</b>日元，性情敦厚，有担当，重情义。<b>土旺</b>故思虑周全但偶有固执。需注意培养水德以润万物。</div>
+        <div class="quote">"厚德载物 · 自强不息"</div>
+      </div>
+      <div class="rpt-card">
+        <div class="lab">☾ WEALTH</div>
+        <div class="ttl">财 运 详 解</div>
+        <div class="txt"><b>正财稳</b>，偏财近年有起色。2026 年走<b>食神生财</b>大运，宜创业或投资文化教育行业。忌大额借贷。</div>
+      </div>
+      <div class="rpt-cta">
+        <div class="ttl">☾ 预 约 名 师 亲 解</div>
+        <div class="desc">AI 命书仅供参考<br>建议预约本所认证命理师深度解盘</div>
+        <button>查 看 推 荐 大 师 →</button>
+      </div>
+    </div><div class="cap">P05 CHART ⭐</div></div></div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">04<small>STEP FOUR</small></div>
+    <div class="step-title"><h2>转化模块 · 大师解盘 + 法器开光<span class="en">/ Conversion</span></h2><p>// not a generic mall · destiny funnel</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">★</div>玄学行业的转化路径不是"商品逛逛"——而是 <b>大师 1V1 解盘（按次付费）+ 改运法器开光定制 + 加大师助理微信进入私域</b>。整个模块包含：大师列表 → 详情 → 选解盘方式 → 预约 → 支付 → <span class="em">添加助理微信</span> → 法器开光商城。</div>
+
+  <div class="det"><b>// 转化实现</b> · 大师列表走 <code>useInfiniteQuery</code> 分页 + <code>IntersectionObserver</code> 懒加载，预约提交触发 <code>wx.chooseWXPay</code>，支付回调 <code>Webhook</code> 把状态机推到 <code>PAID</code>，<code>Realtime channel</code> 立刻推送大师道号企业微信二维码与法事开光直播链接，全程输出同步走 <code>POST /api/destiny/review</code> 过滤封建迷信敏感表述。</div>
+
+  <h4 class="page"><span class="num">P06</span>大师列表 Master List</h4>
+  <div class="det"><b>大师卡片</b>：左侧 54×64 矩形头像（古朴道袍/居士感，金色描边）+ 毛笔楷书姓名 + <span class="em">V 认证</span> + 流派与年限（紫微 12 年 / 八字 8 年）+ 标签（事业 / 婚姻 / 财运）+ 数据条（解盘 X 次 / 评分 X.X）+ 右下角斜体朱砂红 ¥/次 + 鎏金圆形按钮"立即预约"。</div>
+
+  <h4 class="page"><span class="num">P07</span>支付成功 + 加助理微信 <span class="tag" style="background:var(--gold);color:var(--p)">⭐ ULTIMATE</span></h4>
+  <div class="det"><b>这是整个 App 的最终转化目标页</b>。星空墨紫渐变 + 闪烁星点 + 双层鎏金边框（仪式感）+ Cinzel"☾ APPOINTMENT CONFIRMED"+ 鎏金对勾圆形（外环虚线）+ Cinzel 大数字 <span class="em">¥888.00</span> + "5/12 周日 14:00 视频解盘"。<br><b>核心卡片</b>：白色双金边 + 毛笔楷书"添 加 助 理 微 信"+ "深度解盘准备 · 1V1 跟进"+ 二维码（中心紫色 ☾ 图章）+ "扫码后助理 5 分钟内联系"。</div>
+
+  <h4 class="page"><span class="num">P08</span>法器开光商城 Talisman Mall</h4>
+  <div class="det"><b>顶部</b>：星空紫底 + 鎏金描边 + 毛笔大字"开光法器"+ Cinzel"BLESSED TALISMANS"。<br><b>商品卡片</b>：左侧 50×60 法器立式图标（紫底金字"福禄寿喜"）+ 名称（如"<b>本命佛吊坠 · 师傅亲诵开光</b>"）+ 描述 + 三标签（材质 / 已请 X 件 / 师傅亲开）+ 右侧斜体朱砂红 <span class="em">¥1,888</span> + 鎏金按钮"立即请购"。<br>整体如"道观经堂法物流通处"质感。</div>
+
+  <h4 class="page"><span class="num">P09</span>我的命盘 My Destiny</h4>
+  <div class="det"><b>顶部</b>：星空紫渐变 + 闪烁星点 + 矩形古朴头像 + 毛笔楷书姓名 + Cinzel"BAZI · 庚午年生 · 戊辰日"。<b>三宫格</b>：命书 1 / 解盘 2 / 法器 3。<b>列表项</b>：我的命书 / 我的大师（直达微信）/ 我的法器 / 历史预约 / 邀请好友算命 / 设置。所有图标都是金色细线 + 月白底，气质统一。</div>
+
+  <div class="phones">
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body mlist">
+      <div class="mlist-hd"><h3>认 证 命 理 大 师</h3><small>VERIFIED MASTERS · 860</small></div>
+      <div class="mcard">
+        <div class="av">玄</div>
+        <div class="info">
+          <div class="nm">玄 机 子 <span class="v">V</span></div>
+          <div class="ttl">紫微斗数 · 12Y · 终南山门下</div>
+          <div class="skills"><span>事业</span><span>婚姻</span><span>财运</span></div>
+          <div class="stats"><span>解盘 <b>2,860</b></span><span>★ <b>4.9</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥888</div><div class="u">/ 次</div><button>预约</button></div>
+      </div>
+      <div class="mcard">
+        <div class="av">青</div>
+        <div class="info">
+          <div class="nm">青 莲 师 <span class="v">V</span></div>
+          <div class="ttl">八字命理 · 8Y · 龙虎山传人</div>
+          <div class="skills"><span>八字</span><span>大运</span><span>合婚</span></div>
+          <div class="stats"><span>解盘 <b>1,680</b></span><span>★ <b>5.0</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥588</div><div class="u">/ 次</div><button>预约</button></div>
+      </div>
+      <div class="mcard">
+        <div class="av">月</div>
+        <div class="info">
+          <div class="nm">月 明 居 士 <span class="v">V</span></div>
+          <div class="ttl">塔罗占卜 · 6Y · 西方神秘学</div>
+          <div class="skills"><span>塔罗</span><span>感情</span><span>选择</span></div>
+          <div class="stats"><span>解盘 <b>820</b></span><span>★ <b>4.9</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥388</div><div class="u">/ 次</div><button>预约</button></div>
+      </div>
+    </div><div class="cap">P06 MASTERS</div></div></div>
+
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body pay">
+      <div class="pay-seal">☾ APPOINTMENT CONFIRMED</div>
+      <div class="pay-ic">✓</div>
+      <h3>预 约 成 功</h3>
+      <div class="amt">¥ 888.00</div>
+      <div class="desc">5/12 周日 14:00 · 视频解盘<br><b>玄机子 大师</b> · 紫微斗数 12 年</div>
+      <div class="qr-card">
+        <div class="ttl">添 加 助 理 微 信</div>
+        <div class="sub">DEEP READING · 1V1</div>
+        <div class="qr"></div>
+        <div class="save">长按保存 · 助理 5 分钟内联系</div>
+      </div>
+    </div><div class="cap">P07 PAY ⭐</div></div></div>
+
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body mall">
+      <div class="mall-hd"><h3>开 光 法 器</h3><small>BLESSED TALISMANS</small></div>
+      <div class="mcard2">
+        <div class="ic">福</div>
+        <div class="info">
+          <div class="ttl">本命佛吊坠 · 师傅亲诵开光</div>
+          <div class="desc">和田玉雕本命佛 · 七日法事开光<br>含师傅手写八字加持符</div>
+          <div class="meta"><span>已请 <b>1,860</b></span><span>★ <b>5.0</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥1,888</div><button>请 购</button></div>
+      </div>
+      <div class="mcard2">
+        <div class="ic">禄</div>
+        <div class="info">
+          <div class="ttl">五帝钱挂坠 · 镇宅化煞</div>
+          <div class="desc">真品古铜五帝钱 · 道观开光<br>风水化煞专用</div>
+          <div class="meta"><span>已请 <b>3,260</b></span><span>★ <b>4.9</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥688</div><button>请 购</button></div>
+      </div>
+      <div class="mcard2">
+        <div class="ic">寿</div>
+        <div class="info">
+          <div class="ttl">朱砂手串 · 辟邪安神</div>
+          <div class="desc">天然朱砂 108 颗 · 寺院加持<br>安神助眠提运</div>
+          <div class="meta"><span>已请 <b>820</b></span><span>★ <b>4.9</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥388</div><button>请 购</button></div>
+      </div>
+    </div><div class="cap">P08 MALL</div></div></div>
+
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body me">
+      <div class="me-hd"><div class="row"><div class="av">沈</div><div><div class="nm">沈 晚 晴</div><div class="lvl">BAZI · 庚午年 · 戊辰日</div></div></div></div>
+      <div class="me-stats">
+        <div><div class="v">1</div><div class="l">CHARTS</div></div>
+        <div><div class="v">2</div><div class="l">READINGS</div></div>
+        <div><div class="v">3</div><div class="l">TALISMANS</div></div>
+      </div>
+      <div class="me-list">
+        <div class="item"><div class="ic">☾</div><div class="t">我 的 命 书</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">⚐</div><div class="t">我 的 大 师（微信）</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">⚱</div><div class="t">我 的 法 器</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">⊞</div><div class="t">历 史 预 约</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">✦</div><div class="t">邀 请 好 友 算 命</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">⚙</div><div class="t">设 置</div><div class="arr">›</div></div>
+      </div>
+    </div><div class="cap">P09 ME</div></div></div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">05<small>STEP FIVE</small></div>
+    <div class="step-title"><h2>管理后台 · 大师 / 订单 / 法器<span class="en">/ Admin</span></h2><p>// PC console for ops</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">i</div>后台供 <b>平台运营 / 大师工作室 / 开光法事仓储</b> 三类角色基于 <code>RBAC</code> 权限模型分级使用，共覆盖 <b>8 大核心模块</b>：数据看板（实时 DAU / 营收漏斗 / 命理类型分布）、大师管理（道号备案 + 段位评级 + 抽成阶梯 + 锁粉上限）、命书审核（AI 初核排盘准确率 + 资深大师终审用语合规）、解盘订单调度（语音 / 视频 / 面谈三类计费）、法器商城（入仓 / 定价 / 库存 / 商品证书）、开光排期（按月相 / 黄道吉日 / 大师档期智能分配）、财务结算（大师分润 + 增值税专票 + T+1 提现）、系统设置。前端采用 <code>Next.js 14 + ZCOOL 楷书字体</code> 构建，排盘内核走 <code>lunar-typescript</code> 公历转农历 + 紫微 12 宫安星算法，命书 AI 输出经 <code>POST /api/destiny/review</code> 自动过滤封建迷信敏感词，全链路走 <code>Sentry</code> 错误上报 + 操作日志存证。星空墨紫 + 鎏金箔 + 朱砂红配色与 App 端保持一致，强化品牌识别。</div>
+
+  <div class="pc">
+    <div class="pc-bar"><i></i><i></i><i></i><span>STELLAR Admin · admin.stellar.cn</span></div>
+    <div class="pc-body">
+      <div class="pc-side">
+        <div class="logo">STELLAR</div>
+        <div class="item on"><span class="ic">I.</span>数据看板</div>
+        <div class="item"><span class="ic">II.</span>大师管理</div>
+        <div class="item"><span class="ic">III.</span>命书审核</div>
+        <div class="item"><span class="ic">IV.</span>解盘订单</div>
+        <div class="item"><span class="ic">V.</span>法器商城</div>
+        <div class="item"><span class="ic">VI.</span>开光排期</div>
+        <div class="item"><span class="ic">VII.</span>财务结算</div>
+        <div class="item"><span class="ic">VIII.</span>系统设置</div>
+      </div>
+      <div class="pc-main">
+        <h3>数 据 看 板 · 今 日 实 时</h3>
+        <div class="pc-filter">
+          <div class="seg"><span class="on">今日</span><span>本周</span><span>本月</span><span>季度</span><span>自定义</span></div>
+          <input placeholder="🔍  搜索订单号 / 客户姓名 / 大师道号 / 命盘">
+          <button class="btn">导 出 报 表</button>
+        </div>
+        <div class="kpi">
+          <div class="kc"><div class="lab">DAU · 日活</div><div class="v">12,486</div><div class="d">↑ 8.2% vs 昨日</div></div>
+          <div class="kc"><div class="lab">REVENUE · 流水</div><div class="v">¥286,420</div><div class="d">↑ 18.4% vs 昨日</div></div>
+          <div class="kc"><div class="lab">CONSULT · 解盘订单</div><div class="v">186</div><div class="d">↑ 12.6% vs 昨日</div></div>
+          <div class="kc"><div class="lab">REPORT · 命书生成</div><div class="v">3,286</div><div class="d">↑ 22.4% vs 昨日</div></div>
+        </div>
+        <div class="pc-charts">
+          <div class="pc-ch">
+            <h4>近 7 日 大师解盘 + 命书生成趋势 <small>WEEKLY TREND</small></h4>
+            <div class="pc-bars">
+              <div class="b" data-d="5/02" data-v="142" style="height:46%"></div>
+              <div class="b" data-d="5/03" data-v="128" style="height:42%"></div>
+              <div class="b" data-d="5/04" data-v="165" style="height:54%"></div>
+              <div class="b" data-d="5/05" data-v="152" style="height:50%"></div>
+              <div class="b" data-d="5/06" data-v="172" style="height:56%"></div>
+              <div class="b" data-d="5/07" data-v="178" style="height:58%"></div>
+              <div class="b hl" data-d="5/08" data-v="186" style="height:62%"></div>
+            </div>
+          </div>
+          <div class="pc-ch">
+            <h4>命理类型分布 <small>SERVICE MIX</small></h4>
+            <div class="pc-ring"><div class="v"><b>3,286</b><small>TOTAL</small></div></div>
+            <div class="pc-leg">
+              <div><i style="background:var(--gold)"></i>八字命盘 <b>32%</b></div>
+              <div><i style="background:var(--ver)"></i>紫微斗数 <b>24%</b></div>
+              <div><i style="background:var(--pl)"></i>合婚配对 <b>22%</b></div>
+              <div><i style="background:#9DD37E"></i>法器开光 <b>22%</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-tbl">
+          <h4>近期解盘订单 <small>RECENT ORDERS · 共 186 条 · 显示前 6 条</small></h4>
+          <table>
+            <tr><th>订单号</th><th>客户</th><th>大师</th><th>命盘</th><th>类型</th><th>金额</th><th>来源</th><th>响应</th><th>状态</th></tr>
+            <tr><td>ST20260508-0086</td><td><b>沈晚晴</b></td><td>玄机子 (紫微)</td><td>乙丑年·女</td><td>视频解盘 1h</td><td>¥888</td><td>小红书</td><td>3 分钟</td><td><span class="gt">已预约</span></td></tr>
+            <tr><td>ST20260508-0085</td><td><b>李先生</b></td><td>—</td><td>上升本命</td><td>本命佛吊坠</td><td>¥1,888</td><td>抖音</td><td>5 分钟</td><td><span class="ot">开光中</span></td></tr>
+            <tr><td>ST20260508-0084</td><td><b>张女士</b></td><td>青莲师 (八字)</td><td>三合·二人</td><td>八字合婚</td><td>¥588</td><td>微信</td><td>2 分钟</td><td><span class="gt">已完成</span></td></tr>
+            <tr><td>ST20260508-0083</td><td><b>陈女士</b></td><td>君安子 (六爻)</td><td>事业运势</td><td>语音解签</td><td>¥288</td><td>百度</td><td>1 分钟</td><td><span class="gt">咨询中</span></td></tr>
+            <tr><td>ST20260508-0082</td><td><b>王先生</b></td><td>玄机子 (紫微)</td><td>财运·夏令</td><td>财运详报</td><td>¥1,288</td><td>小红书</td><td>8 分钟</td><td><span class="ot">出报中</span></td></tr>
+            <tr><td>ST20260508-0081</td><td><b>赵女士</b></td><td>—</td><td>壬水·创业</td><td>AI 八字报告</td><td>¥99</td><td>抖音</td><td>1 分钟</td><td><span class="rt">待补资</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="foot">
+  <div class="foot-c">
+    <div class="foot-mark">STELLAR<span class="cn">星 命</span></div>
+    <p><b>// 一份完整提示词，从 0 到 1 构建 AI 智能玄学命理 C 端产品</b></p>
+    <p>本提示词适用于 <b>Cursor / Windsurf / Claude Code</b> 等 AI Coding 工具，可一次性生成 Next.js 14 工程骨架。</p>
+    <p>配套：完整提示词 .md · UI 预览 .html · Midjourney 素材包</p>
+    <div class="div"></div>
+    <p class="copyright">© 2026 STELLAR AI · Industry 05 / 05 — Smart Metaphysics Edition · Internal Delivery · v1.0</p>
+  </div>
+</footer>
+
+</body>
+</html>
