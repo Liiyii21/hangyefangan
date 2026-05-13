@@ -1,0 +1,986 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LEX AI · 智能法律咨询平台 — 完整开发提示词与 UI 预览</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:wght@400;700;900&family=Noto+Serif+SC:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1828;
+  --primary:#1A3A5C;          /* 深墨蓝 / Navy */
+  --primary-2:#2A4E73;
+  --primary-3:#3A5E85;
+  --gold:#B8956A;             /* 鎏金 */
+  --gold-l:#D4B896;
+  --gold-d:#8A6D44;
+  --wood:#4A2C2A;             /* 律师红木 */
+  --wood-l:#6B4438;
+  --cream:#FAF7F0;            /* 米白 / 卷宗纸 */
+  --paper:#F5F1E8;
+  --line:#E8DFCC;
+  --gray:#7A6F5C;
+  --text:#1A2436;
+  --hot:#A52A2A;              /* 法槌深红 */
+}
+*{box-sizing:border-box;-webkit-font-smoothing:antialiased}
+body{margin:0;font-family:Inter,'Noto Serif SC',serif;background:var(--cream);color:var(--text);line-height:1.7}
+
+/* === Hero === */
+.hero{background:radial-gradient(ellipse at 30% 30%,#2A4E73 0%,#0E1828 70%);color:#fff;padding:90px 24px 70px;position:relative;overflow:hidden;border-bottom:1px solid var(--gold-d)}
+.hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent 0,transparent 80px,rgba(184,149,106,.04) 80px,rgba(184,149,106,.04) 81px);pointer-events:none}
+.hero::after{content:'';position:absolute;left:0;right:0;bottom:0;height:80px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.4));pointer-events:none}
+/* 装饰：罗马柱底纹 */
+.hero-deco{position:absolute;right:-50px;top:50%;transform:translateY(-50%);width:300px;height:400px;opacity:.08;pointer-events:none}
+.hero-c{max-width:1180px;margin:0 auto;position:relative;z-index:2}
+.crest{display:inline-flex;align-items:center;gap:14px;padding:8px 22px 8px 8px;border:1px solid var(--gold);border-radius:30px;background:rgba(184,149,106,.08);backdrop-filter:blur(8px)}
+.crest .lg{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold-l) 0%,var(--gold) 60%,var(--gold-d) 100%);display:flex;align-items:center;justify-content:center;color:var(--ink);font-family:'Playfair Display';font-weight:900;font-size:18px;box-shadow:0 0 20px rgba(184,149,106,.5),inset 0 1px 2px rgba(255,255,255,.4)}
+.crest span{font-family:'Cormorant Garamond';font-style:italic;letter-spacing:3px;font-size:14px;color:var(--gold-l)}
+.hero h1{font-family:'Playfair Display','Noto Serif SC';font-weight:900;font-size:78px;letter-spacing:1px;margin:24px 0 12px;line-height:1.05;color:#fff}
+.hero h1 .gold{background:linear-gradient(180deg,var(--gold-l) 0%,var(--gold) 50%,var(--gold-d) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic}
+.hero h1 .cn{font-family:'Noto Serif SC';font-weight:900;font-size:36px;display:block;margin-top:14px;letter-spacing:14px;color:#E8DFCC}
+.hero p.sub{font-family:'Noto Serif SC',serif;font-size:16px;color:#C9D0DC;max-width:680px;margin:24px 0 32px;line-height:2;font-weight:400}
+.hero p.sub b{color:var(--gold-l);font-weight:600;border-bottom:1px solid var(--gold-d)}
+.tags{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px}
+.tag-h{padding:7px 16px;background:rgba(255,255,255,.04);border:1px solid var(--gold-d);border-radius:0;font-size:11px;color:#C9D0DC;font-family:'Cormorant Garamond';font-style:italic;letter-spacing:1.5px}
+.tag-h b{color:var(--gold);font-style:normal;font-family:'Playfair Display';font-weight:700}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px}
+.cta-btn{padding:16px 38px;background:linear-gradient(180deg,var(--gold-l) 0%,var(--gold) 50%,var(--gold-d) 100%);color:var(--ink);border:none;border-radius:0;font-family:'Playfair Display','Noto Serif SC';font-size:14px;letter-spacing:4px;cursor:pointer;font-weight:700;box-shadow:0 8px 24px rgba(184,149,106,.4),inset 0 1px 0 rgba(255,255,255,.4);position:relative;transition:all .25s;text-transform:uppercase}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(184,149,106,.5)}
+.cta-btn.ghost{background:transparent;color:var(--gold-l);border:1px solid var(--gold);box-shadow:none}
+
+/* === Trust bar === */
+.trust{background:#0A1220;padding:30px 24px;border-bottom:1px solid var(--primary-2);border-top:1px solid var(--gold-d)}
+.trust-c{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center}
+.trust-i{padding:6px 14px;border-right:1px solid #1F2A3C;position:relative}
+.trust-i:last-child{border-right:0}
+.trust-i .num{font-family:'Playfair Display';font-size:34px;font-weight:700;color:var(--gold);letter-spacing:1px;line-height:1.1}
+.trust-i .lab{font-family:'Cormorant Garamond';font-style:italic;font-size:12px;color:#7A8A9C;margin-top:6px;letter-spacing:2px}
+
+/* === Doc === */
+.doc{max-width:1180px;margin:0 auto;padding:64px 28px;background:var(--cream)}
+
+.intro{padding:34px 38px;background:#fff;border:1px solid var(--gold);border-radius:2px;margin-bottom:50px;font-size:15px;line-height:2;color:#3A4256;box-shadow:0 4px 24px rgba(15,24,40,.06);position:relative}
+.intro::before{content:'';position:absolute;left:8px;top:8px;right:8px;bottom:8px;border:1px solid var(--gold-l);pointer-events:none}
+.intro::after{content:'⚖ BRIEF';position:absolute;right:24px;top:-12px;font-family:'Playfair Display';font-style:italic;font-size:11px;letter-spacing:4px;color:var(--gold-d);padding:4px 12px;background:var(--cream);border:1px solid var(--gold)}
+.intro b{color:var(--primary);font-weight:700}
+.intro .palette{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.intro .pchip{display:flex;align-items:center;gap:8px;padding:5px 12px;background:var(--cream);border:1px solid var(--line);border-radius:0;font-size:11px;font-family:'Cormorant Garamond';font-style:italic;letter-spacing:.5px}
+.intro .pchip i{width:14px;height:14px;border-radius:0;display:inline-block;border:1px solid rgba(0,0,0,.15)}
+
+/* Step header */
+.step{margin:80px 0 36px;display:flex;align-items:flex-end;gap:30px;padding-bottom:18px;border-bottom:2px solid var(--primary);position:relative}
+.step::after{content:'';position:absolute;left:0;bottom:-2px;width:140px;height:5px;background:linear-gradient(90deg,var(--gold) 0%,var(--gold-d) 100%)}
+.step::before{content:'';position:absolute;left:0;bottom:-9px;width:60px;height:1px;background:var(--gold-d)}
+.step-num{font-family:'Playfair Display';font-size:88px;font-weight:900;color:var(--primary);line-height:.85;letter-spacing:-2px;font-style:italic;position:relative}
+.step-num::after{content:'';position:absolute;left:0;right:0;bottom:-4px;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
+.step-num small{font-family:'Cormorant Garamond';font-style:italic;font-size:13px;letter-spacing:5px;color:var(--gold-d);display:block;margin-top:8px;font-weight:500}
+.step-title h2{font-family:'Noto Serif SC';font-weight:900;font-size:30px;color:var(--ink);margin:0;letter-spacing:2px}
+.step-title h2 .en{font-family:'Playfair Display';font-style:italic;color:var(--gold-d);margin-left:14px;font-size:22px;letter-spacing:1px;font-weight:400}
+.step-title p{font-family:'Cormorant Garamond';font-style:italic;font-size:14px;color:var(--gray);margin:8px 0 0;letter-spacing:1px}
+
+.callout{background:#fff;border-left:3px solid var(--gold);padding:20px 26px 20px 32px;border-radius:0 4px 4px 0;font-size:14px;line-height:2;margin:18px 0;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.04);font-family:'Noto Serif SC',serif}
+.callout::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--gold-l);left:3px}
+.callout .ico{position:absolute;left:-14px;top:18px;width:26px;height:26px;background:linear-gradient(135deg,var(--gold-l) 0%,var(--gold-d) 100%);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-family:'Playfair Display';font-weight:900;box-shadow:0 4px 12px rgba(184,149,106,.4)}
+.callout b{color:var(--primary);font-weight:700}
+
+h3.sec{font-family:'Noto Serif SC';font-size:21px;font-weight:900;margin:36px 0 12px;color:var(--primary);position:relative;padding-left:22px;letter-spacing:1px}
+h3.sec::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:4px;background:var(--gold);border-radius:0}
+h3.sec::after{content:'';position:absolute;left:8px;top:6px;bottom:6px;width:1px;background:var(--gold-l)}
+h3.sec .desc{font-family:'Cormorant Garamond';font-style:italic;font-size:14px;font-weight:400;color:var(--gray);margin-left:10px}
+
+h4.page{font-size:15px;font-weight:800;margin:18px 0 4px;color:var(--ink);font-family:'Noto Serif SC'}
+h4.page .num{font-family:'Playfair Display';font-style:italic;color:var(--gold-d);font-weight:700;margin-right:8px;font-size:19px;border-bottom:1px solid var(--gold);padding-bottom:1px}
+
+.det{font-size:13.5px;line-height:2;color:#3A4256;margin:6px 0 14px;padding:14px 16px;border-left:1px solid var(--gold);background:#fff;border-radius:0 3px 3px 0;box-shadow:0 1px 3px rgba(0,0,0,.03);font-family:'Noto Serif SC',serif}
+.det b{color:var(--primary);font-weight:700}
+.det .em{color:var(--gold-d);font-weight:700;background:rgba(184,149,106,.12);padding:0 6px;border-radius:0}
+.det .em-w{color:var(--hot);font-weight:700}
+
+.bullet{padding:5px 0 5px 24px;position:relative;font-size:14px;line-height:1.85;color:#3A4256;font-family:'Noto Serif SC',serif}
+.bullet::before{content:'§';position:absolute;left:4px;top:5px;color:var(--gold);font-family:'Playfair Display';font-weight:700;font-size:14px}
+.bullet b{color:var(--primary)}
+
+.tag{font-size:10px;padding:2px 8px;border-radius:0;display:inline-block;font-weight:700;font-family:'Cormorant Garamond';font-style:italic;letter-spacing:1.5px;border:1px solid}
+
+/* Phone gallery */
+.phones{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;padding:46px 18px;background:linear-gradient(135deg,#0A1220 0%,#1A3A5C 60%,#0E1828 100%);border-radius:4px;margin:28px 0;position:relative;overflow:hidden;border:1px solid var(--gold-d)}
+.phones::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,transparent 0,transparent 100px,rgba(184,149,106,.03) 100px,rgba(184,149,106,.03) 101px);pointer-events:none}
+.phones::after{content:'⚖ UI PREVIEW · MOBILE';position:absolute;top:14px;left:24px;font-family:'Cormorant Garamond';font-style:italic;font-size:11px;letter-spacing:4px;color:var(--gold);opacity:.8}
+.phones .corner{position:absolute;width:40px;height:40px;border:1px solid var(--gold);opacity:.4}
+.phones .c1{top:14px;right:14px;border-left:0;border-bottom:0}
+.phones .c2{bottom:14px;left:14px;border-right:0;border-top:0}
+.phone{width:240px;height:520px;border-radius:36px;background:#0E1828;padding:6px;box-shadow:0 30px 60px -15px rgba(0,0,0,.7),0 0 0 1px rgba(184,149,106,.2);position:relative;flex-shrink:0;transition:transform .3s}
+.phone:hover{transform:translateY(-6px)}
+.scr{height:100%;background:#fff;border-radius:30px;overflow:hidden;display:flex;flex-direction:column;font-size:11px;position:relative;font-family:'Noto Serif SC',serif}
+.notch{height:22px;background:#0E1828;position:relative}
+.notch::after{content:'';position:absolute;left:50%;top:6px;transform:translateX(-50%);width:80px;height:18px;background:#0E1828;border-radius:0 0 12px 12px}
+.sb{height:18px;font-size:9px;display:flex;justify-content:space-between;padding:0 14px;align-items:center;background:#fff;color:#1A3A5C;font-weight:700;font-family:'Playfair Display';letter-spacing:1px}
+.sb.dark{background:#1A3A5C;color:var(--gold-l)}
+.body{flex:1;overflow:hidden;position:relative}
+.cap{position:absolute;left:8px;bottom:8px;background:#0E1828;color:var(--gold);font-size:8.5px;padding:2px 8px;border-radius:0;font-family:'Cormorant Garamond';font-style:italic;letter-spacing:1.5px;z-index:5;border:1px solid var(--gold-d)}
+
+/* === Phone screens === */
+
+/* P1 启动 */
+.splash{height:100%;background:radial-gradient(ellipse at center,#2A4E73 0%,#0E1828 80%);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.splash::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent 0,transparent 24px,rgba(184,149,106,.05) 24px,rgba(184,149,106,.05) 25px)}
+.splash-logo{width:78px;height:78px;border-radius:50%;background:linear-gradient(180deg,var(--gold-l) 0%,var(--gold) 50%,var(--gold-d) 100%);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display';font-size:36px;color:var(--ink);font-weight:900;box-shadow:0 0 50px rgba(184,149,106,.5),inset 0 1px 3px rgba(255,255,255,.3);position:relative;z-index:2;font-style:italic}
+.splash h2{font-family:'Playfair Display';font-size:34px;letter-spacing:6px;margin:18px 0 4px;color:#fff;z-index:2;font-weight:900;font-style:italic}
+.splash .cn{font-family:'Noto Serif SC';font-size:11px;color:var(--gold-l);margin:0;letter-spacing:8px;font-weight:500;z-index:2}
+.splash .div{margin-top:20px;width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);z-index:2}
+.splash .quote{margin-top:14px;font-family:'Cormorant Garamond';font-style:italic;font-size:11px;color:#888;letter-spacing:2px;text-align:center;z-index:2;line-height:1.6}
+.splash .ver{position:absolute;bottom:18px;font-size:8.5px;color:#444;letter-spacing:2px;font-family:'Cormorant Garamond';z-index:2}
+
+/* P2 业务领域 */
+.area{height:100%;background:var(--cream);overflow-y:auto}
+.area-hd{padding:20px 14px 8px;background:linear-gradient(180deg,#1A3A5C,#0E1828);color:#fff}
+.area-hd .step-bar{display:flex;gap:4px;margin-bottom:8px}
+.area-hd .step-bar i{flex:1;height:2px;background:rgba(255,255,255,.15)}
+.area-hd .step-bar i.on{background:var(--gold)}
+.area-hd h3{font-family:'Noto Serif SC';font-weight:900;font-size:17px;margin:6px 0 2px;letter-spacing:2px}
+.area-hd small{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold-l);letter-spacing:2px}
+.area-bd{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.area-card{background:#fff;border:1px solid var(--line);padding:12px 10px;border-radius:2px;text-align:center;position:relative}
+.area-card.on{border-color:var(--gold);box-shadow:0 4px 14px rgba(184,149,106,.2)}
+.area-card.on::after{content:'';position:absolute;left:6px;top:6px;right:6px;bottom:6px;border:1px solid var(--gold-l)}
+.area-card .ic{font-size:24px;color:var(--primary);position:relative;z-index:2}
+.area-card .ic.gold{color:var(--gold)}
+.area-card .t{font-family:'Noto Serif SC';font-weight:700;font-size:12px;color:var(--ink);margin-top:6px;letter-spacing:1px;position:relative;z-index:2}
+.area-card .en{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gold-d);margin-top:1px;letter-spacing:1px;position:relative;z-index:2}
+
+/* P3 首页 */
+.home{height:100%;background:var(--cream);overflow-y:auto;display:flex;flex-direction:column}
+.home-hd{padding:14px;background:linear-gradient(135deg,#1A3A5C 0%,#0E1828 100%);color:#fff;position:relative;overflow:hidden}
+.home-hd::before{content:'';position:absolute;right:-30px;top:-30px;width:140px;height:140px;background:radial-gradient(circle,rgba(184,149,106,.2),transparent 70%)}
+.home-hd .row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;position:relative;z-index:2}
+.home-hd .greet{font-family:'Cormorant Garamond';font-style:italic;font-size:11px;color:var(--gold-l);letter-spacing:1.5px}
+.home-hd .who{font-family:'Noto Serif SC';font-weight:700;font-size:14px;color:#fff;margin-top:2px}
+.home-hd .ic{width:30px;height:30px;background:rgba(255,255,255,.06);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--gold-l);border:1px solid var(--gold-d)}
+.search{margin-top:8px;background:rgba(255,255,255,.08);border:1px solid var(--gold-d);border-radius:2px;padding:9px 12px;display:flex;align-items:center;gap:8px;font-size:11px;color:#A9B0C0;position:relative;z-index:2;font-family:'Noto Serif SC'}
+.search .em{color:var(--gold)}
+
+.cta-pri{margin:14px;padding:14px;background:#fff;border:1px solid var(--gold);border-radius:2px;display:flex;align-items:center;justify-content:space-between;color:var(--primary);position:relative;overflow:hidden}
+.cta-pri::before{content:'';position:absolute;left:6px;top:6px;right:6px;bottom:6px;border:1px solid var(--gold-l);pointer-events:none}
+.cta-pri .l{position:relative;z-index:2}
+.cta-pri .ttl{font-family:'Noto Serif SC';font-weight:900;font-size:13px;letter-spacing:1px}
+.cta-pri .desc{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold-d);margin-top:2px;letter-spacing:1px}
+.cta-pri .arr{font-family:'Playfair Display';font-size:24px;color:var(--gold);position:relative;z-index:2;font-style:italic}
+
+.sec-h{display:flex;justify-content:space-between;align-items:center;padding:0 14px;margin:14px 0 8px}
+.sec-h h4{font-family:'Noto Serif SC';font-weight:900;font-size:13px;color:var(--ink);margin:0;letter-spacing:1px}
+.sec-h h4 small{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold-d);margin-left:6px;letter-spacing:1px}
+.sec-h .more{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold-d);letter-spacing:1px}
+
+.lwy-row{display:flex;gap:8px;padding:0 14px;overflow-x:auto;padding-bottom:14px}
+.lwy-c{min-width:130px;background:#fff;border:1px solid var(--line);border-radius:2px;padding:12px 10px;text-align:center;position:relative}
+.lwy-c .av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#3A5E85,#1A3A5C);margin:0 auto;display:flex;align-items:center;justify-content:center;color:var(--gold-l);font-family:'Playfair Display';font-size:18px;font-weight:700;border:2px solid var(--gold)}
+.lwy-c .nm{font-family:'Noto Serif SC';font-weight:700;font-size:11px;color:var(--ink);margin-top:6px}
+.lwy-c .ttl{font-family:'Cormorant Garamond';font-style:italic;font-size:8.5px;color:var(--gold-d);margin-top:2px;letter-spacing:1px}
+.lwy-c .pri{font-family:'Playfair Display';font-size:13px;color:var(--hot);margin-top:5px;font-weight:700}
+.lwy-c .pri small{font-family:'Cormorant Garamond';font-style:italic;font-size:8.5px;color:#999;font-weight:400}
+
+.tabbar{display:flex;background:#fff;border-top:1px solid var(--line);padding:6px 0 8px;flex-shrink:0}
+.tabbar div{flex:1;text-align:center;font-size:8.5px;color:#999;font-family:'Cormorant Garamond';font-style:italic;letter-spacing:1px}
+.tabbar div.on{color:var(--primary)}
+.tabbar div .ic{font-size:14px;display:block;margin-bottom:2px;font-style:normal}
+
+/* P4 案情录入 */
+.case{height:100%;background:var(--cream);overflow-y:auto}
+.case-hd{padding:14px;background:#1A3A5C;color:#fff;text-align:center;border-bottom:1px solid var(--gold)}
+.case-hd h3{font-family:'Noto Serif SC';font-size:14px;margin:0;font-weight:900;letter-spacing:2px}
+.case-hd small{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold-l);letter-spacing:2px;display:block;margin-top:2px}
+.case-bd{padding:14px}
+.case-area{background:#fff;border:1px solid var(--gold);padding:14px;border-radius:2px;position:relative;min-height:140px;font-size:11px;color:#3A4256;line-height:1.9}
+.case-area::before{content:'';position:absolute;left:6px;top:6px;right:6px;bottom:6px;border:1px solid var(--gold-l);pointer-events:none}
+.case-area .lab{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gold-d);letter-spacing:2px;margin-bottom:6px;display:block;position:relative;z-index:2}
+.case-area .txt{position:relative;z-index:2;font-family:'Noto Serif SC'}
+.case-area .txt b{color:var(--primary);font-weight:700;border-bottom:1px solid var(--gold)}
+.case-tools{display:flex;justify-content:space-around;margin-top:12px;background:#fff;border:1px solid var(--line);padding:10px;border-radius:2px}
+.case-tools div{text-align:center;font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gold-d);letter-spacing:1px}
+.case-tools div .ic{font-size:18px;display:block;margin-bottom:3px;font-style:normal;color:var(--primary)}
+
+.case-cta{margin:14px;padding:13px;background:linear-gradient(180deg,var(--gold-l),var(--gold-d));color:var(--ink);border-radius:2px;text-align:center;font-family:'Noto Serif SC';font-weight:900;font-size:12px;letter-spacing:3px;box-shadow:0 8px 20px rgba(184,149,106,.3)}
+
+/* P5 风险评估报告 ⭐ */
+.rpt{height:100%;background:var(--cream);overflow-y:auto}
+.rpt-hd{padding:18px 14px;background:linear-gradient(135deg,#1A3A5C,#0E1828);color:#fff;text-align:center;position:relative;overflow:hidden;border-bottom:2px solid var(--gold)}
+.rpt-hd::before{content:'';position:absolute;inset:8px;border:1px solid var(--gold-d);pointer-events:none}
+.rpt-hd .seal{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gold);letter-spacing:4px;margin-bottom:4px;position:relative;z-index:2}
+.rpt-hd h3{font-family:'Noto Serif SC';font-weight:900;font-size:16px;margin:0;letter-spacing:3px;position:relative;z-index:2}
+.rpt-hd .sub{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold-l);margin-top:3px;letter-spacing:1.5px;position:relative;z-index:2}
+
+.rpt-score{padding:18px 14px;background:#fff;text-align:center;border-bottom:1px solid var(--line);position:relative}
+.rpt-score::before,.rpt-score::after{content:'';position:absolute;width:30px;height:1px;background:var(--gold);top:50%}
+.rpt-score::before{left:14px}
+.rpt-score::after{right:14px}
+.rpt-score .lab{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gold-d);letter-spacing:3px}
+.rpt-score .num{font-family:'Playfair Display';font-style:italic;font-size:48px;color:var(--primary);font-weight:900;line-height:1;letter-spacing:1px;margin:6px 0}
+.rpt-score .num .u{font-size:18px;color:var(--gold-d);font-weight:400}
+.rpt-score .conf{font-family:'Noto Serif SC';font-size:11px;color:var(--ink);font-weight:700}
+.rpt-score .pg{height:5px;background:var(--line);border-radius:0;margin-top:8px;overflow:hidden;position:relative}
+.rpt-score .pg i{display:block;height:100%;width:72%;background:linear-gradient(90deg,var(--gold-l),var(--gold-d))}
+
+.rpt-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:14px}
+.rpt-cell{background:#fff;border:1px solid var(--line);padding:10px;border-radius:2px;text-align:center}
+.rpt-cell .lab{font-family:'Cormorant Garamond';font-style:italic;font-size:8.5px;color:var(--gold-d);letter-spacing:1.5px}
+.rpt-cell .v{font-family:'Playfair Display';font-style:italic;font-size:18px;color:var(--primary);font-weight:700;margin-top:3px}
+.rpt-cell.warn .v{color:var(--hot)}
+
+.rpt-card{margin:0 14px 10px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);padding:12px;border-radius:0 2px 2px 0}
+.rpt-card .lab{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gold-d);letter-spacing:2px;margin-bottom:4px}
+.rpt-card .ttl{font-family:'Noto Serif SC';font-weight:900;font-size:12px;color:var(--ink);margin-bottom:5px}
+.rpt-card .txt{font-size:10.5px;line-height:1.85;color:#3A4256;font-family:'Noto Serif SC'}
+.rpt-card .txt b{color:var(--primary);font-weight:700}
+.rpt-card .law{margin-top:6px;padding:6px 8px;background:var(--cream);border:1px solid var(--line);font-size:9.5px;color:#3A4256;font-style:italic;font-family:'Noto Serif SC'}
+.rpt-card .law b{color:var(--primary);font-style:normal}
+
+.rpt-cta{margin:14px;padding:14px;background:#0E1828;border:1px solid var(--gold);border-radius:2px;color:#fff;position:relative}
+.rpt-cta::before{content:'';position:absolute;inset:5px;border:1px solid var(--gold-d);pointer-events:none}
+.rpt-cta .ttl{font-family:'Noto Serif SC';font-weight:900;font-size:12px;color:var(--gold);letter-spacing:1px;position:relative;z-index:2}
+.rpt-cta .desc{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:#A9B0C0;margin:4px 0 10px;line-height:1.6;position:relative;z-index:2}
+.rpt-cta button{width:100%;padding:9px;background:linear-gradient(180deg,var(--gold-l),var(--gold-d));color:var(--ink);border:0;border-radius:0;font-family:'Noto Serif SC';font-weight:900;font-size:11px;letter-spacing:3px;position:relative;z-index:2}
+
+/* P6 律师列表 */
+.lwy{height:100%;background:var(--cream);overflow-y:auto}
+.lwy-hd{padding:12px 14px;background:#1A3A5C;color:#fff;display:flex;justify-content:space-between;align-items:center}
+.lwy-hd h3{font-family:'Noto Serif SC';font-size:13px;margin:0;font-weight:900;letter-spacing:2px}
+.lwy-hd small{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gold-l);letter-spacing:2px;margin-top:2px;display:block}
+.lwy-tabs{display:flex;background:#fff;padding:0 14px;border-bottom:1px solid var(--line);overflow-x:auto}
+.lwy-tabs span{padding:9px 12px;font-family:'Noto Serif SC';font-weight:500;font-size:11px;color:var(--gray);border-bottom:2px solid transparent;white-space:nowrap}
+.lwy-tabs span.on{color:var(--primary);border-color:var(--gold);font-weight:900}
+
+.lwy-card{margin:10px 14px;background:#fff;border:1px solid var(--line);border-radius:2px;padding:14px;display:flex;gap:12px;position:relative}
+.lwy-card::before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:3px;background:var(--gold)}
+.lwy-card .av{width:54px;height:64px;border-radius:2px;background:linear-gradient(135deg,#3A5E85,#0E1828);display:flex;align-items:center;justify-content:center;color:var(--gold-l);font-family:'Playfair Display';font-size:20px;font-weight:700;flex-shrink:0;border:1px solid var(--gold-d);font-style:italic}
+.lwy-card .info{flex:1;min-width:0}
+.lwy-card .nm{font-family:'Noto Serif SC';font-weight:900;font-size:13px;color:var(--ink);display:flex;align-items:center;gap:5px}
+.lwy-card .nm .v{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;background:var(--gold);color:#fff;padding:1px 6px;letter-spacing:1px}
+.lwy-card .firm{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold-d);margin-top:2px;letter-spacing:.5px}
+.lwy-card .skills{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+.lwy-card .skills span{padding:1.5px 6px;background:var(--cream);color:var(--primary);font-size:8.5px;border:1px solid var(--line);font-family:'Noto Serif SC'}
+.lwy-card .stats{display:flex;gap:10px;margin-top:7px;font-family:'Cormorant Garamond';font-style:italic;font-size:9.5px;color:var(--gray);letter-spacing:.5px}
+.lwy-card .stats b{font-family:'Playfair Display';color:var(--primary);font-style:normal;font-weight:700}
+.lwy-card .pri{position:absolute;right:12px;top:14px;text-align:right}
+.lwy-card .pri .p{font-family:'Playfair Display';font-style:italic;font-size:18px;color:var(--hot);font-weight:700;line-height:1}
+.lwy-card .pri .u{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gold-d);letter-spacing:1px}
+.lwy-card .pri button{margin-top:8px;padding:5px 10px;background:linear-gradient(180deg,var(--gold-l),var(--gold-d));color:var(--ink);border:0;border-radius:0;font-family:'Noto Serif SC';font-size:9.5px;font-weight:900;letter-spacing:2px}
+
+/* P7 预约咨询 */
+.book{height:100%;background:var(--cream);overflow-y:auto}
+.book-hd{padding:14px;background:linear-gradient(135deg,#1A3A5C,#0E1828);color:#fff;display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--gold);position:relative}
+.book-hd::before{content:'';position:absolute;inset:6px;border:1px solid var(--gold-d);pointer-events:none}
+.book-hd .av{width:42px;height:50px;border-radius:2px;background:linear-gradient(135deg,#3A5E85,#0E1828);display:flex;align-items:center;justify-content:center;color:var(--gold-l);font-family:'Playfair Display';font-size:16px;font-weight:700;border:1px solid var(--gold-d);position:relative;z-index:2}
+.book-hd .info{position:relative;z-index:2}
+.book-hd .nm{font-family:'Noto Serif SC';font-weight:900;font-size:13px;letter-spacing:1px}
+.book-hd .firm{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold-l);margin-top:2px}
+
+.book-mode{margin:12px 14px;background:#fff;border:1px solid var(--line);padding:12px;border-radius:2px}
+.book-mode h4{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold-d);margin:0 0 8px;letter-spacing:2px}
+.book-mode .opts{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.book-mode .opt{padding:8px 4px;text-align:center;background:var(--cream);border:1px solid var(--line);border-radius:0;font-size:9.5px;color:var(--gray);font-family:'Noto Serif SC'}
+.book-mode .opt.on{background:var(--primary);color:var(--gold-l);border-color:var(--gold)}
+.book-mode .opt .ic{font-size:14px;display:block;margin-bottom:3px;color:var(--primary)}
+.book-mode .opt.on .ic{color:var(--gold-l)}
+
+.cal{margin:0 14px 12px;background:#fff;border:1px solid var(--line);padding:12px;border-radius:2px}
+.cal h4{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold-d);margin:0 0 8px;letter-spacing:2px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-grid .h{font-family:'Cormorant Garamond';font-style:italic;font-size:8px;color:#999;text-align:center;letter-spacing:1px;padding:3px 0}
+.cal-grid .d{aspect-ratio:1;background:var(--cream);border-radius:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--ink);font-family:'Playfair Display';font-weight:700;border:1px solid transparent}
+.cal-grid .d.dis{color:#CCC;background:transparent}
+.cal-grid .d.has{background:rgba(184,149,106,.15);color:var(--gold-d);border-color:var(--gold)}
+.cal-grid .d.on{background:var(--primary);color:var(--gold-l);border-color:var(--gold)}
+
+.slots{margin:0 14px 12px;background:#fff;border:1px solid var(--line);padding:12px;border-radius:2px}
+.slots h4{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold-d);margin:0 0 8px;letter-spacing:2px}
+.slots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.slot{padding:7px 4px;text-align:center;background:var(--cream);border:1px solid var(--line);font-family:'Playfair Display';font-size:11px;color:var(--ink);font-weight:700}
+.slot.on{background:var(--primary);color:var(--gold-l);border-color:var(--gold)}
+.slot.full{color:#CCC;background:transparent}
+
+.book-cta{position:absolute;left:0;right:0;bottom:0;padding:10px 14px;background:#fff;border-top:1px solid var(--gold);display:flex;align-items:center;gap:10px}
+.book-cta .pri{flex:1}
+.book-cta .pri .lab{font-family:'Cormorant Garamond';font-style:italic;font-size:8.5px;color:var(--gray);letter-spacing:1px}
+.book-cta .pri .p{font-family:'Playfair Display';font-style:italic;font-size:20px;color:var(--hot);font-weight:700;line-height:1.1}
+.book-cta button{padding:11px 18px;background:linear-gradient(180deg,var(--gold-l),var(--gold-d));color:var(--ink);border:0;border-radius:0;font-family:'Noto Serif SC';font-weight:900;font-size:11px;letter-spacing:2px}
+
+/* P8 支付 + 加微信 */
+.pay{height:100%;background:linear-gradient(180deg,#1A3A5C 0%,#0E1828 100%);color:#fff;padding:24px 16px;text-align:center;position:relative;overflow:hidden}
+.pay::before{content:'';position:absolute;inset:14px;border:1px solid var(--gold-d);pointer-events:none}
+.pay::after{content:'';position:absolute;inset:18px;border:1px solid rgba(184,149,106,.3);pointer-events:none}
+.pay-seal{margin-top:14px;font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold);letter-spacing:5px;position:relative;z-index:2}
+.pay-ic{width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,var(--gold-l),var(--gold-d));margin:14px auto 14px;display:flex;align-items:center;justify-content:center;font-size:30px;color:var(--ink);font-weight:900;box-shadow:0 0 30px rgba(184,149,106,.4),inset 0 1px 3px rgba(255,255,255,.3);position:relative;z-index:2}
+.pay h3{font-family:'Noto Serif SC';font-size:16px;margin:0 0 6px;font-weight:900;letter-spacing:4px;position:relative;z-index:2}
+.pay .amt{font-family:'Playfair Display';font-style:italic;font-size:30px;color:var(--gold);letter-spacing:1px;margin:6px 0;position:relative;z-index:2;font-weight:700}
+.pay .desc{font-family:'Noto Serif SC';font-size:10.5px;color:#C9D0DC;margin-bottom:14px;line-height:1.85;position:relative;z-index:2}
+.pay .desc b{color:var(--gold-l);font-weight:700}
+.pay .qr-card{background:#fff;border:1px solid var(--gold);padding:14px;text-align:center;color:var(--ink);margin:6px 6px;position:relative;z-index:2;box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.pay .qr-card::before{content:'';position:absolute;inset:5px;border:1px solid var(--gold-l);pointer-events:none}
+.pay .qr-card .ttl{font-family:'Noto Serif SC';font-size:11px;font-weight:900;margin-bottom:3px;letter-spacing:1px;position:relative;z-index:2}
+.pay .qr-card .sub{font-family:'Cormorant Garamond';font-style:italic;font-size:9.5px;color:var(--gold-d);margin-bottom:10px;letter-spacing:2px;position:relative;z-index:2}
+.pay .qr{width:106px;height:106px;margin:0 auto;background:repeating-conic-gradient(#0E1828 0% 25%,#fff 0% 50%) 50% / 8px 8px,#fff;border:1px solid var(--gold);position:relative}
+.pay .qr::after{content:'⚖';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:24px;height:24px;background:var(--primary);color:var(--gold);display:flex;align-items:center;justify-content:center;border:2px solid #fff;font-size:13px;font-family:'Playfair Display'}
+.pay .save{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gold);margin-top:8px;letter-spacing:2px;position:relative;z-index:2}
+
+/* P9 文书购买 */
+.doc-mall{height:100%;background:var(--cream);overflow-y:auto}
+.doc-hd{padding:14px;background:#1A3A5C;color:#fff;border-bottom:1px solid var(--gold)}
+.doc-hd h3{font-family:'Noto Serif SC';font-size:13px;margin:0;font-weight:900;letter-spacing:2px}
+.doc-hd small{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gold-l);display:block;margin-top:2px;letter-spacing:2px}
+
+.doc-card{margin:10px 14px;background:#fff;border:1px solid var(--line);border-radius:2px;padding:14px;position:relative;display:flex;gap:12px}
+.doc-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
+.doc-card .ic{width:50px;height:60px;background:linear-gradient(135deg,var(--cream),#E8DFCC);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--primary);flex-shrink:0;font-family:'Playfair Display'}
+.doc-card .info{flex:1}
+.doc-card .ttl{font-family:'Noto Serif SC';font-weight:900;font-size:12px;color:var(--ink);margin-bottom:3px}
+.doc-card .desc{font-family:'Noto Serif SC';font-size:10px;color:var(--gray);line-height:1.6;margin-bottom:5px}
+.doc-card .meta{display:flex;gap:8px;font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gold-d);letter-spacing:.5px}
+.doc-card .meta b{font-family:'Playfair Display';color:var(--primary);font-weight:700;font-style:normal}
+.doc-card .pri{position:absolute;right:14px;top:14px;text-align:right}
+.doc-card .pri .p{font-family:'Playfair Display';font-style:italic;font-size:18px;color:var(--hot);font-weight:700;line-height:1}
+.doc-card .pri button{margin-top:6px;padding:5px 10px;background:var(--primary);color:var(--gold-l);border:1px solid var(--gold);border-radius:0;font-family:'Noto Serif SC';font-size:9.5px;font-weight:900;letter-spacing:1px}
+
+/* P10 我的卷宗 */
+.me{height:100%;background:var(--cream);overflow-y:auto}
+.me-hd{padding:18px 14px;background:linear-gradient(135deg,#1A3A5C,#0E1828);color:#fff;position:relative;overflow:hidden;border-bottom:2px solid var(--gold)}
+.me-hd::before{content:'';position:absolute;right:-30px;top:-30px;width:140px;height:140px;background:radial-gradient(circle,rgba(184,149,106,.2),transparent 70%)}
+.me-hd .row{display:flex;align-items:center;gap:12px;position:relative;z-index:2}
+.me-hd .av{width:48px;height:56px;border-radius:2px;background:linear-gradient(135deg,#3A5E85,#0E1828);display:flex;align-items:center;justify-content:center;color:var(--gold-l);font-family:'Playfair Display';font-size:18px;font-weight:700;border:1px solid var(--gold)}
+.me-hd .nm{font-family:'Noto Serif SC';font-weight:900;font-size:14px;letter-spacing:1px}
+.me-hd .lvl{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold-l);letter-spacing:2px;margin-top:2px}
+
+.me-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:2px;position:relative}
+.me-stats::before{content:'';position:absolute;inset:5px;border:1px solid var(--cream);pointer-events:none}
+.me-stats div{text-align:center;position:relative;z-index:2}
+.me-stats .v{font-family:'Playfair Display';font-style:italic;font-size:20px;color:var(--primary);font-weight:700;line-height:1}
+.me-stats .l{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gold-d);margin-top:3px;letter-spacing:1.5px}
+
+.me-list{margin:0 14px;padding-bottom:60px}
+.me-list .item{padding:11px 14px;background:#fff;border:1px solid var(--line);border-radius:2px;display:flex;align-items:center;gap:10px;margin-bottom:6px;font-family:'Noto Serif SC';font-size:11.5px}
+.me-list .item .ic{width:26px;height:26px;border-radius:0;background:var(--cream);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;color:var(--primary);font-size:12px}
+.me-list .item .t{flex:1;color:var(--ink);font-weight:500}
+.me-list .item .arr{font-family:'Playfair Display';font-style:italic;font-size:14px;color:var(--gold-d)}
+
+/* === Sections === */
+.flow-block{background:#fff;border:1px solid var(--gold);border-radius:2px;padding:24px 28px;margin:24px 0;position:relative}
+.flow-block::before{content:'';position:absolute;left:8px;top:8px;right:8px;bottom:8px;border:1px solid var(--gold-l);pointer-events:none}
+.flow-block::after{content:'⚖ CRITICAL FLOW';position:absolute;right:24px;top:-12px;font-family:'Cormorant Garamond';font-style:italic;font-size:11px;letter-spacing:3px;color:var(--gold-d);padding:4px 12px;background:var(--cream);border:1px solid var(--gold)}
+.flow-block h4{font-family:'Noto Serif SC';font-size:16px;margin:0 0 14px;color:var(--ink);font-weight:900;letter-spacing:1px;position:relative;z-index:2}
+.flow{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:11.5px;font-family:'Noto Serif SC';position:relative;z-index:2}
+.flow span{padding:8px 14px;background:var(--cream);border:1px solid var(--line);font-weight:700;color:var(--gray);letter-spacing:1px}
+.flow span.key{background:var(--primary);color:var(--gold-l);border-color:var(--gold)}
+.flow span.cv{background:linear-gradient(180deg,var(--gold-l),var(--gold-d));color:var(--ink);border-color:var(--gold)}
+.flow .ar{color:var(--gold-d);font-family:'Playfair Display';font-style:italic;font-size:14px;font-weight:700}
+
+/* PC backend */
+.pc{background:linear-gradient(135deg,#0E1828 0%,#1A3A5C 100%);border-radius:2px;overflow:hidden;margin:24px 0;box-shadow:0 30px 60px rgba(0,0,0,.4);border:1px solid var(--gold)}
+.pc-bar{background:#000;padding:9px 14px;display:flex;align-items:center;gap:6px}
+.pc-bar i{width:10px;height:10px;border-radius:50%;background:#FF5F57}
+.pc-bar i:nth-child(2){background:#FFBD2E}
+.pc-bar i:nth-child(3){background:#27C93F}
+.pc-bar span{margin-left:14px;font-family:'Cormorant Garamond';font-style:italic;font-size:11px;color:var(--gold)}
+.pc-body{display:flex;height:380px}
+.pc-side{width:170px;background:#0E1828;border-right:1px solid var(--primary-2);padding:14px 0}
+.pc-side .logo{padding:0 14px 14px;color:var(--gold);font-family:'Playfair Display';font-style:italic;font-size:18px;letter-spacing:3px;border-bottom:1px solid var(--primary-2);margin-bottom:12px;font-weight:900}
+.pc-side .item{padding:10px 14px;font-family:'Noto Serif SC';font-size:11.5px;color:#A9B0C0;display:flex;align-items:center;gap:8px;font-weight:500}
+.pc-side .item.on{background:rgba(184,149,106,.1);color:var(--gold-l);border-left:2px solid var(--gold)}
+.pc-side .item .ic{font-family:'Playfair Display';font-style:italic;font-size:11px;color:var(--gold-d);width:16px}
+.pc-side .item.on .ic{color:var(--gold)}
+.pc-main{flex:1;background:#0F1A2C;padding:18px;color:#fff;overflow:hidden}
+.pc-main h3{font-family:'Noto Serif SC';font-size:14px;margin:0 0 14px;font-weight:900;letter-spacing:2px;color:var(--gold-l)}
+.pc-main .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.pc-main .kc{padding:12px;background:#1A2A40;border:1px solid var(--primary-2);border-left:2px solid var(--gold);border-radius:0;position:relative;overflow:hidden}
+.pc-main .kc .lab{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gold-l);letter-spacing:1.5px}
+.pc-main .kc .v{font-family:'Playfair Display';font-style:italic;font-size:24px;color:var(--gold);margin-top:4px;line-height:1;font-weight:700}
+.pc-main .kc .d{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gold-l);margin-top:3px}
+.pc-main table{width:100%;border-collapse:collapse;font-family:'Noto Serif SC';font-size:10.5px}
+.pc-main th{padding:8px;text-align:left;color:var(--gold-l);font-weight:600;border-bottom:1px solid var(--primary-2);font-family:'Cormorant Garamond';font-style:italic;letter-spacing:1.5px;font-size:10px}
+.pc-main td{padding:8px;border-bottom:1px solid #1A2A40;color:#C9D0DC}
+.pc-main td b{color:#fff;font-weight:700}
+.pc-main td .gt{color:#9FC9E0}
+.pc-main td .ot{color:#E8B870}
+.pc-main td .rt{color:#C77E50}
+
+/* 筛选栏 */
+.pc-filter{display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap}
+.pc-filter .seg{display:flex;background:#1A2A40;border:1px solid var(--primary-2);overflow:hidden}
+.pc-filter .seg span{padding:5px 12px;font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold-l);letter-spacing:1.5px;cursor:pointer;border-right:1px solid var(--primary-2)}
+.pc-filter .seg span:last-child{border-right:0}
+.pc-filter .seg span.on{background:var(--gold);color:#0F1A2C;font-weight:700}
+.pc-filter input{background:#1A2A40;border:1px solid var(--primary-2);color:var(--gold-l);padding:5px 10px;font-family:'Noto Serif SC';font-size:11px;outline:none;min-width:180px}
+.pc-filter input::placeholder{color:#7A8A9C}
+.pc-filter .btn{padding:5px 14px;background:linear-gradient(180deg,var(--gold-l),var(--gold));color:#0F1A2C;font-family:'Noto Serif SC';font-size:10px;font-weight:900;letter-spacing:1.5px;border:0;cursor:pointer}
+/* 图表区 */
+.pc-charts{display:grid;grid-template-columns:1.6fr 1fr;gap:10px;margin-bottom:14px}
+.pc-ch{background:#1A2A40;border:1px solid var(--primary-2);padding:12px;position:relative;border-left:2px solid var(--gold)}
+.pc-ch h4{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold-l);letter-spacing:2px;margin:0 0 14px;display:flex;justify-content:space-between;align-items:center}
+.pc-ch h4 small{font-family:'Cinzel';font-size:8.5px;color:#7A8A9C;font-weight:500;letter-spacing:1px;font-style:normal}
+.pc-bars{display:flex;align-items:flex-end;gap:5px;height:88px;padding:0 4px}
+.pc-bars .b{flex:1;background:linear-gradient(180deg,#3A5C82,#1F3A5C);position:relative;border-top:1px solid #4F7AA0;min-height:6px;border-radius:1px 1px 0 0}
+.pc-bars .b.hl{background:linear-gradient(180deg,var(--gold-l),var(--gold));border-top-color:var(--gold-l);box-shadow:0 0 12px rgba(232,184,112,.5)}
+.pc-bars .b::after{content:attr(data-d);position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);font-family:'Cinzel';font-size:7.5px;color:#7A8A9C;letter-spacing:.3px;white-space:nowrap}
+.pc-bars .b::before{content:attr(data-v);position:absolute;left:50%;top:-11px;transform:translateX(-50%);font-family:'Cinzel';font-size:7.5px;color:var(--gold-l);letter-spacing:.3px;white-space:nowrap}
+.pc-ring{position:relative;width:96px;height:96px;margin:6px auto 0;border-radius:50%;background:conic-gradient(var(--gold) 0% 36%,#9FC9E0 36% 60%,#7A5236 60% 82%,#3A5C82 82% 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(232,184,112,.25)}
+.pc-ring::after{content:'';position:absolute;inset:14px;border-radius:50%;background:#1A2A40}
+.pc-ring .v{position:relative;z-index:2;text-align:center}
+.pc-ring .v b{font-family:'Cinzel';font-size:18px;color:var(--gold-l);font-weight:700;letter-spacing:1px;display:block;line-height:1}
+.pc-ring .v small{font-family:'Cinzel';font-size:7px;color:#7A8A9C;letter-spacing:1.5px}
+.pc-leg{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;margin-top:10px;font-family:'Cinzel';font-size:8px;color:var(--gold-l);letter-spacing:.5px}
+.pc-leg div{display:flex;align-items:center;gap:5px}
+.pc-leg i{width:8px;height:8px;display:inline-block;flex-shrink:0}
+.pc-leg b{margin-left:auto;color:#fff;font-family:'Cinzel';font-weight:700}
+/* 表格区 */
+.pc-tbl{background:#1A2A40;border:1px solid var(--primary-2);padding:10px 12px;border-left:2px solid var(--gold);margin-bottom:10px}
+.pc-tbl h4{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gold-l);letter-spacing:2px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center}
+.pc-tbl h4 small{font-family:'Cinzel';font-style:normal;font-size:8.5px;color:#7A8A9C;letter-spacing:1px;font-weight:500}
+.pc-body{height:auto !important}
+.pc-main{min-height:380px}
+
+/* 内联代码 */
+.det code,.callout code{font-family:'JetBrains Mono',Consolas,monospace;font-size:.86em;background:rgba(184,149,106,.1);color:var(--gold-d);padding:1px 7px;border-radius:3px;border:1px solid rgba(184,149,106,.22);font-weight:600;letter-spacing:.2px;white-space:nowrap}
+
+/* 代码片段 */
+.code-snip{background:#0F1A2C;border:1px solid var(--primary-2);border-left:3px solid var(--gold);margin:18px 0;border-radius:0;font-family:'JetBrains Mono','Cascadia Code',Consolas,monospace;font-size:12px;line-height:1.85;overflow:hidden;box-shadow:0 4px 16px rgba(15,26,44,.06)}
+.code-snip .bar{background:#0A1220;padding:8px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--primary-2)}
+.code-snip .bar i{width:8px;height:8px;border-radius:50%;background:#FF5F57;display:inline-block}
+.code-snip .bar i:nth-child(2){background:#FFBD2E}
+.code-snip .bar i:nth-child(3){background:#27C93F}
+.code-snip .bar span{margin-left:14px;font-family:'Cormorant Garamond';font-style:italic;font-size:11px;color:var(--gold);letter-spacing:1.5px}
+.code-snip .bar em{margin-left:auto;font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:#7A8A9C;letter-spacing:1px}
+.code-snip pre{margin:0;padding:14px 18px;color:#C9D0DC;overflow-x:auto;background:transparent;white-space:pre}
+.code-snip .k{color:#E8B870}
+.code-snip .s{color:#9DD37E}
+.code-snip .c{color:#7A8A9C;font-style:italic}
+.code-snip .f{color:#9FC9E0}
+.code-snip .v{color:#E8D078}
+.code-snip .n{color:#C77E50}
+
+/* === Footer === */
+.foot{background:#0A1220;color:#7A8A9C;padding:48px 24px 30px;border-top:1px solid var(--gold);position:relative;overflow:hidden}
+.foot::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--gold-d) 0%,var(--gold) 50%,var(--gold-d) 100%)}
+.foot-c{max-width:1180px;margin:0 auto;text-align:center}
+.foot-mark{font-family:'Playfair Display';font-style:italic;font-size:42px;color:var(--gold);letter-spacing:5px;margin-bottom:14px;font-weight:900}
+.foot-mark .cn{font-family:'Noto Serif SC';font-size:18px;display:block;color:var(--gold-l);letter-spacing:8px;font-style:normal;margin-top:6px}
+.foot p{font-family:'Noto Serif SC';font-size:12px;line-height:2;margin:6px 0}
+.foot p b{color:var(--gold-l)}
+.foot .div{height:1px;background:var(--primary);margin:24px 0;position:relative}
+.foot .div::before{content:'⚜';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#0A1220;padding:0 14px;color:var(--gold);font-size:14px}
+.foot .copyright{font-family:'Cormorant Garamond';font-style:italic;font-size:11px;color:#444;letter-spacing:1.5px}
+
+@media(max-width:720px){
+  .hero h1{font-size:46px}
+  .hero h1 .cn{font-size:22px;letter-spacing:6px}
+  .step{flex-direction:column;align-items:flex-start;gap:10px}
+  .step-num{font-size:60px}
+  .trust-c{grid-template-columns:repeat(2,1fr)}
+  .pc-body{height:auto;flex-direction:column}
+  .pc-side{width:100%;display:flex;overflow-x:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- =================== HERO =================== -->
+<section class="hero">
+  <svg class="hero-deco" viewBox="0 0 300 400">
+    <g stroke="#B8956A" stroke-width="1" fill="none">
+      <rect x="80" y="20" width="140" height="20"/>
+      <line x1="100" y1="40" x2="100" y2="380"/>
+      <line x1="200" y1="40" x2="200" y2="380"/>
+      <rect x="80" y="380" width="140" height="20"/>
+    </g>
+  </svg>
+  <div class="hero-c">
+    <div class="crest"><div class="lg">L</div><span>LEX AI · LEGAL CONSULTATION</span></div>
+    <h1>LEX <span class="gold">AI</span><span class="cn">智律 · AI 法律咨询平台</span></h1>
+    <p class="sub">用一份完整的开发提示词，从 0 到 1 构建一款 <b>AI 案情评估 + 律师 1V1 咨询 + 文书代写</b> 的法律科技产品。智能法条匹配、胜诉率预测、按小时计费的律师私域服务 —— 让每一次法律咨询都有据可依。</p>
+    <div class="tags">
+      <div class="tag-h"><b>05</b> Chapters</div>
+      <div class="tag-h"><b>10</b> Screens</div>
+      <div class="tag-h"><b>Legal</b> Edition</div>
+      <div class="tag-h"><b>AI</b> Risk Analysis</div>
+    </div>
+    <div class="cta-row">
+      <button class="cta-btn">Start Building →</button>
+      <button class="cta-btn ghost">View UI Kit</button>
+    </div>
+  </div>
+</section>
+
+<!-- =================== TRUST BAR =================== -->
+<div class="trust">
+  <div class="trust-c">
+    <div class="trust-i"><div class="num">12,486</div><div class="lab">Cases Resolved</div></div>
+    <div class="trust-i"><div class="num">3,260</div><div class="lab">Verified Lawyers</div></div>
+    <div class="trust-i"><div class="num">94.2%</div><div class="lab">Win Rate</div></div>
+    <div class="trust-i"><div class="num">4.9 / 5</div><div class="lab">Client Rating</div></div>
+  </div>
+</div>
+
+<!-- =================== DOC =================== -->
+<div class="doc">
+
+  <div class="intro">
+    <b>关于本提示词</b>　这是一份用于 AI 自动开发 <b>智能法律咨询行业 C 端产品</b> 的完整提示词。围绕"AI 案情评估 → 风险报告 → 律师匹配 → 在线咨询预约 → 加律师助理微信"这条核心增长闭环展开，可直接交付给 AI Coding 工具一次性生成 Next.js 14 + TailwindCSS 的产品原型。
+    <div class="palette">
+      <div class="pchip"><i style="background:#1A3A5C"></i>深墨蓝 / Navy Ink</div>
+      <div class="pchip"><i style="background:#B8956A"></i>鎏金 / Gold Leaf</div>
+      <div class="pchip"><i style="background:#4A2C2A"></i>律师红木 / Mahogany</div>
+      <div class="pchip"><i style="background:#FAF7F0"></i>米白卷宗 / Parchment</div>
+      <div class="pchip"><i style="background:#A52A2A"></i>法槌深红 / Court Red</div>
+    </div>
+  </div>
+
+  <!-- ============ STEP 1 ============ -->
+  <div class="step">
+    <div class="step-num">01<small>STEP ONE</small></div>
+    <div class="step-title"><h2>项目规划<span class="en">/ Project Plan</span></h2><p>// positioning · users · scope · stack · compliance</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">i</div>本步骤目标：让 AI 准确理解一款"<b>AI 智能法律咨询 C 端 App</b>"的产品定位、目标人群、核心功能与合规底线。建议在 Cursor / Windsurf 中直接粘贴本步提示词作为项目首条 system 指令。</div>
+
+  <div class="det"><b>// 工程脚手架</b> · 通过 <code>pnpm create next-app@latest</code> 初始化，配 <code>App Router</code> + <code>TypeScript strict</code> + <code>TailwindCSS v3</code> + <code>shadcn/ui</code> 组件库 + <code>Framer Motion</code> 动画。AI 调用层封装为 <code>useStreamChat()</code> Hook，统一兼容 <code>DeepSeek</code> / <code>通义千问</code> / <code>GPT-4</code> 三家供应商，方便成本对账与故障切换。</div>
+
+  <h3 class="sec">1.1 产品定位 <span class="desc">// one sentence</span></h3>
+  <div class="det">面向 <b>25-50 岁中产人群与中小企业主</b> 的 <span class="em">AI 案情评估 + 律师 1V1 咨询 + 文书代写</span> 平台。用户输入案情描述后 60 秒内获得 AI 风险评估报告（含胜诉率、风险等级、法条引用、类似案例），并可一键预约平台 <span class="em">3260+ 认证律师</span> 进行电话/视频/到所咨询，亦可购买专业法律文书模板。</div>
+
+  <h3 class="sec">1.2 核心功能模块 <span class="desc">// 6 modules</span></h3>
+  <div class="bullet"><b>AI 案情评估</b>：多模态输入（文字/语音/拍照合同），自动识别案件类型，生成结构化报告</div>
+  <div class="bullet"><b>风险报告</b>：胜诉率预测 / 风险等级 / 关键法条引用 / 类似裁判案例 / 维权路径建议</div>
+  <div class="bullet"><b>律师匹配</b>：按业务领域、地域、价格、评分智能推荐 3-5 位最匹配律师</div>
+  <div class="bullet"><b>咨询服务</b>：3 种方式（电话 ¥800/h、视频 ¥1200/h、到所 ¥3000/h），按时计费</div>
+  <div class="bullet"><b>文书购买</b>：380+ 法律文书模板（合同/起诉状/答辩状/律师函），AI 自动填充 + 律师审核</div>
+  <div class="bullet"><b>转化引流</b>：支付成功后自动展示 <span class="em">律师助理微信二维码</span>，进入私域 1V1 服务跟进</div>
+
+  <h3 class="sec">1.3 合规底线 <span class="desc">// must-have</span></h3>
+  <div class="det"><b>显著标注</b>："AI 报告仅供参考，不构成法律意见"。<b>律师执业证</b>必须真实可查（与司法部接口对接）。<b>禁止保证胜诉</b>。<b>用户信息加密</b>，案情数据不上链。<span class="em-w">广告法</span>：不出现"最权威""第一""保证"等绝对化用语。</div>
+
+  <h3 class="sec">1.4 技术栈 <span class="desc">// stack</span></h3>
+  <div class="det"><b>前端</b>：Next.js 14 App Router · TypeScript · TailwindCSS · Framer Motion · Lucide React<br><b>AI</b>：通义千问 / DeepSeek / GPT-4 法律专项微调 · 北大法宝 / 威科先行 法条数据库 · 中国裁判文书网检索<br><b>后端</b>：Next.js API · Supabase · 微信支付 · 阿里云身份认证 · 实名制 + 律师证 OCR</div>
+
+  <!-- ============ STEP 2 ============ -->
+  <div class="step">
+    <div class="step-num">02<small>STEP TWO</small></div>
+    <div class="step-title"><h2>页面架构<span class="en">/ Architecture</span></h2><p>// info hierarchy · navigation · entry pages</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">i</div>整个 App 围绕"<b>问 → 评 → 选 → 约 → 加</b>"五步动线设计。底部 Tab 4 项：<b>首页 / 律师 / 文书 / 我的</b>。视觉以 <b>深墨蓝 + 鎏金</b> 为主，传递“庄重、专业、可信”。</div>
+
+  <div class="det"><b>// 路由 / 状态 / 主题</b> · 路由按 <code>app/(consult)/</code>、<code>app/(lawyer)/</code>、<code>app/(my)/</code> 三大路由组划分，状态管理用 <code>Zustand</code> + <code>persist</code> 中间件本地化案情草稿，案情录入页 <code>react-hook-form</code> + <code>zod</code> 表单校验，键盘弹起时自动 <code>scrollIntoView</code> 不挡输入框，主题以 <code>CSS Variables</code> 实现。</div>
+
+  <div class="flow-block">
+    <h4>核心动线 · 从案情录入到完成转化</h4>
+    <div class="flow">
+      <span>启动</span><span class="ar">→</span>
+      <span>选择业务领域</span><span class="ar">→</span>
+      <span class="key">AI 案情录入</span><span class="ar">→</span>
+      <span class="key">AI 风险报告</span><span class="ar">→</span>
+      <span>律师匹配</span><span class="ar">→</span>
+      <span>预约咨询</span><span class="ar">→</span>
+      <span class="cv">支付 + 加助理微信</span>
+    </div>
+  </div>
+
+  <h3 class="sec">2.1 入口与首页（4 屏） <span class="desc">// onboarding & home</span></h3>
+
+  <h4 class="page"><span class="num">P01</span>启动页 Splash</h4>
+  <div class="det">深墨蓝底 + 金色装饰 + <b>金色徽章 LOGO</b>（鎏金渐变 + 内阴影高光）+ 法槌/天平极简符号。Serif 字体 LEX AI 大标题 + 中文小字"智律"+ 经典法律格言"<span class="em">Justitia · Veritas · Aequitas</span>"。气质庄重古典，区别于其它行业的现代风。</div>
+
+  <h4 class="page"><span class="num">P02</span>业务领域选择 Practice Area</h4>
+  <div class="det">深墨蓝顶 + 进度条 + 8 大业务领域 2×4 卡片：<b>婚姻家事 / 合同纠纷 / 劳动争议 / 房产纠纷 / 交通事故 / 刑事辩护 / 公司法务 / 知识产权</b>。每卡片金色细线包边 + 极简图标 + 中英文双语命名。选中态：深墨蓝主底 + 金箔包边动画。</div>
+
+  <h4 class="page"><span class="num">P03</span>首页 Home</h4>
+  <div class="det"><b>顶栏</b>：深墨蓝渐变 + 金色装饰线 + 用户问候 + 搜索框（"<span class="em">检索法条 / 案例 / 律师</span>"）。<br><b>主 CTA 卡片</b>：金色描边 + 内框双线（古典装饰）+ "AI 智能案情评估"+ "60 秒生成专业报告" + 大金色斜体箭头。<br><b>推荐律师横滑</b>：圆形头像 + 金色描边 + 姓名 + 律所 + ¥/h 报价。<br><b>金牌文书入口</b>：4 列网格（合同 / 起诉状 / 答辩状 / 律师函）。</div>
+
+  <h4 class="page"><span class="num">P04</span>案情录入 Case Input <span class="tag" style="background:#1A3A5C;color:#B8956A;border-color:#B8956A">CRITICAL</span></h4>
+  <div class="det"><b>顶部</b>：深墨蓝底 + 金线 + "AI 案情智能评估"。<br><b>主输入区</b>：白色卡片 + 双层金色描边 + Serif 字体 + 多模态输入工具栏（文字 / 语音 / 拍照合同 / 上传文件）。预填示例文案让用户感受 AI 理解能力。<br><b>底部 CTA</b>：金色渐变长按钮"开始 AI 评估 · 60 秒生成报告"，特别庄重。</div>
+
+  <div class="phones">
+    <div class="corner c1"></div><div class="corner c2"></div>
+    <!-- P1 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body splash">
+      <div class="splash-logo">L</div>
+      <h2>LEX AI</h2>
+      <p class="cn">智 律</p>
+      <div class="div"></div>
+      <div class="quote">Justitia · Veritas · Aequitas<br>正义 · 真相 · 公平</div>
+      <div class="ver">VER 1.0 · 备案号 ICP-20260003</div>
+    </div><div class="cap">P01 SPLASH</div></div></div>
+
+    <!-- P2 业务领域 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body area">
+      <div class="area-hd">
+        <div class="step-bar"><i class="on"></i><i class="on"></i><i></i></div>
+        <h3>选择业务领域</h3>
+        <small>SELECT YOUR PRACTICE AREA</small>
+      </div>
+      <div class="area-bd">
+        <div class="area-card on"><div class="ic gold">⚖</div><div class="t">婚姻家事</div><div class="en">FAMILY</div></div>
+        <div class="area-card"><div class="ic">📜</div><div class="t">合同纠纷</div><div class="en">CONTRACT</div></div>
+        <div class="area-card"><div class="ic">💼</div><div class="t">劳动争议</div><div class="en">LABOR</div></div>
+        <div class="area-card"><div class="ic">🏠</div><div class="t">房产纠纷</div><div class="en">PROPERTY</div></div>
+        <div class="area-card"><div class="ic">🚗</div><div class="t">交通事故</div><div class="en">TRAFFIC</div></div>
+        <div class="area-card"><div class="ic">🛡</div><div class="t">刑事辩护</div><div class="en">CRIMINAL</div></div>
+        <div class="area-card"><div class="ic">🏢</div><div class="t">公司法务</div><div class="en">CORPORATE</div></div>
+        <div class="area-card"><div class="ic">©</div><div class="t">知识产权</div><div class="en">IP LAW</div></div>
+      </div>
+    </div><div class="cap">P02 AREA</div></div></div>
+
+    <!-- P3 首页 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body home">
+      <div class="home-hd">
+        <div class="row"><div><div class="greet">Good evening</div><div class="who">陈先生 · 婚姻家事</div></div><div class="ic">⚖</div></div>
+        <div class="search">⌕ <span>检索法条 / 案例 / <span class="em">律师</span></span></div>
+      </div>
+      <div class="cta-pri"><div class="l"><div class="ttl">AI 智能案情评估</div><div class="desc">60 SEC · INSTANT REPORT</div></div><div class="arr">⌒</div></div>
+      <div class="sec-h"><h4>推荐律师<small>RECOMMENDED</small></h4><span class="more">VIEW ALL ›</span></div>
+      <div class="lwy-row">
+        <div class="lwy-c"><div class="av">王</div><div class="nm">王律师</div><div class="ttl">10Y · 婚姻</div><div class="pri">¥800<small>/h</small></div></div>
+        <div class="lwy-c"><div class="av">李</div><div class="nm">李律师</div><div class="ttl">15Y · 合同</div><div class="pri">¥1,200<small>/h</small></div></div>
+        <div class="lwy-c"><div class="av">张</div><div class="nm">张律师</div><div class="ttl">12Y · 刑事</div><div class="pri">¥1,500<small>/h</small></div></div>
+      </div>
+      <div class="tabbar">
+        <div class="on"><span class="ic">⚖</span>HOME</div>
+        <div><span class="ic">⛧</span>LAWYER</div>
+        <div><span class="ic">📜</span>DOCS</div>
+        <div><span class="ic">◉</span>ME</div>
+      </div>
+    </div><div class="cap">P03 HOME</div></div></div>
+
+    <!-- P4 案情录入 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body case">
+      <div class="case-hd"><h3>AI 案情智能评估</h3><small>CASE ANALYSIS · INSTANT</small></div>
+      <div class="case-bd">
+        <div class="case-area">
+          <span class="lab">CASE DESCRIPTION</span>
+          <div class="txt">2024 年 3 月，本人与配偶因 <b>感情破裂</b> 协议离婚未果，对方擅自将共有房产（市值 <b>380 万</b>）过户给其父母名下，且拒绝提供 <b>未成年子女</b> 抚养费...</div>
+        </div>
+        <div class="case-tools">
+          <div><div class="ic">⌨</div>文字</div>
+          <div><div class="ic">🎤</div>语音</div>
+          <div><div class="ic">📷</div>拍照</div>
+          <div><div class="ic">📎</div>文件</div>
+        </div>
+      </div>
+      <div class="case-cta">开始 AI 评估 · 60 秒生成报告</div>
+    </div><div class="cap">P04 INPUT</div></div></div>
+  </div>
+
+  <!-- ============ STEP 3 ============ -->
+  <div class="step">
+    <div class="step-num">03<small>STEP THREE</small></div>
+    <div class="step-title"><h2>核心闭环 · AI 风险评估报告<span class="en">/ AI Core</span></h2><p>// the moment of trust</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">★</div>这是产品最关键的"<b>价值时刻</b>"——用户在 60 秒内拿到一份印章感强、数据详实的 AI 风险报告，决定是否信任你、是否愿意付费咨询律师。<b>报告越像律所出品，付费转化率越高。</b></div>
+
+  <div class="det"><b>// AI 引擎实现</b> · 用户提交案情后，前端调用 <code>POST /api/legal/risk-evaluate</code>，后端并行检索 <code>北大法宝</code> Top-5 相关法条与 <code>裁判文书网</code> 12 篇同类判例，连同案情描述一同交予经法律语料微调的 <code>DeepSeek-Legal</code> 模型，通过 <code>Server-Sent Events</code> 流式输出 <code>winRate / riskLevel / claimCap / duration / advice[]</code> 五项核心结论，全程控制在 60 秒内，输出同步走 <code>OCR 水印</code> 与区块链存证，保证报告不可篡改。</div>
+
+  <h3 class="sec">3.1 AI 风险评估报告 <span class="desc">// the moment of truth</span></h3>
+
+  <h4 class="page"><span class="num">P05</span>AI 风险评估报告 Risk Report <span class="tag" style="background:#B8956A;color:#0E1828;border-color:#B8956A">⭐ KEY</span></h4>
+  <div class="det"><b>顶部印章感封面</b>：深墨蓝渐变 + 双层金色描边 + 金色"⚖ LEX AI 法律风险评估报告"+ 报告编号 + 出具日期 + 严肃感 Serif 字体。<br><b>胜诉率核心数字</b>：白色卡片 + 古典金线分隔 + Playfair Display 斜体大数字 <span class="em">72%</span> + "AI 评估胜诉概率"+ 进度条（鎏金渐变）。<br><b>四宫格关键数据</b>：风险等级 / 类似案例数 / 索赔上限 / 维权周期。<br><b>详细分析卡片</b>：3 个段落（争议焦点 / 法条依据 / 维权建议），每张带金色边框、引用法条小框。<br><b>底部 CTA</b>：黑底金边按钮"<span class="em">立即咨询专业律师</span>"，营造"AI 给方向，律师做执行"的转化路径。</div>
+
+  <div class="phones">
+    <div class="corner c1"></div><div class="corner c2"></div>
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body rpt">
+      <div class="rpt-hd">
+        <div class="seal">⚖ LEX AI · OFFICIAL REPORT</div>
+        <h3>法律风险评估报告</h3>
+        <div class="sub">RPT-20260508-0086 · 2026.05.08</div>
+      </div>
+      <div class="rpt-score">
+        <div class="lab">PROBABILITY OF WINNING</div>
+        <div class="num">72<span class="u">%</span></div>
+        <div class="conf">胜诉概率较高</div>
+        <div class="pg"><i></i></div>
+      </div>
+      <div class="rpt-grid">
+        <div class="rpt-cell"><div class="lab">RISK LEVEL</div><div class="v">中等</div></div>
+        <div class="rpt-cell"><div class="lab">SIMILAR CASES</div><div class="v">1,286</div></div>
+        <div class="rpt-cell warn"><div class="lab">CLAIM CAP</div><div class="v">¥190 万</div></div>
+        <div class="rpt-cell"><div class="lab">DURATION</div><div class="v">8-14 月</div></div>
+      </div>
+      <div class="rpt-card">
+        <div class="lab">⚖ DISPUTE FOCUS</div>
+        <div class="ttl">争议焦点</div>
+        <div class="txt">配偶擅自<b>转移共有财产</b>构成对你的财产损害；未支付抚养费违反<b>《民法典》第1067 条</b>。</div>
+        <div class="law"><b>《民法典》</b> 第 1062 条　夫妻在婚姻关系存续期间所得的下列财产，属于夫妻的共同财产...</div>
+      </div>
+      <div class="rpt-card">
+        <div class="lab">⚖ LEGAL ADVICE</div>
+        <div class="ttl">维权建议</div>
+        <div class="txt"><b>1.</b> 立即申请<b>财产保全</b>冻结过户房产<br><b>2.</b> 起诉离婚同时主张多分共有财产<br><b>3.</b> 索赔抚养费及违约金</div>
+      </div>
+      <div class="rpt-cta">
+        <div class="ttl">⚖ 立即咨询专业律师</div>
+        <div class="desc">AI 报告仅供参考<br>建议预约本所认证律师 1V1 服务</div>
+        <button>查看推荐律师 →</button>
+      </div>
+    </div><div class="cap">P05 REPORT ⭐</div></div></div>
+  </div>
+
+  <!-- ============ STEP 4 ============ -->
+  <div class="step">
+    <div class="step-num">04<small>STEP FOUR</small></div>
+    <div class="step-title"><h2>转化模块 · 律师咨询与文书<span class="en">/ Conversion</span></h2><p>// not a mall · industry funnel</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">★</div>法律行业的转化路径不是"商城购买"——而是 <b>律师按小时计费咨询 + 法律文书订单 + 加律师助理微信进入私域 1V1 服务</b>。整个模块包含：律师列表 → 律师详情 → 选择咨询方式 → 预约时段 → 支付 → <span class="em">添加律师助理微信</span> → 文书购买。</div>
+
+  <div class="det"><b>// 转化实现</b> · 律师列表走 <code>useInfiniteQuery</code> 分页 + <code>IntersectionObserver</code> 懒加载头像，下单后触发 <code>wx.chooseWXPay</code>，支付回调 <code>Webhook</code> 把状态机推到 <code>PAID</code>，前端 <code>Realtime channel</code> 立刻订阅推送律师助理企业微信二维码与案件备料表单。</div>
+
+  <h3 class="sec">4.1 律师匹配 <span class="desc">// lawyer matching</span></h3>
+
+  <h4 class="page"><span class="num">P06</span>律师列表 Lawyer List</h4>
+  <div class="det"><b>顶部 Tab</b>：婚姻 / 合同 / 劳动 / 房产 / 刑事 / 公司。<br><b>律师卡片</b>：左侧 54×64 矩形头像（律师严肃职业照感，金色描边）+ 姓名 + <span class="em">V 认证徽章</span> + 律所名（Cormorant 斜体）+ 业务标签 + 数据条（执业 X 年 / 服务 X 人 / 评分 X.X）+ 右上角 <span class="em-w">¥800/h</span> 红色斜体大字 + 金色按钮"立即预约"。<br>整体气质：传统、专业、可信赖。</div>
+
+  <h4 class="page"><span class="num">P07</span>预约咨询 Book Consultation</h4>
+  <div class="det"><b>顶部</b>：律师浮条（含金色装饰）。<br><b>咨询方式 3 选 1</b>：电话咨询 ¥800/h / 视频咨询 ¥1200/h / <b>到所面谈 ¥3000/h</b>，三种价格逐级递增 → 引导用户选择性价比最高的。<br><b>日历选择</b>：可约日期淡金色底，今日金色实底。<br><b>时段网格</b>：3 列。<br><b>底部固定栏</b>：左侧斜体红色 ¥800（按 1h 计算）+ 右侧金色渐变按钮"立即支付"。</div>
+
+  <h3 class="sec">4.2 支付与加微信 <span class="desc">// the goal</span></h3>
+
+  <h4 class="page"><span class="num">P08</span>支付成功 + 加律师助理微信 <span class="tag" style="background:#B8956A;color:#0E1828;border-color:#B8956A">⭐ ULTIMATE</span></h4>
+  <div class="det"><b>这是整个 App 的最终转化目标页</b>。深墨蓝底 + 金色装饰 + 双层金色边框（仪式感）+ "⚖ PAYMENT CONFIRMED"金字 + 金色对勾图标 + Playfair 斜体大数字 <span class="em">¥800.00</span> + "已预约 5/12 周日 14:00 电话咨询"。<br><b>核心卡片</b>：白色 + 双金边 + "添加律师助理微信"+"协助案件准备 · 资料整理 · 1V1 跟进"+ 二维码（中心放金色 ⚖ 章）+ "扫码后将由助理 5 分钟内联系"。<br><span class="em">设计要点</span>：突出"律所专员"、"专业服务"、"5 分钟响应"，强化高端服务感。</div>
+
+  <h4 class="page"><span class="num">P09</span>金牌文书 Document Mall</h4>
+  <div class="det"><b>顶部</b>：深墨蓝底 + 金线 + "金牌法律文书"+ "GOLDEN LEGAL DOCUMENTS"。<br><b>文书卡片</b>：左侧 50×60 卷宗图标（米白纸 + 金色压痕）+ 名称（如"<b>离婚协议书 · 律师审定版</b>"）+ 描述 + 三标签数据（已售 1280 份 / 律师审核 / 自动填充）+ 右侧斜体红色 <span class="em">¥199</span> + 黑底金边按钮"立即购买"。<br>每张卡片左侧金色装饰条，整体如"图书馆精装书"质感。</div>
+
+  <h4 class="page"><span class="num">P10</span>我的卷宗 My Cases</h4>
+  <div class="det"><b>顶部</b>：深墨蓝渐变 + 矩形律师徽章风头像 + "陈先生" + "VIP 客户 · 已咨询 3 次"。<b>三宫格数据</b>：进行案件 2 / 历史案件 5 / 文书 12。<b>列表项</b>：我的报告 / 我的律师（直达微信） / 我的文书 / 我的订单 / 实名认证 / 设置。所有图标都是金色细线 + 米白底，气质统一。</div>
+
+  <div class="phones">
+    <div class="corner c1"></div><div class="corner c2"></div>
+    <!-- P6 律师列表 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body lwy">
+      <div class="lwy-hd"><div><h3>认证律师</h3><small>VERIFIED LAWYERS · 3,260</small></div></div>
+      <div class="lwy-tabs"><span class="on">婚姻</span><span>合同</span><span>劳动</span><span>房产</span><span>刑事</span></div>
+      <div class="lwy-card">
+        <div class="av">王</div>
+        <div class="info">
+          <div class="nm">王雅慧 <span class="v">V</span></div>
+          <div class="firm">北京君合律师事务所 · 合伙人</div>
+          <div class="skills"><span>婚姻家事</span><span>财产分割</span><span>抚养</span></div>
+          <div class="stats"><span>执业 <b>10</b>Y</span><span>服务 <b>1,260</b></span><span>★ <b>4.9</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥800</div><div class="u">/ HOUR</div><button>预约</button></div>
+      </div>
+      <div class="lwy-card">
+        <div class="av">李</div>
+        <div class="info">
+          <div class="nm">李建国 <span class="v">V</span></div>
+          <div class="firm">金杜律师事务所 · 高级合伙人</div>
+          <div class="skills"><span>合同纠纷</span><span>商事</span><span>仲裁</span></div>
+          <div class="stats"><span>执业 <b>15</b>Y</span><span>服务 <b>2,180</b></span><span>★ <b>5.0</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥1,200</div><div class="u">/ HOUR</div><button>预约</button></div>
+      </div>
+      <div class="lwy-card">
+        <div class="av">张</div>
+        <div class="info">
+          <div class="nm">张梓豪 <span class="v">V</span></div>
+          <div class="firm">大成律师事务所 · 主任律师</div>
+          <div class="skills"><span>刑事辩护</span><span>经济犯罪</span></div>
+          <div class="stats"><span>执业 <b>12</b>Y</span><span>服务 <b>820</b></span><span>★ <b>4.8</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥1,500</div><div class="u">/ HOUR</div><button>预约</button></div>
+      </div>
+    </div><div class="cap">P06 LAWYERS</div></div></div>
+
+    <!-- P7 预约 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body book">
+      <div class="book-hd"><div class="av">王</div><div class="info"><div class="nm">王雅慧 律师</div><div class="firm">北京君合 · 婚姻家事</div></div></div>
+      <div class="book-mode">
+        <h4>CONSULTATION TYPE · 咨询方式</h4>
+        <div class="opts">
+          <div class="opt on"><div class="ic">📞</div>电话<br>¥800/h</div>
+          <div class="opt"><div class="ic">📹</div>视频<br>¥1200/h</div>
+          <div class="opt"><div class="ic">⚖</div>到所<br>¥3000/h</div>
+        </div>
+      </div>
+      <div class="cal">
+        <h4>SELECT DATE · 5 月</h4>
+        <div class="cal-grid">
+          <div class="h">日</div><div class="h">一</div><div class="h">二</div><div class="h">三</div><div class="h">四</div><div class="h">五</div><div class="h">六</div>
+          <div class="d dis"></div><div class="d dis"></div><div class="d dis"></div><div class="d dis"></div><div class="d">1</div><div class="d">2</div><div class="d">3</div>
+          <div class="d">4</div><div class="d">5</div><div class="d has">6</div><div class="d has">7</div><div class="d">8</div><div class="d">9</div><div class="d">10</div>
+          <div class="d">11</div><div class="d on">12</div><div class="d has">13</div><div class="d has">14</div><div class="d has">15</div><div class="d">16</div><div class="d">17</div>
+        </div>
+      </div>
+      <div class="slots">
+        <h4>SELECT TIME · 5/12</h4>
+        <div class="slots-grid">
+          <div class="slot full">09:00</div>
+          <div class="slot">10:00</div>
+          <div class="slot">11:00</div>
+          <div class="slot on">14:00</div>
+          <div class="slot">15:00</div>
+          <div class="slot">19:00</div>
+        </div>
+      </div>
+      <div class="book-cta">
+        <div class="pri"><div class="lab">TOTAL · 1H</div><div class="p">¥ 800</div></div>
+        <button>立即支付</button>
+      </div>
+    </div><div class="cap">P07 BOOK</div></div></div>
+
+    <!-- P8 支付 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body pay">
+      <div class="pay-seal">⚖ PAYMENT CONFIRMED</div>
+      <div class="pay-ic">✓</div>
+      <h3>支付成功</h3>
+      <div class="amt">¥ 800.00</div>
+      <div class="desc">5/12 周日 14:00 · 电话咨询<br><b>王雅慧 律师</b> · 北京君合律师事务所</div>
+      <div class="qr-card">
+        <div class="ttl">添加律师助理微信</div>
+        <div class="sub">CASE PREPARATION · 1V1</div>
+        <div class="qr"></div>
+        <div class="save">长按保存 · 助理 5 分钟内联系</div>
+      </div>
+    </div><div class="cap">P08 PAY ⭐</div></div></div>
+
+    <!-- P9 文书 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body doc-mall">
+      <div class="doc-hd"><h3>金牌文书</h3><small>GOLDEN LEGAL DOCUMENTS</small></div>
+      <div class="doc-card">
+        <div class="ic">📜</div>
+        <div class="info">
+          <div class="ttl">离婚协议书 · 律师审定版</div>
+          <div class="desc">含财产分割、抚养、债务等条款<br>AI 自动填充 + 律师终审</div>
+          <div class="meta"><span>已售 <b>1,280</b></span><span>★ <b>4.9</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥199</div><button>立即购买</button></div>
+      </div>
+      <div class="doc-card">
+        <div class="ic">⚖</div>
+        <div class="info">
+          <div class="ttl">民事起诉状 · 律师代写</div>
+          <div class="desc">合同纠纷专版 · 含证据清单<br>3 个工作日交付</div>
+          <div class="meta"><span>已售 <b>820</b></span><span>★ <b>5.0</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥499</div><button>立即购买</button></div>
+      </div>
+      <div class="doc-card">
+        <div class="ic">📋</div>
+        <div class="info">
+          <div class="ttl">律师函 · 严正交涉</div>
+          <div class="desc">由资深律师署名出具<br>含送达证明 · 法律效力</div>
+          <div class="meta"><span>已售 <b>2,180</b></span><span>★ <b>4.9</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥899</div><button>立即购买</button></div>
+      </div>
+    </div><div class="cap">P09 DOCS</div></div></div>
+
+    <!-- P10 我的 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body me">
+      <div class="me-hd"><div class="row"><div class="av">陈</div><div><div class="nm">陈先生</div><div class="lvl">VIP · 已咨询 3 次</div></div></div></div>
+      <div class="me-stats">
+        <div><div class="v">2</div><div class="l">ACTIVE CASES</div></div>
+        <div><div class="v">5</div><div class="l">RESOLVED</div></div>
+        <div><div class="v">12</div><div class="l">DOCUMENTS</div></div>
+      </div>
+      <div class="me-list">
+        <div class="item"><div class="ic">⚖</div><div class="t">我的 AI 报告</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">⛧</div><div class="t">我的律师（微信）</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">📜</div><div class="t">我的文书</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">💼</div><div class="t">我的订单</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">⚐</div><div class="t">实名认证</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">⚙</div><div class="t">设置</div><div class="arr">›</div></div>
+      </div>
+    </div><div class="cap">P10 PROFILE</div></div></div>
+  </div>
+
+  <!-- ============ STEP 5 ============ -->
+  <div class="step">
+    <div class="step-num">05<small>STEP FIVE</small></div>
+    <div class="step-title"><h2>管理后台 · 律所 / 订单 / 数据<span class="en">/ Admin</span></h2><p>// PC console for partners</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">i</div>后台供 <b>律所合伙人 / 律师助理 / 平台运营</b> 三类角色基于 <code>RBAC</code> 权限模型分级使用，共覆盖 <b>8 大核心模块</b>：数据看板（实时 DAU / 营收漏斗 / 转化热图）、律师管理（律师证 OCR + 司法部备案核验 + 律师背调）、案件智能分配（按擅长领域 / 历史胜诉率 / 当前负载自动派单）、咨询订单（电话 / 视频 / 到所三类计费）、文书审核（AI 初审 + 资深律师复审双轨）、财务结算（律师分润 + 增值税专票 + T+1 提现）、实名认证、系统设置。前端采用 <code>Next.js 14 + TypeScript</code> 构建，后端走 <code>Supabase RLS</code> 行级权限 + 全链路操作审计，AI 风控调用 <code>POST /api/legal/risk-evaluate</code> 接入北大法宝法条库，所有客户数据与接入日志符合 <code>等保三级</code> 留存 5 年。深墨蓝 + 鎏金配色与 App 端保持一致，强化品牌识别。</div>
+
+  <div class="pc">
+    <div class="pc-bar"><i></i><i></i><i></i><span>LEX AI Admin · admin.lexai.cn</span></div>
+    <div class="pc-body">
+      <div class="pc-side">
+        <div class="logo">LEX AI</div>
+        <div class="item on"><span class="ic">I.</span>数据看板</div>
+        <div class="item"><span class="ic">II.</span>律师管理</div>
+        <div class="item"><span class="ic">III.</span>案件分配</div>
+        <div class="item"><span class="ic">IV.</span>咨询订单</div>
+        <div class="item"><span class="ic">V.</span>文书审核</div>
+        <div class="item"><span class="ic">VI.</span>财务结算</div>
+        <div class="item"><span class="ic">VII.</span>实名认证</div>
+        <div class="item"><span class="ic">VIII.</span>系统设置</div>
+      </div>
+      <div class="pc-main">
+        <h3>数据看板 · 今日实时</h3>
+        <div class="pc-filter">
+          <div class="seg"><span class="on">今日</span><span>本周</span><span>本月</span><span>季度</span><span>自定义</span></div>
+          <input placeholder="🔍  搜索订单号 / 客户姓名 / 律师姓名 / 案由">
+          <button class="btn">导出 EXCEL</button>
+        </div>
+        <div class="kpi">
+          <div class="kc"><div class="lab">DAU · 日活</div><div class="v">8,486</div><div class="d">↑ 6.2% vs 昨日</div></div>
+          <div class="kc"><div class="lab">REVENUE · 流水</div><div class="v">¥186,420</div><div class="d">↑ 14.8% vs 昨日</div></div>
+          <div class="kc"><div class="lab">CONSULT · 咨询订单</div><div class="v">256</div><div class="d">↑ 8.6% vs 昨日</div></div>
+          <div class="kc"><div class="lab">REPORT · AI 报告</div><div class="v">2,386</div><div class="d">↑ 22.4% vs 昨日</div></div>
+        </div>
+        <div class="pc-charts">
+          <div class="pc-ch">
+            <h4>近 7 日 律师咨询订单 + AI 报告生成趋势 <small>WEEKLY TREND</small></h4>
+            <div class="pc-bars">
+              <div class="b" data-d="5/02" data-v="186" style="height:48%"></div>
+              <div class="b" data-d="5/03" data-v="172" style="height:44%"></div>
+              <div class="b" data-d="5/04" data-v="218" style="height:56%"></div>
+              <div class="b" data-d="5/05" data-v="203" style="height:52%"></div>
+              <div class="b" data-d="5/06" data-v="232" style="height:60%"></div>
+              <div class="b" data-d="5/07" data-v="244" style="height:64%"></div>
+              <div class="b hl" data-d="5/08" data-v="256" style="height:68%"></div>
+            </div>
+          </div>
+          <div class="pc-ch">
+            <h4>案由分布 <small>CASE TYPE</small></h4>
+            <div class="pc-ring"><div class="v"><b>2,386</b><small>TOTAL</small></div></div>
+            <div class="pc-leg">
+              <div><i style="background:var(--gold)"></i>合同纠纷 <b>36%</b></div>
+              <div><i style="background:#9FC9E0"></i>婚姻家事 <b>24%</b></div>
+              <div><i style="background:#7A5236"></i>劳动争议 <b>22%</b></div>
+              <div><i style="background:#3A5C82"></i>债务追讨 <b>18%</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-tbl">
+          <h4>近期咨询订单 <small>RECENT ORDERS · 共 256 条 · 显示前 6 条</small></h4>
+          <table>
+            <tr><th>订单号</th><th>客户</th><th>律师</th><th>案由</th><th>类型</th><th>金额</th><th>来源</th><th>响应</th><th>状态</th></tr>
+            <tr><td>LX20260508-0086</td><td><b>陈先生</b></td><td>王雅慧 (合同)</td><td>装修合同纠纷</td><td>电话 1h</td><td>¥800</td><td>抖音</td><td>3 分钟</td><td><span class="gt">待咨询</span></td></tr>
+            <tr><td>LX20260508-0085</td><td><b>张女士</b></td><td>李建国 (婚姻)</td><td>离婚财产分割</td><td>面谈 1h</td><td>¥3,000</td><td>百度</td><td>5 分钟</td><td><span class="gt">已支付</span></td></tr>
+            <tr><td>LX20260508-0084</td><td><b>赵先生</b></td><td>—</td><td>欠款追讨</td><td>律师函代写</td><td>¥899</td><td>微信</td><td>8 分钟</td><td><span class="ot">待审核</span></td></tr>
+            <tr><td>LX20260508-0083</td><td><b>孙女士</b></td><td>周子谦 (劳动)</td><td>工伤赔偿</td><td>电话 30m</td><td>¥400</td><td>小红书</td><td>2 分钟</td><td><span class="gt">已完成</span></td></tr>
+            <tr><td>LX20260508-0082</td><td><b>吴先生</b></td><td>王雅慧 (合同)</td><td>买卖合同争议</td><td>面谈 2h</td><td>¥6,000</td><td>抖音</td><td>12 分钟</td><td><span class="gt">咨询中</span></td></tr>
+            <tr><td>LX20260508-0081</td><td><b>郑女士</b></td><td>—</td><td>消费维权</td><td>AI 评估报告</td><td>¥99</td><td>微信</td><td>1 分钟</td><td><span class="rt">待补料</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- =================== FOOTER =================== -->
+<footer class="foot">
+  <div class="foot-c">
+    <div class="foot-mark">LEX AI<span class="cn">智 律</span></div>
+    <p><b>// 一份完整提示词，从 0 到 1 构建 AI 智能法律咨询 C 端产品</b></p>
+    <p>本提示词适用于 <b>Cursor / Windsurf / Claude Code</b> 等 AI Coding 工具，可一次性生成 Next.js 14 工程骨架。</p>
+    <p>配套：完整提示词 .md · UI 预览 .html · Midjourney 素材包</p>
+    <div class="div"></div>
+    <p class="copyright">© 2026 LEX AI · Industry 03 / 05 — Smart Legal Edition · Internal Delivery · v1.0</p>
+  </div>
+</footer>
+
+</body>
+</html>
