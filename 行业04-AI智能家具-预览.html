@@ -1,0 +1,849 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OAKWOOD · AI 智能家居整装平台 — 完整开发提示词与 UI 预览</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Noto+Serif+SC:wght@400;700;900&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#2D2418;--p:#6B4423;--p2:#8B5A2B;--pd:#4A2C18;--sage:#87A96B;--sageL:#A8C28C;--sageD:#6B8951;--cop:#B5A07F;--copL:#D4C19A;--linen:#EDE6D6;--cream:#FAF6EE;--line:#E0D5BE;--gray:#857A66;--text:#3A2D1F;--warn:#C77E50}
+*{box-sizing:border-box;-webkit-font-smoothing:antialiased}
+body{margin:0;font-family:Inter,'Noto Serif SC',serif;background:var(--cream);color:var(--text);line-height:1.7}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#3A2818,#6B4423 50%,#4A2C18);color:#fff;padding:90px 24px 70px;position:relative;overflow:hidden;border-bottom:1px solid var(--cop)}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 2px,rgba(255,255,255,.012) 2px,rgba(255,255,255,.012) 3px)}
+.hero-c{max-width:1180px;margin:0 auto;position:relative}
+.crest{display:inline-flex;align-items:center;gap:14px;padding:8px 22px 8px 8px;border:1px solid var(--cop);border-radius:30px;background:rgba(181,160,127,.06)}
+.crest .lg{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--copL),var(--cop));display:flex;align-items:center;justify-content:center;color:var(--ink);font-family:'Cormorant Garamond';font-style:italic;font-weight:700;font-size:18px;box-shadow:0 0 18px rgba(181,160,127,.5)}
+.crest span{font-family:'Cormorant Garamond';font-style:italic;letter-spacing:3px;font-size:13px;color:var(--copL)}
+.hero h1{font-family:'Cormorant Garamond','Noto Serif SC';font-weight:700;font-size:78px;margin:24px 0 12px;line-height:1.05;color:#fff;letter-spacing:1px}
+.hero h1 .it{font-style:italic;color:var(--sageL);font-weight:500}
+.hero h1 .cn{font-family:'Noto Serif SC';font-weight:900;font-size:32px;display:block;margin-top:14px;letter-spacing:14px;color:var(--linen)}
+.hero p.sub{font-family:'Cormorant Garamond','Noto Serif SC',serif;font-size:16px;color:#D9CFB8;max-width:680px;margin:24px 0 32px;line-height:2}
+.hero p.sub b{color:var(--sageL);border-bottom:1px solid var(--sageD);font-style:italic;font-weight:600}
+.tags{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px}
+.tag-h{padding:7px 18px;background:rgba(255,255,255,.04);border:1px solid var(--cop);border-radius:30px;font-size:11px;color:#D9CFB8;font-family:'Cormorant Garamond';font-style:italic;letter-spacing:1.5px}
+.tag-h b{color:var(--sageL);font-style:normal;font-weight:600}
+.cta-btn{padding:16px 36px;background:var(--sage);color:#fff;border:none;border-radius:2px;font-family:'Cormorant Garamond';font-size:14px;letter-spacing:3px;cursor:pointer;font-weight:600;box-shadow:0 8px 24px rgba(135,169,107,.3);text-transform:uppercase}
+.cta-btn.ghost{background:transparent;color:var(--copL);border:1px solid var(--cop);box-shadow:none}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap}
+
+.trust{background:#1F1810;padding:28px 24px;border-bottom:1px solid var(--pd)}
+.trust-c{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:16px;text-align:center}
+.trust-i{padding:6px;border-right:1px solid #2A2018}.trust-i:last-child{border-right:0}
+.trust-i .num{font-family:'Cormorant Garamond';font-style:italic;font-size:34px;color:var(--cop);font-weight:700;line-height:1.1}
+.trust-i .lab{font-family:'Cormorant Garamond';font-style:italic;font-size:11px;color:#857A66;margin-top:6px;letter-spacing:2px}
+
+.doc{max-width:1180px;margin:0 auto;padding:64px 28px}
+.intro{padding:32px 36px;background:#fff;border:1px solid var(--cop);border-radius:2px;margin-bottom:50px;font-size:15px;line-height:2;color:var(--text);box-shadow:0 4px 24px rgba(107,68,35,.06);position:relative;font-family:'Noto Serif SC',serif}
+.intro::after{content:'❦ BRIEF';position:absolute;right:24px;top:-12px;font-family:'Cormorant Garamond';font-style:italic;font-size:11px;letter-spacing:4px;color:var(--p);padding:4px 12px;background:var(--cream);border:1px solid var(--cop)}
+.intro b{color:var(--p);font-weight:700}
+.palette{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.pchip{display:flex;align-items:center;gap:8px;padding:5px 12px;background:var(--cream);border:1px solid var(--line);border-radius:20px;font-size:11px;font-family:'Cormorant Garamond';font-style:italic}
+.pchip i{width:14px;height:14px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.1)}
+
+.step{margin:80px 0 36px;display:flex;align-items:flex-end;gap:30px;padding-bottom:18px;border-bottom:1px solid var(--cop);position:relative}
+.step::after{content:'';position:absolute;left:0;bottom:-1px;width:140px;height:3px;background:linear-gradient(90deg,var(--p),var(--sage))}
+.step-num{font-family:'Cormorant Garamond';font-style:italic;font-size:84px;font-weight:700;color:var(--p);line-height:.85;letter-spacing:-2px}
+.step-num small{font-family:'Cormorant Garamond';font-style:italic;font-size:13px;letter-spacing:5px;color:var(--gray);display:block;margin-top:8px}
+.step-title h2{font-family:'Noto Serif SC';font-weight:900;font-size:28px;color:var(--ink);margin:0;letter-spacing:2px}
+.step-title h2 .en{font-family:'Cormorant Garamond';font-style:italic;color:var(--sageD);margin-left:14px;font-size:21px;font-weight:500}
+.step-title p{font-family:'Cormorant Garamond';font-style:italic;font-size:13px;color:var(--gray);margin:8px 0 0}
+
+.callout{background:#fff;border-left:3px solid var(--sage);padding:20px 26px 20px 32px;border-radius:0 4px 4px 0;font-size:14px;line-height:2;margin:18px 0;position:relative;box-shadow:0 2px 8px rgba(107,68,35,.05);font-family:'Noto Serif SC',serif}
+.callout .ico{position:absolute;left:-13px;top:18px;width:26px;height:26px;background:linear-gradient(135deg,var(--sageL),var(--sageD));color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-family:'Cormorant Garamond';font-style:italic;box-shadow:0 4px 12px rgba(135,169,107,.4)}
+.callout b{color:var(--p);font-weight:700}
+
+h3.sec{font-family:'Noto Serif SC';font-size:20px;font-weight:900;margin:36px 0 12px;color:var(--p);position:relative;padding-left:18px;letter-spacing:1px}
+h3.sec::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:3px;background:var(--cop)}
+h3.sec .desc{font-family:'Cormorant Garamond';font-style:italic;font-size:14px;color:var(--gray);margin-left:10px;font-weight:400}
+
+h4.page{font-size:15px;font-weight:800;margin:18px 0 4px;color:var(--ink);font-family:'Noto Serif SC'}
+h4.page .num{font-family:'Cormorant Garamond';font-style:italic;color:var(--sageD);font-weight:700;margin-right:8px;font-size:18px}
+
+.det{font-size:13.5px;line-height:2;color:var(--text);margin:6px 0 14px;padding:14px 16px;border-left:1px solid var(--cop);background:#fff;border-radius:0 3px 3px 0;font-family:'Noto Serif SC',serif}
+.det b{color:var(--p);font-weight:700}
+.det .em{color:var(--sageD);font-weight:700;background:rgba(135,169,107,.12);padding:0 6px}
+.det .em-w{color:var(--warn);font-weight:700}
+
+.bullet{padding:5px 0 5px 24px;position:relative;font-size:14px;line-height:1.85;font-family:'Noto Serif SC',serif}
+.bullet::before{content:'❦';position:absolute;left:4px;top:5px;color:var(--sage);font-family:'Cormorant Garamond'}
+.bullet b{color:var(--p)}
+
+.tag{font-size:10px;padding:2px 8px;border-radius:30px;display:inline-block;font-weight:700;font-family:'Cormorant Garamond';font-style:italic;letter-spacing:1.5px}
+
+/* Phones */
+.phones{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;padding:46px 18px;background:linear-gradient(135deg,#3A2818,#6B4423 60%,#4A2C18);border-radius:4px;margin:28px 0;position:relative;border:1px solid var(--cop)}
+.phones::after{content:'❦ MOBILE PREVIEW';position:absolute;top:14px;left:24px;font-family:'Cormorant Garamond';font-style:italic;font-size:11px;letter-spacing:4px;color:var(--copL);opacity:.8}
+.phone{width:240px;height:520px;border-radius:36px;background:#2D2418;padding:6px;box-shadow:0 30px 60px -15px rgba(0,0,0,.6),0 0 0 1px rgba(181,160,127,.2);position:relative}
+.scr{height:100%;background:#fff;border-radius:30px;overflow:hidden;display:flex;flex-direction:column;font-size:11px;position:relative;font-family:'Noto Serif SC',serif}
+.notch{height:22px;background:#2D2418;position:relative}
+.notch::after{content:'';position:absolute;left:50%;top:6px;transform:translateX(-50%);width:80px;height:18px;background:#2D2418;border-radius:0 0 12px 12px}
+.sb{height:18px;font-size:9px;display:flex;justify-content:space-between;padding:0 14px;align-items:center;background:#fff;color:var(--p);font-weight:700;font-family:'Cormorant Garamond';font-style:italic}
+.sb.dark{background:var(--p);color:var(--cream)}
+.body{flex:1;overflow:hidden;position:relative}
+.cap{position:absolute;left:8px;bottom:8px;background:#2D2418;color:var(--cop);font-size:8.5px;padding:2px 8px;border-radius:30px;font-family:'Cormorant Garamond';font-style:italic;letter-spacing:1.5px;z-index:5;border:1px solid var(--cop)}
+
+/* Splash */
+.splash{height:100%;background:linear-gradient(135deg,#3A2818,#6B4423);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.splash::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent 2px,rgba(255,255,255,.025) 2px,rgba(255,255,255,.025) 3px)}
+.splash-logo{width:78px;height:78px;border-radius:50%;background:linear-gradient(135deg,var(--copL),var(--cop),var(--p));display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond';font-style:italic;font-size:36px;color:var(--ink);font-weight:700;box-shadow:0 0 50px rgba(181,160,127,.5);z-index:2}
+.splash h2{font-family:'Cormorant Garamond';font-style:italic;font-size:28px;letter-spacing:5px;margin:18px 0 4px;z-index:2;font-weight:700}
+.splash .cn{font-family:'Noto Serif SC';font-size:11px;color:var(--copL);letter-spacing:8px;z-index:2;margin:0}
+.splash .div{margin-top:18px;width:80px;height:1px;background:linear-gradient(90deg,transparent,var(--cop),transparent);z-index:2;position:relative}
+.splash .div::after{content:'❦';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#3A2818;padding:0 8px;color:var(--cop);font-size:11px}
+.splash .quote{margin-top:14px;font-family:'Cormorant Garamond';font-style:italic;font-size:11px;color:#D9CFB8;letter-spacing:1.5px;text-align:center;line-height:1.7;z-index:2;padding:0 30px}
+
+/* Style picker */
+.style{height:100%;background:var(--cream);overflow-y:auto}
+.style-hd{padding:18px 14px 10px;text-align:center}
+.style-hd .step-bar{display:flex;gap:4px;margin-bottom:10px}
+.style-hd .step-bar i{flex:1;height:2px;background:var(--line)}
+.style-hd .step-bar i.on{background:var(--sage)}
+.style-hd h3{font-family:'Noto Serif SC';font-weight:900;font-size:16px;margin:6px 0 2px;color:var(--p);letter-spacing:2px}
+.style-hd small{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gray);letter-spacing:2px}
+.style-bd{padding:10px 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.style-card{background:#fff;border:1px solid var(--line);padding:10px 8px;border-radius:2px;text-align:center}
+.style-card .img{height:56px;background:linear-gradient(135deg,var(--linen),var(--cream));border-radius:2px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond';font-style:italic;font-size:18px;color:var(--p)}
+.style-card.on{border-color:var(--sage);background:rgba(135,169,107,.06);box-shadow:0 4px 14px rgba(135,169,107,.18)}
+.style-card.on .img{background:linear-gradient(135deg,var(--sageL),var(--sage));color:#fff}
+.style-card .t{font-family:'Noto Serif SC';font-weight:700;font-size:11px;color:var(--ink);margin-top:6px}
+.style-card .en{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gray)}
+
+/* Home */
+.home{height:100%;background:var(--cream);overflow-y:auto;display:flex;flex-direction:column}
+.home-hd{padding:14px;background:linear-gradient(135deg,#6B4423,#3A2818);color:#fff;position:relative;overflow:hidden}
+.home-hd::before{content:'';position:absolute;right:-30px;top:-30px;width:140px;height:140px;background:radial-gradient(circle,rgba(135,169,107,.18),transparent 70%)}
+.home-hd .row{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2}
+.home-hd .greet{font-family:'Cormorant Garamond';font-style:italic;font-size:11px;color:var(--copL);letter-spacing:1.5px}
+.home-hd .who{font-family:'Noto Serif SC';font-weight:700;font-size:14px;margin-top:2px}
+.home-hd .ic{width:28px;height:28px;background:rgba(255,255,255,.06);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--copL);border:1px solid var(--cop);font-size:12px}
+.cta-pri{margin:14px;padding:0;background:#fff;border:1px solid var(--sage);border-radius:2px;display:flex;align-items:center;color:var(--p);overflow:hidden;height:84px}
+.cta-pri .img{width:84px;height:100%;background:linear-gradient(135deg,var(--sageL),var(--sage));display:flex;align-items:center;justify-content:center;color:#fff;font-size:30px;font-family:'Cormorant Garamond';font-style:italic;flex-shrink:0;position:relative}
+.cta-pri .img::after{content:'';position:absolute;inset:6px;border:1px solid rgba(255,255,255,.3)}
+.cta-pri .info{flex:1;padding:0 14px}
+.cta-pri .ttl{font-family:'Noto Serif SC';font-weight:900;font-size:13px;letter-spacing:1px}
+.cta-pri .desc{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gray);margin-top:3px;letter-spacing:1px}
+.sec-h{display:flex;justify-content:space-between;align-items:center;padding:0 14px;margin:6px 0 8px}
+.sec-h h4{font-family:'Noto Serif SC';font-weight:900;font-size:13px;color:var(--ink);margin:0}
+.sec-h h4 small{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gray);margin-left:6px}
+.sec-h .more{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--sageD)}
+.scheme{margin:0 14px 14px;background:#fff;border:1px solid var(--line);border-radius:2px;overflow:hidden;box-shadow:0 2px 8px rgba(107,68,35,.06)}
+/* 客厅透视实景 */
+.scheme .pic{height:104px;background:linear-gradient(180deg,#F5EBD8 0%,#EDE0C5 55%,#A87C5A 55%,#6B4423 100%);position:relative;overflow:hidden}
+.scheme .pic::before{content:'';position:absolute;left:0;right:0;top:0;height:55%;background:repeating-linear-gradient(90deg,transparent 0 28px,rgba(135,169,107,.06) 28px 29px),radial-gradient(ellipse at 70% 30%,rgba(232,224,197,.6),transparent 60%)}
+.scheme .pic::after{content:'';position:absolute;left:0;right:0;top:55%;bottom:0;background:repeating-linear-gradient(90deg,#6B4423 0 22px,#5B3A1F 22px 24px,#7A4F2A 24px 46px)}
+/* 透视场景元素 */
+.scene{position:absolute;inset:0;z-index:2}
+.scene .window{position:absolute;left:14px;top:8px;width:62px;height:32px;background:linear-gradient(180deg,#D4E4F0,#EDE6D6);border:1px solid #B5A07F;box-shadow:0 0 0 2px #6B4423}
+.scene .window::before{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:#6B4423}
+.scene .window::after{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:#6B4423}
+.scene .lamp-st{position:absolute;right:24px;top:6px;width:1px;height:30px;background:#3A2818}
+.scene .lamp-sh{position:absolute;right:18px;top:4px;width:14px;height:8px;background:#FAF0DC;border:1px solid #B5A07F;border-radius:50% 50% 6px 6px;box-shadow:0 0 8px rgba(232,208,120,.5)}
+.scene .plant{position:absolute;left:90px;top:18px;width:0;height:0}
+.scene .plant::before{content:'';position:absolute;left:-5px;top:0;width:10px;height:14px;background:#4A5D3F;clip-path:polygon(50% 0,100% 70%,80% 100%,20% 100%,0 70%)}
+.scene .plant::after{content:'';position:absolute;left:-3px;top:14px;width:6px;height:4px;background:#6B4423}
+.scene .sofa{position:absolute;left:18px;bottom:6px;width:88px;height:30px;background:linear-gradient(180deg,#A8C28C,#87A96B);border:1px solid #5B4533;border-radius:6px 6px 3px 3px;box-shadow:0 4px 8px rgba(0,0,0,.25),inset 0 -3px 0 rgba(0,0,0,.15)}
+.scene .sofa::before{content:'';position:absolute;left:3px;top:3px;width:18px;height:14px;background:#FAF6EE;border-radius:3px;box-shadow:24px 0 0 #FAF6EE,48px 0 0 #FAF6EE}
+.scene .sofa::after{content:'';position:absolute;left:-2px;bottom:-3px;width:4px;height:3px;background:#3A2818;box-shadow:88px 0 0 #3A2818}
+.scene .table{position:absolute;left:120px;bottom:14px;width:36px;height:18px;background:linear-gradient(180deg,#B5A07F,#8B5A2B);border:1px solid #3A2818;border-radius:50%;box-shadow:0 3px 6px rgba(0,0,0,.3)}
+.scene .tv{position:absolute;right:14px;bottom:18px;width:50px;height:26px;background:#1A1208;border:2px solid #4A2C18;box-shadow:0 3px 6px rgba(0,0,0,.3),inset 0 0 8px rgba(135,169,107,.15)}
+.scene .tv::after{content:'';position:absolute;left:-6px;bottom:-5px;width:62px;height:3px;background:#4A2C18}
+.scheme .body{padding:10px 12px}
+.scheme .ttl{font-family:'Noto Serif SC';font-weight:900;font-size:12px;color:var(--ink)}
+.scheme .meta{font-family:'Cormorant Garamond';font-style:italic;font-size:9.5px;color:var(--gray);margin-top:3px;letter-spacing:.5px}
+.scheme .row{display:flex;justify-content:space-between;align-items:flex-end;margin-top:8px}
+.scheme .pri{font-family:'Cormorant Garamond';font-style:italic;font-size:18px;color:var(--warn);font-weight:700}
+.scheme .pri small{font-size:9px;color:var(--gray);font-style:italic}
+.scheme button{padding:5px 12px;background:var(--sage);color:#fff;border:0;border-radius:2px;font-family:'Noto Serif SC';font-size:10px;font-weight:700;letter-spacing:1px}
+.tabbar{display:flex;background:#fff;border-top:1px solid var(--line);padding:6px 0 8px;flex-shrink:0}
+.tabbar div{flex:1;text-align:center;font-size:8.5px;color:var(--gray);font-family:'Cormorant Garamond';font-style:italic}
+.tabbar div.on{color:var(--p)}
+.tabbar div .ic{font-size:14px;display:block;margin-bottom:2px;font-style:normal}
+
+/* Scan */
+.scan{height:100%;background:var(--ink);color:#fff;position:relative;overflow:hidden}
+.scan-bar{position:absolute;left:0;right:0;top:14px;display:flex;justify-content:space-between;padding:0 14px;z-index:5}
+.scan-bar .x{width:24px;height:24px;background:rgba(0,0,0,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px}
+.scan-bar .room{padding:5px 14px;background:rgba(0,0,0,.5);border-radius:30px;font-family:'Cormorant Garamond';font-style:italic;font-size:10px;letter-spacing:1.5px;border:1px solid var(--cop)}
+.scan-img{position:absolute;inset:0;background:linear-gradient(135deg,#5B4533 0%,#3A2818 50%,#6B4423 100%);background-image:linear-gradient(135deg,rgba(0,0,0,.3),transparent),repeating-linear-gradient(45deg,transparent 0,transparent 30px,rgba(255,255,255,.03) 30px,rgba(255,255,255,.03) 31px)}
+.scan-grid{position:absolute;left:20px;right:20px;top:64px;bottom:108px;background:linear-gradient(transparent 0,transparent calc(100% - 1px),rgba(135,169,107,.35) 100%) 0 0 / 100% 22px,linear-gradient(90deg,transparent 0,transparent calc(100% - 1px),rgba(135,169,107,.35) 100%) 0 0 / 22px 100%;border:1px dashed rgba(168,194,140,.6)}
+/* 多家具识别框 */
+.det-box{position:absolute;border:1.5px solid var(--sage);background:rgba(135,169,107,.18);box-shadow:0 0 12px rgba(135,169,107,.4);font-family:'Cormorant Garamond';font-style:italic;font-size:8.5px;color:var(--sageL);letter-spacing:.5px}
+.det-box .lab{position:absolute;top:-14px;left:0;background:#0F0A06;padding:1px 5px;border:1px solid var(--sage);white-space:nowrap}
+.det-box .lab b{color:var(--copL);font-style:normal;font-family:'Inter';font-weight:700;margin-left:3px}
+.det-box.b1{left:8%;top:38%;width:54%;height:30%}
+.det-box.b2{right:6%;top:14%;width:32%;height:22%}
+.det-box.b3{left:24%;bottom:8%;width:30%;height:18%}
+.det-box.b4{right:8%;bottom:10%;width:24%;height:18%;border-color:var(--copL);background:rgba(212,193,154,.16);box-shadow:0 0 12px rgba(212,193,154,.4)}
+.det-box.b4 .lab{border-color:var(--copL);color:var(--copL)}
+.scan-tip{position:absolute;left:14px;right:14px;bottom:90px;text-align:center;font-family:'Noto Serif SC';font-size:11px;color:#fff;font-weight:700;z-index:4}
+.scan-tip small{display:block;font-family:'Cormorant Garamond';font-style:italic;font-size:9.5px;color:var(--sageL);margin-top:4px;letter-spacing:1.5px}
+.scan-shot{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);width:54px;height:54px;border-radius:50%;background:#fff;border:4px solid var(--sage);z-index:5}
+.scan-shot::before{content:'';position:absolute;inset:5px;border-radius:50%;background:var(--sage)}
+
+/* Report ⭐ */
+.rpt{height:100%;background:var(--cream);overflow-y:auto}
+.rpt-hd{padding:18px 14px;background:linear-gradient(135deg,#6B4423,#3A2818);color:#fff;text-align:center;border-bottom:2px solid var(--cop);position:relative}
+.rpt-hd::before{content:'';position:absolute;inset:8px;border:1px solid var(--cop)}
+.rpt-hd .seal{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--cop);letter-spacing:4px;margin-bottom:4px;position:relative;z-index:2}
+.rpt-hd h3{font-family:'Noto Serif SC';font-weight:900;font-size:15px;margin:0;letter-spacing:3px;position:relative;z-index:2}
+.rpt-hd .sub{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--copL);margin-top:3px;letter-spacing:1.5px;position:relative;z-index:2}
+/* 俯视平面图 */
+.rpt-3d{height:170px;background:#FAF0DC;background-image:repeating-linear-gradient(0deg,transparent 0 18px,rgba(107,68,35,.04) 18px 19px),repeating-linear-gradient(90deg,transparent 0 18px,rgba(107,68,35,.04) 18px 19px);position:relative;border-bottom:1px solid var(--line);overflow:hidden}
+.rpt-3d::before{content:'❦ 3D 俯视平面图';position:absolute;top:8px;right:10px;font-family:'Cormorant Garamond';font-style:italic;font-size:8.5px;color:var(--p);letter-spacing:1.5px;background:rgba(255,255,255,.85);padding:2px 6px;border:1px solid var(--cop);z-index:5}
+.rpt-3d::after{content:'';position:absolute;left:12px;right:12px;top:12px;bottom:12px;border:2px solid #6B4423;background:transparent;pointer-events:none}
+/* 房间隔断 */
+.rpt-3d .wall-v{position:absolute;left:54%;top:14px;bottom:14px;width:2px;background:#6B4423}
+.rpt-3d .wall-h{position:absolute;left:54%;right:12px;top:50%;height:2px;background:#6B4423}
+.rpt-3d .room-tag{position:absolute;font-family:'Cormorant Garamond';font-style:italic;font-size:7.5px;color:var(--p);letter-spacing:1px;background:rgba(255,255,255,.7);padding:1px 4px;z-index:4}
+.rpt-3d .t-living{left:24px;top:18px}
+.rpt-3d .t-kitchen{right:24px;top:18px}
+.rpt-3d .t-bed{right:24px;bottom:54%;transform:translateY(50%)}
+/* 家具俯视轮廓 */
+.f{position:absolute;border:1px solid #5B3A1F;border-radius:2px;font-family:'Cormorant Garamond';font-style:italic;font-size:6.5px;color:#5B3A1F;display:flex;align-items:center;justify-content:center;letter-spacing:.3px}
+.f-sofa{left:18px;bottom:42%;width:78px;height:18px;background:linear-gradient(180deg,#A8C28C,#87A96B);border-color:#4A5D3F;color:#fff;border-radius:3px}
+.f-sofa-s{left:18px;bottom:18%;width:36px;height:18px;background:linear-gradient(180deg,#A8C28C,#87A96B);border-color:#4A5D3F;color:#fff;border-radius:3px}
+.f-rug{left:60px;bottom:30%;width:44px;height:30px;background:repeating-linear-gradient(45deg,#D4C19A 0 4px,#B5A07F 4px 8px);border:1px dashed #8B6F3F;border-radius:2px}
+.f-table{left:74px;bottom:34%;width:18px;height:14px;background:#8B5A2B;border-color:#3A2818;border-radius:50%}
+.f-tv{left:18px;bottom:62%;width:42px;height:8px;background:#1A1208;border-color:#3A2818;color:var(--copL)}
+.f-plant{left:118px;bottom:26%;width:10px;height:10px;background:radial-gradient(circle,#4A5D3F 40%,#6B8951 70%,transparent 72%);border:0;border-radius:50%}
+.f-bed{right:22px;bottom:14%;width:60px;height:32px;background:linear-gradient(180deg,#FAF0DC 0 60%,#EDE0C5 60%);border-color:#8B5A2B;border-radius:3px}
+.f-bed::before{content:'';position:absolute;top:2px;left:6px;width:8px;height:6px;background:#FAF6EE;border:1px solid #B5A07F;border-radius:1px;box-shadow:14px 0 0 #FAF6EE,inset 0 0 0 1px #fff}
+.f-bedside{right:84px;bottom:14%;width:14px;height:14px;background:#A87C5A;border-color:#3A2818}
+.f-counter{right:18px;top:30px;width:64px;height:16px;background:linear-gradient(180deg,#D4C19A,#B5A07F);border-color:#5B3A1F}
+.f-counter::before{content:'';position:absolute;left:8px;top:3px;width:8px;height:8px;background:#1A1208;border:1px solid #3A2818;border-radius:50%;box-shadow:14px 0 0 #1A1208}
+.f-fridge{right:18px;top:54px;width:18px;height:24px;background:linear-gradient(180deg,#EDE6D6,#D4C19A);border-color:#5B3A1F}
+.f-fridge::after{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:#5B3A1F}
+.f-table-d{right:46px;top:64px;width:30px;height:14px;background:#8B5A2B;border-color:#3A2818;border-radius:2px}
+.f-chair{right:46px;top:50px;width:8px;height:8px;background:#A87C5A;border-color:#3A2818;box-shadow:12px 0 0 #A87C5A,0 28px 0 #A87C5A,12px 28px 0 #A87C5A}
+.f-door{position:absolute;left:54%;top:42%;width:14px;height:2px;background:transparent;border-top:2px dashed #6B4423;transform:translateX(-50%)}
+.rpt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:14px 14px 0}
+.rpt-cell{background:#fff;border:1px solid var(--line);padding:8px 6px;border-radius:2px;text-align:center}
+.rpt-cell .lab{font-family:'Cormorant Garamond';font-style:italic;font-size:8px;color:var(--gray);letter-spacing:1.5px}
+.rpt-cell .v{font-family:'Cormorant Garamond';font-style:italic;font-size:16px;color:var(--p);font-weight:700;margin-top:2px}
+.rpt-card{margin:10px 14px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--sage);padding:12px;border-radius:0 2px 2px 0}
+.rpt-card .lab{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--sageD);letter-spacing:2px;margin-bottom:4px}
+.rpt-card .ttl{font-family:'Noto Serif SC';font-weight:900;font-size:12px;color:var(--ink);margin-bottom:6px}
+.rpt-card .items{display:flex;flex-direction:column;gap:5px}
+.rpt-card .item{display:flex;justify-content:space-between;font-size:10.5px;font-family:'Noto Serif SC';color:var(--text)}
+.rpt-card .item b{font-family:'Cormorant Garamond';font-style:italic;color:var(--p)}
+.rpt-cta{margin:14px;padding:14px;background:var(--p);border:1px solid var(--cop);border-radius:2px;color:#fff;text-align:center;position:relative}
+.rpt-cta::before{content:'';position:absolute;inset:5px;border:1px solid var(--cop)}
+.rpt-cta .ttl{font-family:'Noto Serif SC';font-weight:900;font-size:12px;color:var(--copL);letter-spacing:1px;position:relative;z-index:2}
+.rpt-cta .pri{font-family:'Cormorant Garamond';font-style:italic;font-size:24px;color:#fff;margin:4px 0;font-weight:700;position:relative;z-index:2}
+.rpt-cta .pri small{font-size:11px;color:var(--copL);text-decoration:line-through;margin-left:6px}
+.rpt-cta button{padding:9px 28px;background:var(--sage);color:#fff;border:0;border-radius:2px;font-family:'Noto Serif SC';font-weight:900;font-size:11px;letter-spacing:2px;margin-top:6px;position:relative;z-index:2}
+
+/* Designer list */
+.dlist{height:100%;background:var(--cream);overflow-y:auto}
+.dlist-hd{padding:14px;background:var(--p);color:#fff;border-bottom:1px solid var(--cop)}
+.dlist-hd h3{font-family:'Noto Serif SC';font-size:13px;margin:0;font-weight:900;letter-spacing:2px}
+.dlist-hd small{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--copL);display:block;margin-top:2px;letter-spacing:2px}
+.dcard{margin:10px 14px;background:#fff;border:1px solid var(--line);border-radius:2px;padding:14px;position:relative;display:flex;gap:12px}
+.dcard::before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:3px;background:var(--cop)}
+.dcard .av{width:54px;height:64px;border-radius:2px;background:linear-gradient(135deg,#A87C5A,#4A2C18);display:flex;align-items:center;justify-content:center;color:var(--copL);font-family:'Cormorant Garamond';font-style:italic;font-size:20px;font-weight:700;border:1px solid var(--cop);flex-shrink:0}
+.dcard .info{flex:1;min-width:0}
+.dcard .nm{font-family:'Noto Serif SC';font-weight:900;font-size:13px;color:var(--ink);display:flex;align-items:center;gap:5px}
+.dcard .nm .v{font-family:'Cormorant Garamond';font-style:italic;font-size:8.5px;background:var(--cop);color:#fff;padding:1px 6px;letter-spacing:1px}
+.dcard .ttl{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--sageD);margin-top:2px;letter-spacing:.5px}
+.dcard .skills{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+.dcard .skills span{padding:1.5px 6px;background:var(--cream);color:var(--p);font-size:8.5px;border:1px solid var(--line);font-family:'Noto Serif SC'}
+.dcard .stats{display:flex;gap:10px;margin-top:7px;font-family:'Cormorant Garamond';font-style:italic;font-size:9.5px;color:var(--gray)}
+.dcard .stats b{font-family:'Cormorant Garamond';color:var(--p);font-weight:700}
+.dcard .pri{position:absolute;right:12px;bottom:12px;text-align:right}
+.dcard .pri .p{font-family:'Cormorant Garamond';font-style:italic;font-size:16px;color:var(--warn);font-weight:700;line-height:1}
+.dcard .pri .u{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gray)}
+.dcard .pri button{margin-top:5px;padding:5px 10px;background:var(--sage);color:#fff;border:0;border-radius:2px;font-family:'Noto Serif SC';font-size:9.5px;font-weight:900;letter-spacing:1px}
+
+/* Book */
+.book{height:100%;background:var(--cream);overflow-y:auto}
+.book-hd{padding:14px;background:linear-gradient(135deg,#6B4423,#3A2818);color:#fff;display:flex;align-items:center;gap:10px}
+.book-hd .av{width:42px;height:50px;border-radius:2px;background:linear-gradient(135deg,#A87C5A,#4A2C18);display:flex;align-items:center;justify-content:center;color:var(--copL);font-family:'Cormorant Garamond';font-style:italic;font-size:16px;border:1px solid var(--cop)}
+.book-hd .nm{font-family:'Noto Serif SC';font-weight:900;font-size:13px}
+.book-hd .ttl{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--copL);margin-top:2px}
+.book-pkg{margin:12px 14px;background:#fff;border:1px solid var(--line);padding:12px;border-radius:2px}
+.book-pkg h4{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--sageD);margin:0 0 8px;letter-spacing:2px}
+.pkg-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line);font-family:'Noto Serif SC';font-size:11px}
+.pkg-row:last-child{border-bottom:0}
+.pkg-row .l{flex:1;color:var(--text)}
+.pkg-row .l small{display:block;font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gray);margin-top:1px}
+.pkg-row .p{font-family:'Cormorant Garamond';font-style:italic;font-size:13px;color:var(--p);font-weight:700}
+.book-srv{margin:0 14px 12px;background:#fff;border:1px solid var(--line);padding:12px;border-radius:2px}
+.book-srv h4{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--sageD);margin:0 0 8px;letter-spacing:2px}
+.srv-list{display:flex;flex-direction:column;gap:6px}
+.srv-list .item{display:flex;align-items:center;gap:8px;font-size:10.5px;font-family:'Noto Serif SC'}
+.srv-list .item .ic{width:20px;height:20px;border-radius:50%;background:var(--sage);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900}
+.book-cta{position:absolute;left:0;right:0;bottom:0;padding:10px 14px;background:#fff;border-top:1px solid var(--cop);display:flex;align-items:center;gap:10px}
+.book-cta .pri{flex:1}
+.book-cta .pri .lab{font-family:'Cormorant Garamond';font-style:italic;font-size:8.5px;color:var(--gray);letter-spacing:1px}
+.book-cta .pri .p{font-family:'Cormorant Garamond';font-style:italic;font-size:20px;color:var(--warn);font-weight:700}
+.book-cta button{padding:11px 18px;background:var(--sage);color:#fff;border:0;border-radius:2px;font-family:'Noto Serif SC';font-weight:900;font-size:11px;letter-spacing:2px}
+
+/* Pay */
+.pay{height:100%;background:linear-gradient(180deg,#6B4423,#2D2418);color:#fff;padding:24px 16px;text-align:center;position:relative;overflow:hidden}
+.pay::before{content:'';position:absolute;inset:14px;border:1px solid var(--cop)}
+.pay-seal{margin-top:10px;font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--cop);letter-spacing:5px;position:relative;z-index:2}
+.pay-ic{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--sageL),var(--sage));margin:14px auto 14px;display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;box-shadow:0 0 30px rgba(135,169,107,.4);position:relative;z-index:2}
+.pay h3{font-family:'Noto Serif SC';font-size:15px;margin:0 0 6px;font-weight:900;letter-spacing:3px;position:relative;z-index:2}
+.pay .amt{font-family:'Cormorant Garamond';font-style:italic;font-size:30px;color:var(--copL);letter-spacing:1px;margin:6px 0;font-weight:700;position:relative;z-index:2}
+.pay .desc{font-family:'Noto Serif SC';font-size:10.5px;color:#D9CFB8;margin-bottom:12px;line-height:1.85;position:relative;z-index:2}
+.pay .desc b{color:var(--sageL);font-weight:700}
+.pay .qr-card{background:#fff;border:1px solid var(--cop);padding:14px;color:var(--ink);margin:6px;position:relative;z-index:2;box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.pay .qr-card::before{content:'';position:absolute;inset:5px;border:1px solid var(--copL);pointer-events:none}
+.pay .qr-card .ttl{font-family:'Noto Serif SC';font-size:11px;font-weight:900;margin-bottom:3px;letter-spacing:1px;position:relative;z-index:2}
+.pay .qr-card .sub{font-family:'Cormorant Garamond';font-style:italic;font-size:9.5px;color:var(--sageD);margin-bottom:10px;letter-spacing:2px;position:relative;z-index:2}
+.pay .qr{width:106px;height:106px;margin:0 auto;background:repeating-conic-gradient(#2D2418 0% 25%,#fff 0% 50%) 50% / 8px 8px,#fff;border:1px solid var(--cop);position:relative}
+.pay .qr::after{content:'❦';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:24px;height:24px;background:var(--p);color:var(--cop);display:flex;align-items:center;justify-content:center;border:2px solid #fff;font-size:13px;font-family:'Cormorant Garamond';font-style:italic}
+.pay .save{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--copL);margin-top:8px;letter-spacing:2px;position:relative;z-index:2}
+
+/* My */
+.me{height:100%;background:var(--cream);overflow-y:auto}
+.me-hd{padding:18px 14px;background:linear-gradient(135deg,#6B4423,#3A2818);color:#fff;border-bottom:2px solid var(--cop);position:relative;overflow:hidden}
+.me-hd::before{content:'';position:absolute;right:-30px;top:-30px;width:140px;height:140px;background:radial-gradient(circle,rgba(181,160,127,.18),transparent 70%)}
+.me-hd .row{display:flex;align-items:center;gap:12px;position:relative;z-index:2}
+.me-hd .av{width:48px;height:56px;border-radius:2px;background:linear-gradient(135deg,#A87C5A,#4A2C18);display:flex;align-items:center;justify-content:center;color:var(--copL);font-family:'Cormorant Garamond';font-style:italic;font-size:18px;font-weight:700;border:1px solid var(--cop)}
+.me-hd .nm{font-family:'Noto Serif SC';font-weight:900;font-size:14px}
+.me-hd .lvl{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--copL);margin-top:2px;letter-spacing:2px}
+.me-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px;padding:12px;background:#fff;border:1px solid var(--line);border-radius:2px}
+.me-stats div{text-align:center}
+.me-stats .v{font-family:'Cormorant Garamond';font-style:italic;font-size:20px;color:var(--p);font-weight:700;line-height:1}
+.me-stats .l{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--gray);margin-top:3px;letter-spacing:1.5px}
+.me-list{margin:0 14px;padding-bottom:10px}
+.me-list .item{padding:11px 14px;background:#fff;border:1px solid var(--line);border-radius:2px;display:flex;align-items:center;gap:10px;margin-bottom:6px;font-family:'Noto Serif SC';font-size:11.5px}
+.me-list .item .ic{width:26px;height:26px;border-radius:50%;background:var(--cream);border:1px solid var(--cop);display:flex;align-items:center;justify-content:center;color:var(--p);font-size:12px}
+.me-list .item .t{flex:1;color:var(--ink)}
+.me-list .item .arr{font-family:'Cormorant Garamond';font-style:italic;font-size:14px;color:var(--gray)}
+
+/* Flow */
+.flow-block{background:#fff;border:1px solid var(--cop);border-radius:2px;padding:24px 28px;margin:24px 0;position:relative}
+.flow-block::after{content:'❦ CRITICAL FLOW';position:absolute;right:24px;top:-12px;font-family:'Cormorant Garamond';font-style:italic;font-size:11px;letter-spacing:3px;color:var(--p);padding:4px 12px;background:var(--cream);border:1px solid var(--cop)}
+.flow-block h4{font-family:'Noto Serif SC';font-size:16px;margin:0 0 14px;color:var(--ink);font-weight:900;letter-spacing:1px}
+.flow{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:11.5px;font-family:'Noto Serif SC'}
+.flow span{padding:8px 14px;background:var(--cream);border:1px solid var(--line);font-weight:700;color:var(--gray)}
+.flow span.key{background:var(--p);color:var(--copL);border-color:var(--cop)}
+.flow span.cv{background:var(--sage);color:#fff;border-color:var(--sageD)}
+.flow .ar{color:var(--cop);font-family:'Cormorant Garamond';font-style:italic;font-size:14px}
+
+/* PC backend */
+.pc{background:linear-gradient(135deg,#3A2818,#6B4423);border-radius:2px;overflow:hidden;margin:24px 0;box-shadow:0 30px 60px rgba(0,0,0,.4);border:1px solid var(--cop)}
+.pc-bar{background:#1F1810;padding:9px 14px;display:flex;align-items:center;gap:6px}
+.pc-bar i{width:10px;height:10px;border-radius:50%;background:#FF5F57}
+.pc-bar i:nth-child(2){background:#FFBD2E}
+.pc-bar i:nth-child(3){background:#27C93F}
+.pc-bar span{margin-left:14px;font-family:'Cormorant Garamond';font-style:italic;font-size:11px;color:var(--cop)}
+.pc-body{display:flex;height:380px}
+.pc-side{width:170px;background:#3A2818;border-right:1px solid var(--pd);padding:14px 0}
+.pc-side .logo{padding:0 14px 14px;color:var(--cop);font-family:'Cormorant Garamond';font-style:italic;font-size:18px;letter-spacing:3px;border-bottom:1px solid var(--pd);margin-bottom:12px;font-weight:700}
+.pc-side .item{padding:10px 14px;font-family:'Noto Serif SC';font-size:11.5px;color:var(--copL);display:flex;align-items:center;gap:8px;font-weight:500}
+.pc-side .item.on{background:rgba(135,169,107,.12);color:var(--sageL);border-left:2px solid var(--sage)}
+.pc-side .item .ic{font-family:'Cormorant Garamond';font-style:italic;font-size:11px;color:var(--gray);width:16px}
+.pc-side .item.on .ic{color:var(--sage)}
+.pc-body{height:auto !important}
+.pc-main{flex:1;background:#2D2418;padding:18px;color:#fff;overflow:hidden;min-height:380px}
+/* 后台筛选栏 */
+.pc-filter{display:flex;gap:8px;margin-bottom:12px;align-items:center;flex-wrap:wrap}
+.pc-filter .seg{display:flex;background:#3A2818;border:1px solid var(--pd);overflow:hidden}
+.pc-filter .seg span{padding:5px 12px;font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--copL);letter-spacing:1.5px;cursor:pointer;border-right:1px solid var(--pd)}
+.pc-filter .seg span:last-child{border-right:0}
+.pc-filter .seg span.on{background:var(--sage);color:#fff;font-weight:700}
+.pc-filter input{background:#3A2818;border:1px solid var(--pd);color:var(--copL);padding:5px 10px;font-family:'Noto Serif SC';font-size:11px;outline:none;min-width:160px}
+.pc-filter .btn{padding:5px 14px;background:linear-gradient(180deg,var(--copL),var(--cop));color:var(--ink);font-family:'Noto Serif SC';font-size:10px;font-weight:900;letter-spacing:1.5px;border:0;cursor:pointer}
+/* 图表区 */
+.pc-charts{display:grid;grid-template-columns:1.6fr 1fr;gap:10px;margin-bottom:14px}
+.pc-ch{background:#3A2818;border:1px solid var(--pd);padding:12px;position:relative;border-left:2px solid var(--sage)}
+.pc-ch h4{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--copL);letter-spacing:2px;margin:0 0 14px;display:flex;justify-content:space-between;align-items:center}
+.pc-ch h4 small{font-family:'Cinzel';font-size:8.5px;color:var(--gray);font-weight:500;letter-spacing:1px;font-style:normal}
+.pc-bar{display:flex;align-items:flex-end;gap:5px;height:88px;padding:0 4px}
+.pc-bar .b{flex:1;background:linear-gradient(180deg,var(--sageL),var(--sageD));position:relative;border-top:1px solid var(--sage);min-height:6px;border-radius:1px 1px 0 0}
+.pc-bar .b.hl{background:linear-gradient(180deg,var(--copL),var(--cop));border-top-color:var(--copL);box-shadow:0 0 12px rgba(212,193,154,.5)}
+.pc-bar .b::after{content:attr(data-d);position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);font-family:'Cinzel';font-size:7.5px;color:var(--gray);letter-spacing:.3px;white-space:nowrap}
+.pc-bar .b::before{content:attr(data-v);position:absolute;left:50%;top:-11px;transform:translateX(-50%);font-family:'Cinzel';font-size:7.5px;color:var(--copL);letter-spacing:.3px;white-space:nowrap}
+.pc-ring{position:relative;width:96px;height:96px;margin:6px auto 0;border-radius:50%;background:conic-gradient(var(--sage) 0% 42%,var(--cop) 42% 68%,#C77E50 68% 88%,var(--p2) 88% 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(135,169,107,.25)}
+.pc-ring::after{content:'';position:absolute;inset:14px;border-radius:50%;background:#3A2818}
+.pc-ring .v{position:relative;z-index:2;text-align:center}
+.pc-ring .v b{font-family:'Cinzel';font-size:18px;color:var(--copL);font-weight:700;letter-spacing:1px;display:block;line-height:1}
+.pc-ring .v small{font-family:'Cinzel';font-size:7px;color:var(--gray);letter-spacing:1.5px}
+.pc-leg{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;margin-top:10px;font-family:'Cinzel';font-size:8px;color:var(--copL);letter-spacing:.5px}
+.pc-leg div{display:flex;align-items:center;gap:5px}
+.pc-leg i{width:8px;height:8px;display:inline-block;flex-shrink:0}
+.pc-leg b{margin-left:auto;color:#fff;font-family:'Cinzel';font-weight:700}
+/* 表格区 */
+.pc-tbl{background:#3A2818;border:1px solid var(--pd);padding:10px 12px;border-left:2px solid var(--sage);margin-bottom:10px}
+.pc-tbl h4{font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--copL);letter-spacing:2px;margin:0 0 8px;display:flex;justify-content:space-between;align-items:center}
+.pc-tbl h4 small{font-family:'Cinzel';font-style:normal;font-size:8.5px;color:var(--gray);letter-spacing:1px;font-weight:500}
+/* 内联代码 */
+.det code,.callout code{font-family:'JetBrains Mono',Consolas,monospace;font-size:.86em;background:rgba(135,169,107,.12);color:var(--sageD);padding:1px 7px;border-radius:3px;border:1px solid rgba(135,169,107,.25);font-weight:600;letter-spacing:.2px;white-space:nowrap}
+/* 代码片段 */
+.code-snip{background:#2D2418;border:1px solid var(--pd);border-left:3px solid var(--sage);margin:18px 0;font-family:'JetBrains Mono','Cascadia Code',Consolas,monospace;font-size:12px;line-height:1.85;overflow:hidden;box-shadow:0 4px 16px rgba(107,68,35,.08)}
+.code-snip .bar{background:#1F1810;padding:8px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--pd)}
+.code-snip .bar i{width:8px;height:8px;border-radius:50%;background:#FF5F57;display:inline-block}
+.code-snip .bar i:nth-child(2){background:#FFBD2E}
+.code-snip .bar i:nth-child(3){background:#27C93F}
+.code-snip .bar span{margin-left:14px;font-family:'Cormorant Garamond';font-style:italic;font-size:11px;color:var(--copL);letter-spacing:1.5px}
+.code-snip .bar em{margin-left:auto;font-family:'Cormorant Garamond';font-style:italic;font-size:10px;color:var(--gray);letter-spacing:1px}
+.code-snip pre{margin:0;padding:14px 18px;color:#D9CFB8;overflow-x:auto;background:transparent;white-space:pre}
+.code-snip .k{color:var(--sageL)}
+.code-snip .s{color:#D4C19A}
+.code-snip .c{color:var(--gray);font-style:italic}
+.code-snip .f{color:var(--copL)}
+.code-snip .v{color:#E8B870}
+.code-snip .n{color:var(--warn)}
+.pc-main h3{font-family:'Noto Serif SC';font-size:14px;margin:0 0 14px;font-weight:900;letter-spacing:2px;color:var(--copL)}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.kc{padding:12px;background:#3A2818;border:1px solid var(--pd);border-left:2px solid var(--sage);border-radius:0;position:relative}
+.kc .lab{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--copL);letter-spacing:1.5px}
+.kc .v{font-family:'Cormorant Garamond';font-style:italic;font-size:22px;color:var(--cop);margin-top:4px;line-height:1;font-weight:700}
+.kc .d{font-family:'Cormorant Garamond';font-style:italic;font-size:9px;color:var(--sageL);margin-top:3px}
+table{width:100%;border-collapse:collapse;font-family:'Noto Serif SC';font-size:10.5px}
+th{padding:8px;text-align:left;color:var(--copL);font-weight:600;border-bottom:1px solid var(--pd);font-family:'Cormorant Garamond';font-style:italic;letter-spacing:1.5px;font-size:10px}
+td{padding:8px;border-bottom:1px solid #3A2818;color:#D9CFB8}
+td b{color:#fff}
+td .gt{color:var(--sageL)}
+td .ot{color:var(--warn)}
+
+/* Footer */
+.foot{background:#1F1810;color:#857A66;padding:48px 24px 30px;border-top:1px solid var(--cop);position:relative}
+.foot::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--p),var(--sage),var(--p))}
+.foot-c{max-width:1180px;margin:0 auto;text-align:center}
+.foot-mark{font-family:'Cormorant Garamond';font-style:italic;font-size:42px;color:var(--cop);letter-spacing:5px;margin-bottom:14px;font-weight:700}
+.foot-mark .cn{font-family:'Noto Serif SC';font-size:18px;display:block;color:var(--copL);letter-spacing:8px;font-style:normal;margin-top:6px}
+.foot p{font-family:'Noto Serif SC';font-size:12px;line-height:2;margin:6px 0}
+.foot p b{color:var(--sageL)}
+.foot .div{height:1px;background:var(--pd);margin:24px 0;position:relative}
+.foot .div::before{content:'❦';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#1F1810;padding:0 14px;color:var(--cop);font-size:14px}
+.foot .copyright{font-family:'Cormorant Garamond';font-style:italic;font-size:11px;color:#444;letter-spacing:1.5px}
+
+@media(max-width:720px){
+  .hero h1{font-size:46px}.hero h1 .cn{font-size:20px;letter-spacing:6px}
+  .step{flex-direction:column;align-items:flex-start;gap:10px}.step-num{font-size:60px}
+  .trust-c{grid-template-columns:repeat(2,1fr)}.pc-body{height:auto;flex-direction:column}.pc-side{width:100%;display:flex;overflow-x:auto}
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-c">
+    <div class="crest"><div class="lg">O</div><span>OAKWOOD · AI HOME DESIGN</span></div>
+    <h1>OAK<span class="it">wood</span><span class="cn">栎宅 · AI 智能整装平台</span></h1>
+    <p class="sub">用一份完整的开发提示词，从 0 到 1 构建一款 <b>AI 拍房识图 + 整屋 3D 方案 + 设计师上门服务</b> 的家居整装产品。一张照片识别户型与风格，60 秒生成整屋 3D 方案，整屋组合购替代单品逛逛 —— 让家具购买回归生活美学。</p>
+    <div class="tags">
+      <div class="tag-h"><b>05</b> Chapters</div>
+      <div class="tag-h"><b>10</b> Screens</div>
+      <div class="tag-h"><b>Furniture</b> Edition</div>
+      <div class="tag-h"><b>AI</b> Room Recognition</div>
+    </div>
+    <div class="cta-row">
+      <button class="cta-btn">Start Building →</button>
+      <button class="cta-btn ghost">View UI Kit</button>
+    </div>
+  </div>
+</section>
+
+<div class="trust"><div class="trust-c">
+  <div class="trust-i"><div class="num">36,800</div><div class="lab">Homes Designed</div></div>
+  <div class="trust-i"><div class="num">2,580</div><div class="lab">Senior Designers</div></div>
+  <div class="trust-i"><div class="num">¥18,600</div><div class="lab">Avg. Saving</div></div>
+  <div class="trust-i"><div class="num">4.9 / 5</div><div class="lab">Client Rating</div></div>
+</div></div>
+
+<div class="doc">
+
+  <div class="intro">
+    <b>关于本提示词</b>　这是一份用于 AI 自动开发 <b>智能家居整装行业 C 端产品</b> 的完整提示词。围绕"AI 拍房识图 → 户型 + 风格分析 → 整屋 3D 方案 → 整屋组合购 + 预约设计师上门量房 → 加设计师微信"这条核心增长闭环展开。
+    <div class="palette">
+      <div class="pchip"><i style="background:#6B4423"></i>胡桃原木 / Walnut</div>
+      <div class="pchip"><i style="background:#87A96B"></i>鼠尾草绿 / Sage</div>
+      <div class="pchip"><i style="background:#B5A07F"></i>铜金 / Copper</div>
+      <div class="pchip"><i style="background:#EDE6D6"></i>亚麻米 / Linen</div>
+      <div class="pchip"><i style="background:#4A5D3F"></i>暗墨绿叶 / Forest</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">01<small>STEP ONE</small></div>
+    <div class="step-title"><h2>项目规划<span class="en">/ Project Plan</span></h2><p>// positioning · users · scope · stack</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">i</div>本步骤目标：让 AI 准确理解一款"<b>AI 智能家居整装 C 端 App</b>"的产品定位、目标人群、核心功能与差异点。</div>
+
+  <div class="det"><b>// 工程脚手架</b> · 通过 <code>pnpm create next-app@latest</code> 初始化，配 <code>App Router</code> + <code>TypeScript strict</code> + <code>TailwindCSS v3</code> + <code>shadcn/ui</code>，整屋 3D 走 <code>three.js</code> + <code>react-three-fiber</code> + <code>R3F Drei</code>，户型扫描封装为 <code>useScanRoom()</code> Hook 统一对接 <code>YOLOv8</code> 与 <code>SAM</code> 分割模型，渲染任务走 <code>BullMQ</code> 异步队列防 GPU 资源争抢。</div>
+
+  <h3 class="sec">1.1 产品定位 <span class="desc">// one sentence</span></h3>
+  <div class="det">面向 <b>28-45 岁新房装修业主与改善型家庭</b> 的 <span class="em">AI 拍房识图 + 整屋 3D 设计 + 设计师上门服务</span> 平台。用户拍一张房间照片，60 秒识别户型尺寸、当前风格、家具空缺，AI 自动生成 <span class="em">整屋 3D 方案</span>（含 18-32 件家具），可一键整屋组合购或预约 <b>2580+ 认证设计师</b> 上门量房。</div>
+
+  <h3 class="sec">1.2 核心功能模块 <span class="desc">// 6 modules</span></h3>
+  <div class="bullet"><b>AI 拍房识图</b>：单图识别户型/面积/层高/风格/光照，自动生成 3D 模型</div>
+  <div class="bullet"><b>整屋 3D 方案</b>：基于风格偏好 AI 推荐 6 套整屋方案，可旋转预览</div>
+  <div class="bullet"><b>整屋组合购</b>：18-32 件家具一键加购，享套餐价（比单品省 ¥10,000+）</div>
+  <div class="bullet"><b>设计师服务</b>：认证设计师库、上门量房（¥299 抵 ¥2000）、整装方案出图</div>
+  <div class="bullet"><b>转化引流</b>：支付成功后展示 <span class="em">设计师专属微信</span>，进入私域 1V1 服务</div>
+  <div class="bullet"><b>到家服务</b>：免费送货 + 安装 + 30 天无理由退换 + 5 年质保</div>
+
+  <h3 class="sec">1.3 技术栈 <span class="desc">// stack</span></h3>
+  <div class="det"><b>前端</b>：Next.js 14 · TS · Tailwind · Three.js（3D 户型渲染）· react-webcam<br><b>AI</b>：百度 EasyDL 户型识别 · 通义千问-VL 风格分析 · Stable Diffusion ControlNet 室内重绘 · ARKit / ARCore 实景试摆<br><b>后端</b>：Next.js API · Supabase · 微信支付 · 阿里云 OSS（3D 模型/素材）</div>
+
+  <div class="step">
+    <div class="step-num">02<small>STEP TWO</small></div>
+    <div class="step-title"><h2>页面架构<span class="en">/ Architecture</span></h2><p>// info hierarchy · navigation</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">i</div>底部 Tab 4 项：<b>首页 / 拍房 / 设计师 / 我的家</b>。视觉以 <b>胡桃原木 + 鼠尾草绿</b> 为主，传递“温暖、自然、生活美学”。</div>
+
+  <div class="det"><b>// 路由 / 状态 / 主题</b> · 路由按 <code>app/(scan)/</code>、<code>app/(plan)/</code>、<code>app/(book)/</code> 三大动线分组，全局状态走 <code>Jotai</code> + <code>jotai-immer</code> 管理户型与选品草稿，整屋拖拽家具走 <code>@dnd-kit/core</code>，主色以 <code>CSS Variables</code> 动态切换侘寂 / 北欧 / 法式 / 现代四套主题。</div>
+
+  <div class="flow-block">
+    <h4>核心动线 · 从拍房到完成转化</h4>
+    <div class="flow">
+      <span>启动</span><span class="ar">→</span>
+      <span>选风格</span><span class="ar">→</span>
+      <span class="key">AI 拍房</span><span class="ar">→</span>
+      <span class="key">整屋 3D 方案</span><span class="ar">→</span>
+      <span>设计师匹配</span><span class="ar">→</span>
+      <span>预约量房</span><span class="ar">→</span>
+      <span class="cv">支付 + 加设计师微信</span>
+    </div>
+  </div>
+
+  <h3 class="sec">2.1 入口与首页（4 屏） <span class="desc">// onboarding & home</span></h3>
+
+  <h4 class="page"><span class="num">P01</span>启动页</h4>
+  <div class="det">胡桃木渐变背景 + <b>铜金渐变圆形 LOGO</b> + 古朴 Cormorant 斜体"OAKwood"+ 中文"栎宅"+ 装饰线 + 一句生活格言"<span class="em">A house is made of walls and beams · A home is built with love and dreams</span>"。气质温暖、有质感、岁月感。</div>
+
+  <h4 class="page"><span class="num">P02</span>风格选择 Style Picker</h4>
+  <div class="det">2×3 风格卡片：<b>北欧 / 日式 / 侘寂 / 法式 / 现代 / 工业风</b>。每张卡片上半部分用对应配色块表示风格质感（北欧浅米、日式原木、侘寂深灰、法式米金、现代冷灰、工业铁黑），下半部分中英文双标。选中态：鼠尾草绿描边 + 内卡片绿底 + 浅绿光晕。</div>
+
+  <h4 class="page"><span class="num">P03</span>首页 Home</h4>
+  <div class="det"><b>顶栏</b>：胡桃木渐变 + 用户问候。<br><b>主 CTA</b>：左侧鼠尾草绿大方块（图标 + 古朴印字"AI 拍房 · 60 秒生成方案"）+ 右侧文字。<br><b>推荐方案卡片</b>：渐变缩略图（胡桃 → 鼠尾草渐变模拟室内场景）+ 方案名"<span class="em">日式侘寂三居整装方案</span>"+ 32 件家具 / 12 万套餐价 / 已选 686 户。</div>
+
+  <h4 class="page"><span class="num">P04</span>AI 拍房 Room Scan <span class="tag" style="background:var(--sage);color:#fff">CRITICAL</span></h4>
+  <div class="det">深色摄像头实景 + 顶部"客厅 / 卧室 / 餐厅"切换 + <b>3D 网格扫描线</b>（鼠尾草绿）+ 中部识别框（已识别"沙发 280×100cm"标签实时浮现）+ 底部 Cormorant 斜体提示"<span class="em">FULL ROOM · GOOD LIGHTING</span>"+ 鼠尾草绿大圆拍照按钮。</div>
+
+  <div class="phones">
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body splash">
+      <div class="splash-logo">O</div>
+      <h2>OAKWOOD</h2>
+      <p class="cn">栎 宅</p>
+      <div class="div"></div>
+      <div class="quote">A house is made of walls and beams<br>A home is built with love and dreams</div>
+    </div><div class="cap">P01 SPLASH</div></div></div>
+
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body style">
+      <div class="style-hd">
+        <div class="step-bar"><i class="on"></i><i class="on"></i><i></i></div>
+        <h3>选择心仪风格</h3>
+        <small>SELECT YOUR DESIGN STYLE</small>
+      </div>
+      <div class="style-bd">
+        <div class="style-card on"><div class="img">❦</div><div class="t">日式侘寂</div><div class="en">WABI-SABI</div></div>
+        <div class="style-card"><div class="img">▲</div><div class="t">北欧极简</div><div class="en">NORDIC</div></div>
+        <div class="style-card"><div class="img">◈</div><div class="t">法式优雅</div><div class="en">FRENCH</div></div>
+        <div class="style-card"><div class="img">▢</div><div class="t">现代轻奢</div><div class="en">MODERN</div></div>
+        <div class="style-card"><div class="img">⚒</div><div class="t">工业复古</div><div class="en">INDUSTRIAL</div></div>
+        <div class="style-card"><div class="img">✿</div><div class="t">原木自然</div><div class="en">NATURAL</div></div>
+      </div>
+    </div><div class="cap">P02 STYLE</div></div></div>
+
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body home">
+      <div class="home-hd"><div class="row"><div><div class="greet">Welcome home</div><div class="who">林女士 · 日式侘寂</div></div><div class="ic">❦</div></div></div>
+      <div class="cta-pri"><div class="img">📷</div><div class="info"><div class="ttl">AI 智能拍房</div><div class="desc">60 SEC · 3D ROOM SCAN</div></div></div>
+      <div class="sec-h"><h4>整屋方案<small>WHOLE HOUSE</small></h4><span class="more">VIEW ALL ›</span></div>
+      <div class="scheme">
+        <div class="pic">
+          <div class="scene">
+            <i class="window"></i>
+            <i class="plant"></i>
+            <i class="lamp-st"></i><i class="lamp-sh"></i>
+            <i class="sofa"></i>
+            <i class="table"></i>
+            <i class="tv"></i>
+          </div>
+        </div>
+        <div class="body">
+          <div class="ttl">日式侘寂三居整装方案</div>
+          <div class="meta">32 件家具 · 110㎡ · 已选 686 户</div>
+          <div class="row"><div class="pri">¥120,800<small> · 省 ¥18,600</small></div><button>查看</button></div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <div class="on"><span class="ic">❦</span>HOME</div>
+        <div><span class="ic">📷</span>SCAN</div>
+        <div><span class="ic">⚐</span>DESIGN</div>
+        <div><span class="ic">◉</span>ME</div>
+      </div>
+    </div><div class="cap">P03 HOME</div></div></div>
+
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body scan">
+      <div class="scan-img"></div>
+      <div class="scan-bar"><div class="x">×</div><div class="room">客厅 LIVING</div></div>
+      <div class="scan-grid">
+        <div class="det-box b1"><span class="lab">SOFA · 三人位 <b>280×100cm</b></span></div>
+        <div class="det-box b2"><span class="lab">WINDOW <b>180×140cm</b></span></div>
+        <div class="det-box b3"><span class="lab">TABLE <b>120×70cm</b></span></div>
+        <div class="det-box b4"><span class="lab">PLANT <b>薄荷</b></span></div>
+      </div>
+      <div class="scan-tip">已识别 4 件家具 · 请继续扫描<small>FULL ROOM · GOOD LIGHTING</small></div>
+      <div class="scan-shot"></div>
+    </div><div class="cap">P04 SCAN</div></div></div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">03<small>STEP THREE</small></div>
+    <div class="step-title"><h2>核心闭环 · 整屋 3D 方案<span class="en">/ AI Core</span></h2><p>// the moment of trust</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">★</div>这是产品最关键的"<b>价值时刻</b>"——用户拍完房间后 60 秒看到一份完整 3D 整屋方案 + 家具清单 + 套餐价 + 省了多少钱。<b>方案越精美、越懂客户、越有节省感，付费转化率越高。</b></div>
+
+  <div class="det"><b>// AI 渲染实现</b> · 用户拍完裸房后，前端调用 <code>POST /api/furniture/render</code>，后端先走 <code>YOLOv8 户型检测</code> 识别面积 / 朝向 / 层高，随后交给 <code>Stable Diffusion XL</code> 配合 <code>ControlNet (MLSD + Depth)</code> 双控制生成 4K 整屋渲染图，准确保留原始门窗位置与透视结构；同时在成品库内以 <code>cosine similarity</code> 匹配风格、预算与面积都合适的家具清单，下单后自动拆单推送至工厂 <code>SAP</code> 与仓储 <code>WMS</code>，60 秒内输出报价与交付周期。</div>
+
+  <h4 class="page"><span class="num">P05</span>AI 整屋方案 Whole House Plan <span class="tag" style="background:var(--cop);color:#fff">⭐ KEY</span></h4>
+  <div class="det"><b>顶部封面</b>：胡桃木渐变 + 铜色双框 + "AI 整屋设计方案"+ 报告编号 + 出具日期。<br><b>3D 户型渲染</b>：浅米黄底 + 透视感胡桃木地面 + 浮动"❦ 3D LAYOUT · 客厅 28㎡"标签。<br><b>三宫格数据</b>：户型 110㎡ / 风格匹配 92% / 家具 32 件。<br><b>家具清单卡片</b>（左铜金竖条）：列出"主沙发 · 胡桃实木 ¥8,600 / 茶几 · 鼠尾草绿绒面 ¥3,200 / 电视柜 ¥4,500 ..."<br><b>底部 CTA</b>：胡桃木背景 + 铜色双框 + 古朴大字"<span class="em">¥120,800</span>" 套餐价 + 划线 ¥139,400 + 鼠尾草绿按钮"<span class="em">立即整屋购 / 预约设计师上门</span>"。</div>
+
+  <div class="phones">
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body rpt">
+      <div class="rpt-hd">
+        <div class="seal">❦ OAKWOOD · OFFICIAL DESIGN</div>
+        <h3>AI 整屋设计方案</h3>
+        <div class="sub">PLN-20260508-0086 · 110㎡ · 日式侘寂</div>
+      </div>
+      <div class="rpt-3d">
+        <i class="wall-v"></i><i class="wall-h"></i><i class="f-door"></i>
+        <span class="room-tag t-living">客厅 28㎡</span>
+        <span class="room-tag t-kitchen">餐厨 18㎡</span>
+        <span class="room-tag t-bed">卧室 16㎡</span>
+        <i class="f f-tv">TV</i>
+        <i class="f f-sofa">SOFA</i>
+        <i class="f f-rug"></i>
+        <i class="f f-table"></i>
+        <i class="f f-sofa-s"></i>
+        <i class="f f-plant"></i>
+        <i class="f f-counter"></i>
+        <i class="f f-fridge"></i>
+        <i class="f f-chair"></i>
+        <i class="f f-table-d"></i>
+        <i class="f f-bed"></i>
+        <i class="f f-bedside"></i>
+      </div>
+      <div class="rpt-grid">
+        <div class="rpt-cell"><div class="lab">AREA</div><div class="v">110㎡</div></div>
+        <div class="rpt-cell"><div class="lab">MATCH</div><div class="v">92%</div></div>
+        <div class="rpt-cell"><div class="lab">ITEMS</div><div class="v">32</div></div>
+      </div>
+      <div class="rpt-card">
+        <div class="lab">❦ FURNITURE LIST</div>
+        <div class="ttl">客厅家具清单</div>
+        <div class="items">
+          <div class="item"><span>主沙发 · 胡桃实木 280cm</span><b>¥8,600</b></div>
+          <div class="item"><span>侘寂茶几 · 鼠尾草绒面</span><b>¥3,200</b></div>
+          <div class="item"><span>电视柜 · 樱木原色</span><b>¥4,500</b></div>
+          <div class="item"><span>侘寂落地灯 · 棉麻</span><b>¥1,280</b></div>
+        </div>
+      </div>
+      <div class="rpt-cta">
+        <div class="ttl">❦ WHOLE HOUSE PACKAGE</div>
+        <div class="pri">¥120,800<small>¥139,400</small></div>
+        <button>立即整屋购 →</button>
+      </div>
+    </div><div class="cap">P05 PLAN ⭐</div></div></div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">04<small>STEP FOUR</small></div>
+    <div class="step-title"><h2>转化模块 · 设计师上门 + 整屋购<span class="en">/ Conversion</span></h2><p>// not a product mall · whole-house funnel</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">★</div>家具行业的转化路径不是"逛单品商城"——而是 <b>整屋方案打包购 + 预约设计师上门量房 + 加设计师微信进入私域服务</b>。整个模块包含：设计师列表 → 详情 → 选服务（量房/出图/整装）→ 预约 → 支付 → <span class="em">添加设计师微信</span>。</div>
+
+  <div class="det"><b>// 转化实现</b> · 设计师列表走 <code>useInfiniteQuery</code> 分页 + <code>IntersectionObserver</code> 懒加载，预约提交走 <code>tRPC mutation</code> 写入 <code>bookings</code> 表，<code>wx.chooseWXPay</code> 支付完成后 <code>BullMQ</code> 异步发短信 + 推送钉钉到设计师工作室，前端 <code>Realtime channel</code> 立刻推送量房师傅企业微信二维码与 GPS 上门路径。</div>
+
+  <h4 class="page"><span class="num">P06</span>设计师列表 Designer List</h4>
+  <div class="det"><b>设计师卡片</b>：左侧 54×64 矩形头像（艺术家职业感，胡桃木背景）+ 姓名 + <span class="em">V 认证</span> + 头衔（首席设计师 · 8 年）+ 标签（侘寂 / 日式 / 现代）+ 数据条（作品 X 套 / 服务 X 户 / 评分 X.X）+ 右下角斜体橙色 ¥299 / 起 + 鼠尾草绿按钮"立即预约"。</div>
+
+  <h4 class="page"><span class="num">P07</span>预约服务 Service Booking</h4>
+  <div class="det"><b>顶部</b>：设计师浮条。<br><b>服务套餐</b>：3 选 1 列出 ① 上门量房 ¥299（抵 ¥2000）② 整装方案出图 ¥1,999 ③ 全程跟进 ¥9,800。<br><b>包含服务</b>：4 项打勾列表（实地测量 / 风格沟通 / 方案出图 / 软装清单）。<br><b>底部固定栏</b>：左侧斜体橙色 ¥299 + 右侧鼠尾草绿"立即支付"。</div>
+
+  <h4 class="page"><span class="num">P08</span>支付成功 + 加设计师微信 <span class="tag" style="background:var(--sage);color:#fff">⭐ ULTIMATE</span></h4>
+  <div class="det"><b>这是整个 App 的最终转化目标页</b>。胡桃木渐变背景 + 双层铜色边框（仪式感）+ 鎏金"❦ DESIGN BOOKED"+ 鼠尾草绿成功圆形 + 古朴大字 <span class="em">¥299.00</span> + "已预约 5/12 周日 14:00 上门量房"。<br><b>核心卡片</b>：白色双铜边 + "添加设计师微信"+ "1V1 整装顾问 · 上门前确认细节"+ 二维码（中心铜金 ❦ 标）+ "助理 30 分钟内联系"。<br>设计要点：突出"专属设计师"、"上门服务"、"快速响应"。</div>
+
+  <h4 class="page"><span class="num">P09</span>我的家 My Home</h4>
+  <div class="det"><b>顶部</b>：胡桃木渐变 + 矩形设计感头像 + "林女士 · VIP" + "已设计 1 套 / 进行中"。<b>三宫格数据</b>：方案 1 / 订单 0 / 设计师 1。<b>列表项</b>：我的方案 / 我的设计师（直达微信）/ 我的家具订单 / 量房记录 / 优惠券 / 设置。整体米色卡片 + 铜金边图标。</div>
+
+  <div class="phones">
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body dlist">
+      <div class="dlist-hd"><h3>认证设计师</h3><small>VERIFIED DESIGNERS · 2,580</small></div>
+      <div class="dcard">
+        <div class="av">林</div>
+        <div class="info">
+          <div class="nm">林清远 <span class="v">V</span></div>
+          <div class="ttl">首席设计师 · 8Y · 侘寂日式</div>
+          <div class="skills"><span>侘寂</span><span>日式</span><span>原木</span></div>
+          <div class="stats"><span>作品 <b>180</b></span><span>服务 <b>620</b></span><span>★ <b>4.9</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥299</div><div class="u">起 / 上门</div><button>预约</button></div>
+      </div>
+      <div class="dcard">
+        <div class="av">陈</div>
+        <div class="info">
+          <div class="nm">陈雨桐 <span class="v">V</span></div>
+          <div class="ttl">高级设计师 · 6Y · 北欧</div>
+          <div class="skills"><span>北欧</span><span>极简</span><span>软装</span></div>
+          <div class="stats"><span>作品 <b>120</b></span><span>服务 <b>380</b></span><span>★ <b>5.0</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥299</div><div class="u">起 / 上门</div><button>预约</button></div>
+      </div>
+      <div class="dcard">
+        <div class="av">江</div>
+        <div class="info">
+          <div class="nm">江南舟 <span class="v">V</span></div>
+          <div class="ttl">主任设计师 · 12Y · 法式</div>
+          <div class="skills"><span>法式</span><span>新中式</span><span>轻奢</span></div>
+          <div class="stats"><span>作品 <b>240</b></span><span>服务 <b>820</b></span><span>★ <b>4.9</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥499</div><div class="u">起 / 上门</div><button>预约</button></div>
+      </div>
+    </div><div class="cap">P06 DESIGNERS</div></div></div>
+
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body book">
+      <div class="book-hd"><div class="av">林</div><div><div class="nm">林清远 · 首席设计师</div><div class="ttl">8Y · 侘寂日式 · ★4.9</div></div></div>
+      <div class="book-pkg">
+        <h4>SERVICE PACKAGE · 服务套餐</h4>
+        <div class="pkg-row"><div class="l">① 上门量房 + 风格沟通<small>2 小时 · 抵 ¥2000 设计费</small></div><div class="p">¥299</div></div>
+        <div class="pkg-row"><div class="l">② 整装方案出图<small>3D 效果图 + CAD 平面图</small></div><div class="p">¥1,999</div></div>
+        <div class="pkg-row"><div class="l">③ 全程整装跟进<small>方案 + 软装 + 选品 + 验收</small></div><div class="p">¥9,800</div></div>
+      </div>
+      <div class="book-srv">
+        <h4>INCLUDED · 包含服务</h4>
+        <div class="srv-list">
+          <div class="item"><div class="ic">✓</div>实地测量与户型分析</div>
+          <div class="item"><div class="ic">✓</div>风格偏好深度沟通</div>
+          <div class="item"><div class="ic">✓</div>初步空间规划建议</div>
+          <div class="item"><div class="ic">✓</div>软装色彩方案推荐</div>
+        </div>
+      </div>
+      <div class="book-cta">
+        <div class="pri"><div class="lab">SELECTED · 上门量房</div><div class="p">¥ 299</div></div>
+        <button>立即支付</button>
+      </div>
+    </div><div class="cap">P07 BOOK</div></div></div>
+
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body pay">
+      <div class="pay-seal">❦ DESIGN BOOKED</div>
+      <div class="pay-ic">✓</div>
+      <h3>预约成功</h3>
+      <div class="amt">¥ 299.00</div>
+      <div class="desc">5/12 周日 14:00 · 上门量房<br><b>林清远 设计师</b> · 首席设计师 8 年</div>
+      <div class="qr-card">
+        <div class="ttl">添加设计师微信</div>
+        <div class="sub">1V1 整装顾问 · ON-SITE</div>
+        <div class="qr"></div>
+        <div class="save">长按保存 · 设计师 30 分钟内联系</div>
+      </div>
+    </div><div class="cap">P08 PAY ⭐</div></div></div>
+
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body me">
+      <div class="me-hd"><div class="row"><div class="av">林</div><div><div class="nm">林女士</div><div class="lvl">VIP · 设计中</div></div></div></div>
+      <div class="me-stats">
+        <div><div class="v">1</div><div class="l">DESIGN PLAN</div></div>
+        <div><div class="v">0</div><div class="l">ORDERS</div></div>
+        <div><div class="v">1</div><div class="l">DESIGNER</div></div>
+      </div>
+      <div class="me-list">
+        <div class="item"><div class="ic">❦</div><div class="t">我的整装方案</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">⚐</div><div class="t">我的设计师（微信）</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">📦</div><div class="t">我的家具订单</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">📐</div><div class="t">量房记录</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">🎁</div><div class="t">优惠券</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">⚙</div><div class="t">设置</div><div class="arr">›</div></div>
+      </div>
+    </div><div class="cap">P09 MY HOME</div></div></div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">05<small>STEP FIVE</small></div>
+    <div class="step-title"><h2>管理后台 · 设计师 / 订单 / 数据<span class="en">/ Admin</span></h2><p>// PC console for ops</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">i</div>后台供 <b>平台运营 / 设计师工作室 / 仓储物流</b> 三类角色基于 <code>RBAC</code> 权限模型分级使用，共覆盖 <b>8 大核心模块</b>：数据看板（实时 DAU / 营收漏斗 / 户型分布）、设计师管理（作品集 AI 打分 + 段位评级 + 抽成阶梯）、方案审核（AI 初筛 + 主案首席终审）、整装订单（电子合同·五步节点 / 工程进度·节点截图）、量房排期（高德地图聚合 + 师傅实时 GPS）、仓储发货（菜鸟 / 顺丰多仓联动）、财务结算（设计师分润 + 增值税专票 + T+1 提现）、系统设置。前端采用 <code>Next.js 14 + TailwindCSS</code> 构建，3D 渲染引擎走 <code>Stable Diffusion XL + ControlNet</code>，下单后自动拆单调起工厂 <code>SAP</code> 与仓储 <code>WMS</code>，所有订单核心状态机走 <code>Redis Streams</code> 实时广播。胡桃木 + 鼠尾草绿配色与 App 端完全一致，强化品牌识别。</div>
+
+  <div class="pc">
+    <div class="pc-bar"><i></i><i></i><i></i><span>OAKWOOD Admin · admin.oakwood.cn</span></div>
+    <div class="pc-body">
+      <div class="pc-side">
+        <div class="logo">OAKWOOD</div>
+        <div class="item on"><span class="ic">I.</span>数据看板</div>
+        <div class="item"><span class="ic">II.</span>设计师管理</div>
+        <div class="item"><span class="ic">III.</span>方案审核</div>
+        <div class="item"><span class="ic">IV.</span>整装订单</div>
+        <div class="item"><span class="ic">V.</span>量房排期</div>
+        <div class="item"><span class="ic">VI.</span>仓储发货</div>
+        <div class="item"><span class="ic">VII.</span>财务结算</div>
+        <div class="item"><span class="ic">VIII.</span>系统设置</div>
+      </div>
+      <div class="pc-main">
+        <h3>数据看板 · 今日实时</h3>
+        <div class="pc-filter">
+          <div class="seg"><span class="on">今日</span><span>本周</span><span>本月</span><span>季度</span><span>自定义</span></div>
+          <input placeholder="🔍  搜索订单号 / 客户姓名 / 设计师">
+          <button class="btn">导出报表</button>
+        </div>
+        <div class="kpi">
+          <div class="kc"><div class="lab">DAU · 日活</div><div class="v">6,486</div><div class="d">↑ 8.2% vs 昨日</div></div>
+          <div class="kc"><div class="lab">REVENUE · 流水</div><div class="v">¥486,200</div><div class="d">↑ 18.4% vs 昨日</div></div>
+          <div class="kc"><div class="lab">APPOINT · 量房预约</div><div class="v">86</div><div class="d">↑ 12.6% vs 昨日</div></div>
+          <div class="kc"><div class="lab">PLAN · 方案生成</div><div class="v">1,286</div><div class="d">↑ 22.4% vs 昨日</div></div>
+        </div>
+        <div class="pc-charts">
+          <div class="pc-ch">
+            <h4>近 7 日 量房预约 + 整屋方案趋势 <small>WEEKLY TREND</small></h4>
+            <div class="pc-bar">
+              <div class="b" data-d="5/02" data-v="62" style="height:54%"></div>
+              <div class="b" data-d="5/03" data-v="58" style="height:50%"></div>
+              <div class="b" data-d="5/04" data-v="71" style="height:62%"></div>
+              <div class="b" data-d="5/05" data-v="68" style="height:59%"></div>
+              <div class="b" data-d="5/06" data-v="75" style="height:65%"></div>
+              <div class="b" data-d="5/07" data-v="79" style="height:69%"></div>
+              <div class="b hl" data-d="5/08" data-v="86" style="height:75%"></div>
+            </div>
+          </div>
+          <div class="pc-ch">
+            <h4>风格分布 <small>STYLE MIX</small></h4>
+            <div class="pc-ring"><div class="v"><b>1,286</b><small>TOTAL</small></div></div>
+            <div class="pc-leg">
+              <div><i style="background:var(--sage)"></i>侘寂 <b>42%</b></div>
+              <div><i style="background:var(--cop)"></i>北欧 <b>26%</b></div>
+              <div><i style="background:#C77E50"></i>法式 <b>20%</b></div>
+              <div><i style="background:var(--p2)"></i>现代 <b>12%</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="pc-tbl">
+          <h4>近期订单明细 <small>RECENT ORDERS · 共 86 条 · 显示前 5 条</small></h4>
+          <table>
+            <tr><th>订单号</th><th>客户</th><th>设计师</th><th>类型</th><th>面积</th><th>金额</th><th>来源</th><th>响应</th><th>状态</th></tr>
+            <tr><td>OW20260508-0086</td><td><b>林女士</b></td><td>林清远</td><td>上门量房</td><td>110㎡</td><td>¥299</td><td>抖音</td><td>3 分钟</td><td><span class="gt">已预约</span></td></tr>
+            <tr><td>OW20260508-0085</td><td><b>张先生</b></td><td>江南舟</td><td>整屋整装</td><td>140㎡</td><td>¥120,800</td><td>小红书</td><td>5 分钟</td><td><span class="gt">已支付</span></td></tr>
+            <tr><td>OW20260508-0084</td><td><b>陈女士</b></td><td>陈雨桐</td><td>方案出图</td><td>89㎡</td><td>¥1,999</td><td>微信</td><td>8 分钟</td><td><span class="ot">设计中</span></td></tr>
+            <tr><td>OW20260508-0083</td><td><b>王先生</b></td><td>林清远</td><td>软装搭配</td><td>96㎡</td><td>¥6,800</td><td>抖音</td><td>2 分钟</td><td><span class="gt">已完成</span></td></tr>
+            <tr><td>OW20260508-0082</td><td><b>赵女士</b></td><td>江南舟</td><td>上门量房</td><td>120㎡</td><td>¥299</td><td>百度</td><td>12 分钟</td><td><span class="gt">已预约</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="foot">
+  <div class="foot-c">
+    <div class="foot-mark">OAKWOOD<span class="cn">栎 宅</span></div>
+    <p><b>// 一份完整提示词，从 0 到 1 构建 AI 智能整装 C 端产品</b></p>
+    <p>本提示词适用于 <b>Cursor / Windsurf / Claude Code</b> 等 AI Coding 工具，可一次性生成 Next.js 14 工程骨架。</p>
+    <p>配套：完整提示词 .md · UI 预览 .html · Midjourney 素材包</p>
+    <div class="div"></div>
+    <p class="copyright">© 2026 OAKWOOD AI · Industry 04 / 05 — Smart Furniture Edition · Internal Delivery · v1.0</p>
+  </div>
+</footer>
+
+</body>
+</html>
