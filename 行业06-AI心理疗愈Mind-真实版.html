@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>Mind · AI 心理疗愈陪伴 · 真实版</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style id="core">
+:root{
+  --mist:#6B7FB5; --mist-d:#4A5C8F; --mist-l:#B5C0DC;
+  --lav:#A89AC7; --lav-l:#D6CCE5; --lav-d:#7E6FA0;
+  --dawn:#F5C7C7; --cedar:#8AAB91;
+  --milk:#F8F5F1; --paper:#FBF9F5; --cream:#F2EDE5;
+  --ink:#2A3658; --ink-s:#4A5478; --gray:#8B90A8;
+  --gold:#C9A866; --danger:#C9665A;
+}
+*{box-sizing:border-box}
+body{font-family:Inter,'Noto Serif SC',sans-serif;background:#E5E2DB;color:var(--ink);margin:0;-webkit-font-smoothing:antialiased}
+.serif{font-family:'Noto Serif SC',serif}
+.cormorant{font-family:'Cormorant Garamond',serif}
+.mono{font-family:'JetBrains Mono',monospace}
+main{padding:54px 60px;background:linear-gradient(180deg,#FBF9F5,#F2EDE5)}
+
+/* ===== Hero ===== */
+.hero{position:relative;padding:56px 60px 44px;color:#fff;overflow:hidden;background:linear-gradient(135deg,#4A5C8F 0%,#6B7FB5 40%,#A89AC7 100%)}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(245,199,199,.28),transparent 50%),radial-gradient(circle at 20% 80%,rgba(138,171,145,.22),transparent 55%)}
+.hero>*{position:relative;z-index:2}
+.hero-row{display:flex;align-items:flex-start;gap:24px;margin-bottom:18px}
+.hero .crest{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,#F5C7C7,#D6CCE5);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond';font-style:italic;font-size:38px;font-weight:700;color:var(--mist-d);box-shadow:0 12px 30px rgba(0,0,0,.2);flex-shrink:0}
+.hero h1{font-family:'Noto Serif SC';font-size:42px;font-weight:900;letter-spacing:2px;margin:0;line-height:1.18}
+.hero h1 .en{display:block;font-family:'Cormorant Garamond';font-style:italic;font-size:22px;font-weight:500;color:#F5C7C7;letter-spacing:5px;margin-top:4px}
+.hero .sub{font-size:14px;color:#E8E5F0;letter-spacing:1.2px;margin-top:14px;max-width:600px;line-height:1.95}
+.hero .palette{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.hero .chip{font-size:10px;letter-spacing:2px;padding:6px 12px;border-radius:20px;font-weight:600;font-family:Inter;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;backdrop-filter:blur(6px)}
+.hero .chip .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.hero .stats{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap}
+.hero .st{background:rgba(255,255,255,.10);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);padding:11px 18px;border-radius:14px}
+.hero .st .n{font-family:'Cormorant Garamond';font-size:24px;font-weight:700;color:#fff;line-height:1}
+.hero .st .l{font-size:9.5px;letter-spacing:2px;color:#D6CCE5;text-transform:uppercase;margin-top:4px}
+
+/* Intro */
+.intro{background:linear-gradient(135deg,#FBF9F5,#F2EDE5);padding:30px 44px;border-bottom:1px solid var(--mist-l);font-size:14px;line-height:2;color:var(--ink-s)}
+.intro b{color:var(--ink)}
+
+/* ===== Step heading ===== */
+.step{display:flex;align-items:flex-start;gap:24px;margin:60px 0 12px;padding-bottom:18px;border-bottom:1px solid rgba(75,88,120,.2);position:relative}
+.step::after{content:'';position:absolute;left:0;bottom:-1px;width:80px;height:3px;background:linear-gradient(90deg,var(--mist),var(--lav));border-radius:2px}
+.step-num{font-family:'Cormorant Garamond';font-style:italic;font-size:64px;font-weight:700;line-height:.85;color:var(--mist);display:flex;flex-direction:column;flex-shrink:0}
+.step-num small{font-family:Inter;font-style:normal;font-size:10px;letter-spacing:4px;font-weight:700;color:var(--lav-d);margin-top:8px}
+.step-title{padding-top:6px}
+.step-title h2{font-family:'Noto Serif SC';font-size:28px;font-weight:900;color:var(--ink);margin:0;display:inline-block}
+.step-title .en{font-family:'Cormorant Garamond';font-style:italic;font-size:15px;color:var(--mist-d);letter-spacing:3px;margin-left:10px;font-weight:500}
+.step-title p{font-size:13px;color:var(--ink-s);margin:8px 0 0;letter-spacing:.5px;line-height:1.7}
+
+/* ===== Callout ===== */
+.callout{background:linear-gradient(90deg,rgba(168,154,199,.10),rgba(107,127,181,.06));border-left:3px solid var(--mist);padding:20px 26px 20px 40px;border-radius:0 10px 10px 0;font-size:14px;line-height:1.95;margin:22px 0;position:relative;color:var(--ink-s)}
+.callout .ico{position:absolute;left:-16px;top:18px;width:30px;height:30px;background:linear-gradient(135deg,var(--mist),var(--lav));color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:0 8px 18px rgba(107,127,181,.35)}
+.callout b{color:var(--ink)}
+.callout .em{background:rgba(168,154,199,.25);color:var(--lav-d);padding:1px 6px;border-radius:4px;font-weight:600}
+
+/* ===== Det / Sec / Page / Bullet ===== */
+.det{font-size:13.5px;line-height:2;color:#3E4666;margin:8px 0 14px;padding:12px 18px;border-left:1px solid var(--lav-l);background:rgba(255,255,255,.55);border-radius:0 6px 6px 0}
+.det b{color:var(--ink);font-weight:700}
+.det .em{background:rgba(245,199,199,.4);color:#A6574E;padding:0 5px;border-radius:3px;font-weight:600}
+.det code{font-family:'JetBrains Mono',Consolas,monospace;font-size:12.5px;background:rgba(107,127,181,.12);color:var(--mist-d);padding:1px 7px;border-radius:4px;border:1px solid rgba(168,154,199,.35);font-weight:700;letter-spacing:.3px}
+h3.sec{font-family:'Noto Serif SC';font-size:20px;font-weight:700;margin:34px 0 10px;color:var(--ink);position:relative;padding-left:20px}
+h3.sec::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:3px;background:linear-gradient(180deg,var(--mist),var(--lav));border-radius:2px}
+h3.sec .desc{font-family:Inter;font-size:13px;font-weight:400;color:var(--gray);margin-left:8px}
+h4.page{font-size:15px;font-weight:700;margin:18px 0 4px;color:var(--ink)}
+h4.page .num{font-family:'Cormorant Garamond';font-style:italic;color:var(--mist);font-weight:700;margin-right:6px;font-size:18px}
+.bullet{padding:6px 0 6px 22px;position:relative;font-size:14px;line-height:1.75;color:#3E4666}
+.bullet::before{content:'◆';color:var(--lav);position:absolute;left:4px;font-size:9px;top:11px}
+.bullet b{color:var(--ink)}
+
+/* ===== Compliance card ===== */
+.comp{background:linear-gradient(135deg,#FBF9F5,#F8F5F1);border:1px solid rgba(201,168,102,.3);border-radius:14px;padding:22px 26px;margin:18px 0;position:relative}
+.comp::before{content:'⚠';position:absolute;top:-14px;left:22px;background:linear-gradient(135deg,#C9A866,#A88845);color:#fff;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;box-shadow:0 6px 14px rgba(201,168,102,.4)}
+.comp h4{font-family:'Noto Serif SC';font-size:16px;font-weight:700;color:var(--ink);margin:0 0 12px}
+.comp .row{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px;font-size:13.5px;line-height:1.8;color:var(--ink-s)}
+.comp .row .ic{color:var(--gold);font-weight:700;flex-shrink:0;margin-top:2px}
+.comp .row b{color:var(--ink)}
+
+/* ===== Tag ===== */
+.tag{font-size:10px;padding:3px 9px;border-radius:12px;display:inline-block;font-weight:600;letter-spacing:.5px}
+</style>
+<style id="phones">
+/* ===== Phone gallery container ===== */
+.phones{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;padding:48px 18px 56px;background:linear-gradient(135deg,#3A4670 0%,#5A6B9A 50%,#8475A8 100%);border-radius:20px;margin:30px 0;position:relative;overflow:hidden}
+.phones::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 30% 20%,rgba(245,199,199,.15),transparent 50%),radial-gradient(circle at 80% 80%,rgba(168,154,199,.18),transparent 50%);pointer-events:none}
+.phones::after{content:'★ MOBILE UI · REAL FEEL';position:absolute;top:18px;left:24px;font-family:'Cormorant Garamond';font-style:italic;font-size:11px;letter-spacing:5px;color:rgba(245,199,199,.6);font-weight:700}
+
+/* ===== Phone shell (iPhone 15-ish) ===== */
+.ph{width:248px;height:530px;border-radius:44px;background:#0E1622;padding:5px;position:relative;flex-shrink:0;transition:transform .35s cubic-bezier(.2,.8,.2,1);box-shadow:0 30px 60px -20px rgba(0,0,0,.55),0 0 0 1px rgba(168,154,199,.18),inset 0 0 0 1.5px #1F2A3F}
+.ph:hover{transform:translateY(-6px) rotate(-.3deg)}
+.ph .scr{height:100%;border-radius:39px;overflow:hidden;display:flex;flex-direction:column;font-family:-apple-system,'PingFang SC','SF Pro Text',Inter,sans-serif;font-size:11px;position:relative;background:#fff;color:#1A1F2E}
+
+/* Dynamic Island */
+.ph .island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:88px;height:25px;background:#000;border-radius:14px;z-index:20}
+
+/* Status Bar (real iOS) */
+.stb{height:44px;display:flex;justify-content:space-between;align-items:flex-end;padding:0 22px 7px;font-size:13px;font-weight:600;font-family:-apple-system,'SF Pro Text',sans-serif;letter-spacing:-.2px;flex-shrink:0;position:relative;z-index:5}
+.stb .t{font-variant-numeric:tabular-nums}
+.stb .r{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600}
+.stb .r svg{display:block}
+.stb.dark{color:#fff}
+.stb.light{color:#1A1F2E}
+
+/* Home indicator */
+.hpipe{position:absolute;bottom:7px;left:50%;transform:translateX(-50%);width:118px;height:4.5px;background:rgba(0,0,0,.32);border-radius:3px;z-index:20}
+.hpipe.light{background:rgba(255,255,255,.5)}
+
+/* Body of screen content */
+.bod{flex:1;overflow:hidden;position:relative;display:flex;flex-direction:column}
+
+/* Caption beneath phone */
+.cap{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(14,22,34,.85);color:#F5C7C7;font-size:9.5px;padding:4px 14px;border-radius:14px;font-family:'JetBrains Mono';letter-spacing:1.5px;z-index:30;font-weight:600;border:1px solid rgba(168,154,199,.35);backdrop-filter:blur(8px);white-space:nowrap}
+
+/* ===== iOS-like controls ===== */
+.tabbar{display:flex;justify-content:space-around;align-items:center;height:62px;padding-bottom:18px;background:rgba(255,255,255,.78);backdrop-filter:blur(20px);border-top:.5px solid rgba(0,0,0,.08);flex-shrink:0;position:relative;z-index:5}
+.tabbar .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:9px;color:#9AA0B0;font-weight:600;letter-spacing:.3px}
+.tabbar .tab.on{color:#6B7FB5}
+.tabbar .tab svg{width:22px;height:22px}
+
+.seg{display:flex;background:rgba(0,0,0,.06);border-radius:9px;padding:2.5px;font-size:11.5px;font-weight:600}
+.seg .s{flex:1;text-align:center;padding:6px 0;border-radius:7px;color:#5A6478;transition:all .2s}
+.seg .s.on{background:#fff;color:#1A1F2E;box-shadow:0 1px 2.5px rgba(0,0,0,.12),0 1px .5px rgba(0,0,0,.04)}
+
+.tog{width:34px;height:21px;background:#34C759;border-radius:14px;position:relative;flex-shrink:0}
+.tog::after{content:'';position:absolute;top:1.5px;right:1.5px;width:18px;height:18px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+.tog.off{background:rgba(120,120,128,.16)}
+.tog.off::after{right:auto;left:1.5px}
+
+.cellrow{display:flex;align-items:center;gap:11px;padding:11px 14px;background:#fff;border-bottom:.5px solid rgba(0,0,0,.08);font-size:13px}
+.cellrow:last-child{border-bottom:none}
+.cellrow .name{flex:1;color:#1A1F2E;font-weight:500}
+.cellrow .val{color:#8B90A0;font-size:12px}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 20px;border-radius:13px;font-size:13.5px;font-weight:600;letter-spacing:.3px}
+.btn-pri{background:linear-gradient(135deg,#6B7FB5,#A89AC7);color:#fff;box-shadow:0 6px 16px -4px rgba(107,127,181,.5)}
+.btn-sec{background:rgba(107,127,181,.1);color:#4A5C8F}
+
+.pillb{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:11px;font-size:10.5px;font-weight:600;background:rgba(168,154,199,.18);color:#7E6FA0}
+
+/* Chat bubbles */
+.bub{max-width:78%;padding:9px 13px;border-radius:18px;font-size:12.5px;line-height:1.55;margin-bottom:9px}
+.bub.ai{background:#F0EBF6;color:#3A3550;border-bottom-left-radius:5px;align-self:flex-start}
+.bub.me{background:linear-gradient(135deg,#6B7FB5,#8475A8);color:#fff;border-bottom-right-radius:5px;align-self:flex-end}
+
+/* Mood color cells */
+.mood-grid{display:grid;grid-template-columns:repeat(13,1fr);gap:2.5px}
+.mood-grid .c{aspect-ratio:1;border-radius:2.5px}
+
+/* Breathing circle */
+@keyframes breathe{0%,100%{transform:scale(.85);opacity:.65}50%{transform:scale(1.05);opacity:1}}
+.breath{width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#D6CCE5,#A89AC7 55%,#7E6FA0);box-shadow:0 0 60px 12px rgba(168,154,199,.45);animation:breathe 5.5s ease-in-out infinite;position:relative}
+.breath::after{content:'';position:absolute;inset:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.35)}
+
+/* Radar (PHQ-9) */
+.radar{width:160px;height:160px;position:relative;margin:0 auto}
+
+/* SVG icon helper */
+.ic{width:18px;height:18px;display:inline-block;vertical-align:middle}
+.ic-sm{width:14px;height:14px}
+.ic-lg{width:24px;height:24px}
+
+/* ===== Pricing matrix ===== */
+.pmat{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0 6px}
+.pmat .pm{background:linear-gradient(180deg,#fff,#FBF9F5);border:1px solid rgba(168,154,199,.25);border-radius:12px;padding:14px 14px 12px;position:relative;transition:transform .25s}
+.pmat .pm:hover{transform:translateY(-2px);box-shadow:0 12px 24px -10px rgba(107,127,181,.25)}
+.pmat .pm .ttl{font-size:11px;letter-spacing:1.5px;color:var(--lav-d);font-weight:700;text-transform:uppercase}
+.pmat .pm .price{font-family:'Cormorant Garamond';font-size:30px;font-weight:700;color:var(--mist-d);margin-top:3px;line-height:1}
+.pmat .pm .price small{font-family:Inter;font-size:11px;color:var(--gray);font-weight:500;margin-left:3px}
+.pmat .pm .desc{font-size:11.5px;color:var(--ink-s);line-height:1.6;margin-top:8px}
+.pmat .pm.hot::after{content:'最 受 欢 迎';position:absolute;top:-9px;right:10px;background:linear-gradient(135deg,#D89A9A,#B86464);color:#fff;font-size:9px;letter-spacing:2px;padding:3px 8px;border-radius:9px;font-weight:700}
+
+/* ===== Refund ladder ===== */
+.refund{display:flex;border:1px solid rgba(168,154,199,.3);border-radius:12px;overflow:hidden;margin:14px 0;background:#fff}
+.refund .rl{flex:1;padding:14px 12px;text-align:center;border-right:1px solid rgba(168,154,199,.18);position:relative}
+.refund .rl:last-child{border-right:none}
+.refund .rl .pct{font-family:'Cormorant Garamond';font-size:28px;font-weight:700;line-height:1}
+.refund .rl .when{font-size:10.5px;color:var(--gray);letter-spacing:1px;margin-top:6px}
+.refund .rl .desc{font-size:11px;color:var(--ink-s);margin-top:6px;line-height:1.5}
+.refund .rl.r100 .pct{color:#5E7E66}
+.refund .rl.r50 .pct{color:#C9A866}
+.refund .rl.r0 .pct{color:#B86464}
+
+/* ===== Therapist card chip ===== */
+.tcard{background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:14px;padding:13px 14px;margin-bottom:10px;display:flex;gap:11px;align-items:flex-start;box-shadow:0 4px 12px -6px rgba(42,54,88,.08)}
+.tcard .av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#A89AC7,#7E6FA0);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Noto Serif SC';font-weight:700;font-size:17px;position:relative}
+.tcard .av .v{position:absolute;bottom:-2px;right:-2px;width:15px;height:15px;border-radius:50%;background:#5E7E66;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:9px;color:#fff;font-weight:700}
+
+/* ===== Subscription tier ===== */
+.subs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:14px 0 6px}
+.subs .sb{background:linear-gradient(180deg,#fff,#FBF9F5);border:1px solid rgba(168,154,199,.25);border-radius:14px;padding:18px 14px;position:relative;text-align:center}
+.subs .sb.hi{border:2px solid var(--lav);background:linear-gradient(180deg,#F0EBF6,#fff);box-shadow:0 14px 30px -10px rgba(168,154,199,.4);transform:scale(1.04)}
+.subs .sb .nm{font-size:12px;letter-spacing:2px;font-weight:700;color:var(--lav-d)}
+.subs .sb .pr{font-family:'Cormorant Garamond';font-size:42px;font-weight:700;color:var(--mist-d);line-height:1;margin-top:6px}
+.subs .sb .pr sup{font-family:Inter;font-size:14px;color:var(--gray);font-weight:500;margin-right:2px}
+.subs .sb .pr small{font-family:Inter;font-size:12px;color:var(--gray);font-weight:500}
+.subs .sb .save{display:inline-block;background:rgba(216,154,154,.18);color:#A6574E;padding:2px 8px;border-radius:9px;font-size:10px;font-weight:700;margin-top:6px}
+.subs .sb ul{margin:14px 0 0;padding:0;list-style:none;text-align:left}
+.subs .sb li{font-size:11.5px;color:var(--ink-s);padding:5px 0 5px 18px;line-height:1.5;position:relative}
+.subs .sb li::before{content:'✓';position:absolute;left:0;color:#5E7E66;font-weight:700}
+
+/* ===== PC SaaS shell ===== */
+.pc{background:linear-gradient(135deg,#1F2A48,#2A3658);border-radius:18px;padding:6px;margin:24px 0;box-shadow:0 30px 60px -20px rgba(42,54,88,.5),0 0 0 1px rgba(168,154,199,.18)}
+.pc .topbar{height:30px;background:#0E1622;border-radius:14px 14px 0 0;display:flex;align-items:center;padding:0 14px;gap:6px}
+.pc .topbar .dot{width:10px;height:10px;border-radius:50%}
+.pc .topbar .url{margin-left:18px;background:rgba(255,255,255,.08);color:#A89AC7;font-size:11px;padding:4px 14px;border-radius:8px;font-family:'JetBrains Mono';flex:1;max-width:340px;letter-spacing:.5px}
+.pc .topbar .url .lock{color:#8AAB91;margin-right:6px}
+.pc .body{background:#FBF9F5;border-radius:0 0 14px 14px;display:grid;grid-template-columns:200px 1fr;min-height:520px;color:#1A1F2E;font-family:Inter,'PingFang SC',sans-serif;overflow:hidden}
+.pc .side{background:linear-gradient(180deg,#2A3658 0%,#1F2A48 100%);color:#A89AC7;padding:18px 12px}
+.pc .side .brand{display:flex;align-items:center;gap:9px;font-family:'Noto Serif SC';font-weight:700;font-size:15px;color:#fff;padding:0 6px 16px;border-bottom:1px solid rgba(168,154,199,.18);margin-bottom:14px}
+.pc .side .brand .lg{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#F5C7C7,#A89AC7);display:flex;align-items:center;justify-content:center;color:#fff;font-style:italic;font-family:'Cormorant Garamond';font-weight:700;font-size:14px}
+.pc .side .grp{font-size:9px;letter-spacing:2.5px;color:#7E6FA0;font-weight:700;padding:14px 8px 6px}
+.pc .side .nav{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-size:12.5px;color:#D6CCE5;font-weight:500;cursor:pointer;letter-spacing:.3px}
+.pc .side .nav:hover{background:rgba(168,154,199,.1)}
+.pc .side .nav.on{background:linear-gradient(135deg,rgba(168,154,199,.25),rgba(107,127,181,.18));color:#fff;font-weight:600;box-shadow:inset 0 0 0 1px rgba(168,154,199,.3)}
+.pc .side .nav .num{margin-left:auto;background:rgba(216,154,154,.3);color:#FFB8B8;padding:2px 7px;border-radius:9px;font-size:9.5px;font-weight:700}
+.pc .main{padding:18px 22px;overflow:hidden}
+.pc .htop{display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid rgba(0,0,0,.06)}
+.pc .htop h5{font-family:'Noto Serif SC';font-size:18px;font-weight:700;color:#2A3658;margin:0}
+.pc .htop .crumbs{font-size:11px;color:#9AA0B0}
+.pc .htop .actions{margin-left:auto;display:flex;gap:7px}
+.pc .htop .btn{font-size:11px;padding:6px 13px;border-radius:8px;font-weight:600;letter-spacing:.3px}
+.pc .htop .btn-pri{background:linear-gradient(135deg,#6B7FB5,#A89AC7);color:#fff;box-shadow:0 4px 10px -3px rgba(107,127,181,.4)}
+.pc .htop .btn-sec{background:rgba(0,0,0,.05);color:#5A6478}
+.pc .stats4{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:14px 0 16px}
+.pc .stats4 .card{background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:11px;padding:12px 14px;box-shadow:0 4px 12px -8px rgba(42,54,88,.1)}
+.pc .stats4 .card .l{font-size:9.5px;letter-spacing:1.5px;color:#9AA0B0;font-weight:600}
+.pc .stats4 .card .v{font-family:'Cormorant Garamond';font-size:24px;font-weight:700;color:#2A3658;margin-top:3px;line-height:1}
+.pc .stats4 .card .d{font-size:10px;color:#5E7E66;margin-top:5px;font-weight:600}
+.pc .stats4 .card .d.dn{color:#B86464}
+</style>
+</head>
+<body>
+<div id="root" class="max-w-5xl mx-auto bg-white" style="box-shadow:0 50px 120px -30px rgba(42,54,88,.3)">
+
+<header class="hero">
+<div class="hero-row">
+<div class="crest">M</div>
+<div>
+<h1>心境 Mind<span class="en">— Soft Companion for Anxious Minds</span></h1>
+</div>
+</div>
+<p class="sub">把焦虑交给夜晚，把宁静留给明天。一份完整的开发提示词，从 0 到 1 构建 <b style="color:#fff">AI 树洞 + 情绪图谱 + 持证咨询师 1V1</b> 的轻量级心理陪伴产品 —— 不诊断、不开药、危机干预自动转 12320，让每一次倾诉都被温柔接住。</p>
+<div class="palette">
+<span class="chip"><span class="dot" style="background:#6B7FB5"></span>雾蓝 / Mist Blue</span>
+<span class="chip"><span class="dot" style="background:#A89AC7"></span>治愈紫 / Lavender</span>
+<span class="chip"><span class="dot" style="background:#F5C7C7"></span>晨曦粉 / Dawn Pink</span>
+<span class="chip"><span class="dot" style="background:#8AAB91"></span>雪松绿 / Cedar</span>
+<span class="chip"><span class="dot" style="background:#F8F5F1;border:1px solid rgba(255,255,255,.3)"></span>温奶白 / Milk</span>
+</div>
+<div class="stats">
+<div class="st"><div class="n">4,832</div><div class="l">持证咨询师</div></div>
+<div class="st"><div class="n">680<span style="font-size:14px">万</span>+</div><div class="l">树洞对话</div></div>
+<div class="st"><div class="n">4.93<span style="font-size:14px">★</span></div><div class="l">用户评分</div></div>
+<div class="st"><div class="n">12320</div><div class="l">危机热线对接</div></div>
+<div class="st"><div class="n">等保<span style="font-size:14px">三级</span></div><div class="l">数据合规</div></div>
+</div>
+</header>
+
+<div class="intro">
+<b>关于本提示词　</b>这是一份用于 AI 自动开发 <b>心理疗愈 C 端 App</b> 的完整工程化提示词。围绕"<b>评估 → AI 树洞 → 情绪日记 → 咨询师匹配 → 冥想课订阅</b>"这条情绪需求闭环展开，可直接交付给 AI Coding 工具一次性生成 <b>Next.js 14 + TailwindCSS + Lucide</b> 的真机风产品原型。<br>本版本相较通用模板，<b>砍掉</b>了 PC 管理后台章节，<b>新增</b>合规底线模块与用户成长仪表盘，所有页面遵循「<b>iOS 原生质感</b> + <b>真实数据</b> + <b>柔和动效</b>」三原则。
+</div>
+
+<main id="main">
+
+<div class="step">
+<div class="step-num">01<small>FOUNDATION</small></div>
+<div class="step-title">
+<h2>产品定位与合规底线<span class="en">Positioning & Compliance</span></h2>
+<p>心理类产品的第一道护城河不是 AI，而是<b>合规边界</b>。把不能做的写在最前面。</p>
+</div>
+</div>
+
+<div class="callout"><span class="ico">🌱</span><b>任务说明：</b>让 AI 准确理解一款"<b>AI 心理陪伴 + 持证咨询师 1V1</b>"产品的定位、目标人群、商业闭环，并把<b>不诊断、不开药、不替代医生、危机干预自动转人工</b>这四条合规红线写进系统级 prompt 与每一段对话的兜底逻辑。</div>
+
+<div class="det"><b>// 工程脚手架</b> · 通过 <code>pnpm create next-app@latest</code> 初始化，配 <code>App Router</code> + <code>TypeScript strict</code> + <code>TailwindCSS v3</code> + <code>shadcn/ui</code> + <code>Framer Motion</code> + <code>Lucide</code> 图标库。AI 对话层用 <code>Vercel AI SDK</code> 统一封装 <code>useChat()</code> Hook 兼容 <code>DeepSeek</code> / <code>Qwen-72B</code> / <code>GPT-4o</code> 三家供应商，<code>system prompt</code> 注入 <b>CBT/正念/接纳承诺</b> 三套心理学流派模板，全程 <code>Sentry</code> + <code>PostHog</code> 监控对话满意度与危机词命中率。</div>
+
+<h3 class="sec">1.1 产品定位 <span class="desc">// one-sentence</span></h3>
+<div class="det">面向 <b>22-40 岁都市白领与高校学生</b> 的「<b>轻量级心理陪伴 + 专业咨询入口</b>」。日常用 <b>AI 树洞</b> 倾诉与 <b>情绪日记</b> 复盘建立长期陪伴感（免费），出现持续低落、失眠、关系困扰时<b>无缝转</b>持证心理咨询师 1V1（按时长付费），订阅 <b>冥想课</b> 沉淀习惯与商业留存。</div>
+
+<h3 class="sec">1.2 目标人群 <span class="desc">// 3 personas</span></h3>
+<div class="bullet"><b>都市白领（70%）</b>：25-35 岁，月薪 1-3 万，互联网/金融/医护，主诉<span class="em">睡眠差 / 焦虑 / 职场关系</span>，对咨询师价格敏感但愿为效果付费</div>
+<div class="bullet"><b>高校学生（22%）</b>：18-25 岁，主诉<span class="em">学业压力 / 恋爱 / 原生家庭</span>，对 AI 树洞依赖度最高，付费意愿低但用户黏性最高</div>
+<div class="bullet"><b>慢病康复人群（8%）</b>：抑郁/焦虑/双相已就医，需要日常情绪记录辅助主治医生评估，<b>不可作为诊疗工具</b>，仅作生活陪伴</div>
+
+<h3 class="sec">1.3 核心商业闭环 <span class="desc">// 5-screen funnel</span></h3>
+<div class="det"><b>免费层</b>：注册 → PHQ-9/GAD-7 量表评估 → AI 树洞无限对话 → 情绪日记打卡。<b>付费层 ①</b>：咨询师匹配 → 文字 ¥199/30min · 视频 ¥800/50min · 到诊 ¥1500/50min · 套餐 10 次包 ¥6800（省 ¥1200）。<b>付费层 ②</b>：冥想课会员 ¥39/月（睡前 / 焦虑 / 专注 / 自我接纳 4 大主题，每周更新 2 条音频课）。</div>
+
+<div class="comp">
+<h4>合规底线 · 四条红线（最高优先级）</h4>
+<div class="row"><span class="ic">①</span><div><b>不诊断、不开药、不替代医生</b>　所有 AI 输出末尾自动追加免责声明：<span class="em">"以上内容仅供情绪整理参考，不构成医学诊断或治疗建议，如需就诊请前往精神卫生专科。"</span> 系统 prompt 硬约束 <code>禁止输出诊断词</code>（抑郁症 / 焦虑症 / 双相 / 强迫症）。</div></div>
+<div class="row"><span class="ic">②</span><div><b>危机词检测 + 自动转人工</b>　对话中检测到 <code>自杀 / 自残 / 不想活 / 跳楼 / 服药</code> 等关键词或 <code>BERT 危机情绪分类器</code> 置信度 ≥ 0.85，立即<span class="em">中断 AI 回复</span>，弹出 <b>北京心理援助热线 010-82951332</b> + <b>全国 12320</b> + 一键拨打按钮，并将对话上下文加密推送至值班咨询师 SOS 队列。</div></div>
+<div class="row"><span class="ic">③</span><div><b>咨询师持证可查</b>　所有上架咨询师必须公示<span class="em">人社部二级/三级证书编号</span>或<span class="em">中国心理学会注册系统编号（X-YYYY-NNNN）</span>，详情页一键跳转<b>注册系统官网验真</b>，禁止非持证人员接单。</div></div>
+<div class="row"><span class="ic">④</span><div><b>数据加密 + 可删除权</b>　对话内容 <code>AES-256</code> 端到端加密落库，咨询师后台仅能看到用户授权的对话片段；用户可在<b>设置</b>中一键<b>永久删除</b>所有树洞记录与情绪日记，<code>30 天</code> 内不可恢复，符合 <code>等保三级</code> 与 <code>个保法</code> 要求。</div></div>
+</div>
+
+<h3 class="sec">1.4 技术栈 <span class="desc">// stack</span></h3>
+<div class="det"><b>前端</b>：<code>Next.js 14</code> App Router · <code>TypeScript strict</code> · <code>TailwindCSS</code> · <code>Framer Motion</code>（柔和动效） · <code>Lucide</code> 图标 · <code>Recharts</code> 情绪可视化 · <code>react-markdown</code> 渲染 AI 回复<br><b>AI</b>：<code>DeepSeek-V3</code> / <code>Qwen-72B-Chat</code> 心理学微调版 · <code>OpenAI Whisper</code> 语音转录 · <code>BGE-M3</code> 向量检索情绪标签 · <code>BERT 危机情绪分类器</code><br><b>后端</b>：<code>Supabase</code>（Postgres + Auth + Realtime + Vector）· <code>Redis Streams</code> 对话队列 · <code>BullMQ</code> 异步任务 · <code>微信支付</code> + <code>Apple IAP</code><br><b>合规</b>：<code>等保三级</code> · <code>个保法</code> · <code>未成年人模式</code>（家长授权 + 内容降级）· <code>12320</code> 危机热线 SDK 对接</div>
+<div class="step">
+<div class="step-num">02<small>USER FLOW</small></div>
+<div class="step-title">
+<h2>5 屏疗愈动线 · 信息架构<span class="en">Healing Funnel</span></h2>
+<p>从冷启动到长期陪伴 —— 每一屏都对应一种情绪状态。</p>
+</div>
+</div>
+
+<div class="callout"><span class="ico">🌙</span><b>任务说明：</b>把"<b>启动 → 量表评估 → 结果建议 → 主页 → AI 树洞 → 情绪日记 → 咨询师 → 冥想课</b>"这条情绪需求闭环拆成 <b>5 个核心屏 + 12 个二级屏</b>。每一屏都要让用户感到"被看见、被理解、被陪伴"，不要 Material Design 的硬朗，要 iOS 的柔和与雾感。</div>
+
+<div class="det"><b>// 路由设计</b> · 用 <code>app/(auth)/onboarding/[step]</code> 承载量表流（<code>step ∈ ['phq9','gad7','isi']</code>），结果页用 <code>app/(main)/result?from=onboarding</code> 区分新老用户。主入口 <code>app/(main)/page.tsx</code> 通过 <code>cookies()</code> 读取最近一次评估时间，<code>&gt; 14 天</code> 自动弹「再做一次评估」轻提示卡。底部 tab 用 <code>parallel routes</code>（<code>@chat</code> / <code>@diary</code> / <code>@therapy</code> / <code>@meditation</code>）实现切换不卸载，对话状态全程保留。</div>
+
+<h3 class="sec">2.1 5 屏主线 <span class="desc">// core screens</span></h3>
+<div class="bullet"><b>① 启动屏 Splash</b>　雾蓝 → 薰衣草渐变 + 月相 logo + 一句呼吸 slogan，停留 <code>1.2s</code> 后自动转登录或主页（<code>useEffect</code> + <code>setTimeout</code>），全程<span class="em">禁止任何弹窗与广告</span>。</div>
+<div class="bullet"><b>② PHQ-9 / GAD-7 量表</b>　卡片式问卷，进度条 <code>0/9</code>、单选放大 tap 区，全程不可跳过；新用户首次必填，老用户每 14 天主动提示一次（不强制）。</div>
+<div class="bullet"><b>③ 评估结果</b>　仪表盘可视化分数 + 文字解读 + <b>三条推荐路径</b>（树洞 / 咨询师 / 冥想），底部固定<span class="em">免责声明</span>，禁止使用"抑郁症"等诊断词。</div>
+<div class="bullet"><b>④ 主页 Home</b>　顶部问候 + 当日心情天气 + 四大功能卡 + 今日陪伴任务，<b>不显示</b>红点 / 数字徽标（避免焦虑诱发），消息走 in-app 横幅。</div>
+<div class="bullet"><b>⑤ AI 树洞 Chat</b>　Step 3 详述。</div>
+
+<h3 class="sec">2.2 高保真原型预览 <span class="desc">// 4 phones · iOS 真机风</span></h3>
+
+<div class="phones">
+
+<!-- ============= 1. SPLASH ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:linear-gradient(160deg,#3A4670 0%,#5A6B9A 35%,#A89AC7 70%,#D6CCE5 100%);color:#fff">
+    <div class="stb dark"><span class="t">9:41</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5zm0 4c1.4 0 2.7.6 3.7 1.5l1.2-1.3c-1.3-1.2-3-1.9-4.9-1.9s-3.6.7-4.9 1.9l1.2 1.3c1-.9 2.3-1.5 3.7-1.5zM9 10.4l2.2-2.4C10.6 7.4 9.8 7 9 7s-1.6.4-2.2 1z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/><rect x="2" y="2.5" width="14" height="8" rx="1.4" fill="currentColor"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".5"/></svg>
+    </span></div>
+    <div class="bod" style="align-items:center;justify-content:center;text-align:center;padding:0 30px">
+      <div style="margin-top:-30px">
+        <!-- Moon glyph -->
+        <div style="width:96px;height:96px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFF8EC,#F5E5C7 50%,#C9A866);box-shadow:0 0 50px 8px rgba(255,236,200,.5),inset -16px -10px 28px rgba(80,60,30,.35);position:relative;margin:0 auto 28px">
+          <div style="position:absolute;top:18%;left:25%;width:14px;height:14px;border-radius:50%;background:rgba(180,140,80,.25)"></div>
+          <div style="position:absolute;top:55%;left:55%;width:9px;height:9px;border-radius:50%;background:rgba(180,140,80,.22)"></div>
+          <div style="position:absolute;top:40%;left:70%;width:6px;height:6px;border-radius:50%;background:rgba(180,140,80,.18)"></div>
+        </div>
+        <div style="font-family:'Noto Serif SC';font-size:32px;font-weight:700;letter-spacing:6px;margin-bottom:8px;text-shadow:0 2px 12px rgba(0,0,0,.2)">心 境</div>
+        <div style="font-family:'Cormorant Garamond';font-style:italic;font-size:14px;letter-spacing:4px;color:rgba(255,255,255,.8);margin-bottom:36px">M I N D</div>
+        <div style="font-size:12px;line-height:1.9;color:rgba(255,255,255,.85);font-family:'Noto Serif SC';letter-spacing:3px">把焦虑交给夜晚<br>把宁静留给明天</div>
+      </div>
+      <div style="position:absolute;bottom:90px;font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.45);font-family:'JetBrains Mono'">v 1.0.0 · MIND TEAM</div>
+    </div>
+    <div class="hpipe light"></div>
+  </div>
+  <div class="cap">SPLASH</div>
+</div>
+
+<!-- ============= 2. PHQ-9 ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:linear-gradient(180deg,#FBF9F5 0%,#F0EBF6 100%)">
+    <div class="stb light"><span class="t">9:42</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5zM9 10.4l2.2-2.4C10.6 7.4 9.8 7 9 7s-1.6.4-2.2 1z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/><rect x="2" y="2.5" width="17" height="8" rx="1.4" fill="#34C759"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".4"/></svg>
+    </span></div>
+    <!-- Top bar -->
+    <div style="padding:6px 18px 14px;display:flex;align-items:center;gap:12px">
+      <div style="width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;font-size:16px;color:#5A6478">‹</div>
+      <div style="flex:1">
+        <div style="font-size:10.5px;color:#8B90A0;letter-spacing:1px;font-weight:600">PHQ-9 抑郁症筛查量表</div>
+        <div style="height:4px;background:rgba(107,127,181,.18);border-radius:2px;margin-top:5px;overflow:hidden">
+          <div style="height:100%;width:33%;background:linear-gradient(90deg,#6B7FB5,#A89AC7);border-radius:2px"></div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;font-weight:700;color:#6B7FB5;font-variant-numeric:tabular-nums">3<span style="color:#9AA0B0;font-weight:500">/9</span></div>
+    </div>
+    <!-- Question -->
+    <div style="padding:10px 22px 18px">
+      <div style="font-size:10px;color:#A89AC7;letter-spacing:2px;font-weight:700;margin-bottom:8px">QUESTION 03</div>
+      <div style="font-family:'Noto Serif SC';font-size:18px;line-height:1.55;color:#2A3658;font-weight:500">过去两周，您是否<br>睡眠困难<span style="color:#8B90A0;font-size:13px;font-weight:400">（入睡难、易醒或睡得过多）？</span></div>
+    </div>
+    <!-- Options -->
+    <div style="padding:0 18px;display:flex;flex-direction:column;gap:9px;flex:1">
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:13px;padding:13px 15px;display:flex;align-items:center;gap:11px;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="width:20px;height:20px;border-radius:50%;border:1.5px solid #C9D0E0;flex-shrink:0"></div>
+        <div style="flex:1"><div style="font-size:13.5px;color:#1A1F2E;font-weight:500">完全没有</div><div style="font-size:10.5px;color:#9AA0B0;margin-top:2px">睡眠规律 · 几乎不受影响</div></div>
+        <div style="font-size:11px;color:#C9D0E0;font-weight:700">0</div>
+      </div>
+      <div style="background:linear-gradient(135deg,#F0EBF6,#FBF9F5);border:1.5px solid #A89AC7;border-radius:13px;padding:13px 15px;display:flex;align-items:center;gap:11px;box-shadow:0 6px 16px -6px rgba(168,154,199,.4)">
+        <div style="width:20px;height:20px;border-radius:50%;background:#A89AC7;flex-shrink:0;display:flex;align-items:center;justify-content:center"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div style="flex:1"><div style="font-size:13.5px;color:#2A3658;font-weight:600">几天有过</div><div style="font-size:10.5px;color:#7E6FA0;margin-top:2px">偶尔失眠 · 一周不超过 3 天</div></div>
+        <div style="font-size:11px;color:#7E6FA0;font-weight:700">1</div>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:13px;padding:13px 15px;display:flex;align-items:center;gap:11px">
+        <div style="width:20px;height:20px;border-radius:50%;border:1.5px solid #C9D0E0;flex-shrink:0"></div>
+        <div style="flex:1"><div style="font-size:13.5px;color:#1A1F2E;font-weight:500">一半以上时间</div><div style="font-size:10.5px;color:#9AA0B0;margin-top:2px">明显困扰 · 影响白天状态</div></div>
+        <div style="font-size:11px;color:#C9D0E0;font-weight:700">2</div>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:13px;padding:13px 15px;display:flex;align-items:center;gap:11px">
+        <div style="width:20px;height:20px;border-radius:50%;border:1.5px solid #C9D0E0;flex-shrink:0"></div>
+        <div style="flex:1"><div style="font-size:13.5px;color:#1A1F2E;font-weight:500">几乎每天</div><div style="font-size:10.5px;color:#9AA0B0;margin-top:2px">严重失眠 · 建议尽快就诊</div></div>
+        <div style="font-size:11px;color:#C9D0E0;font-weight:700">3</div>
+      </div>
+    </div>
+    <!-- Footer btns -->
+    <div style="padding:14px 18px 22px;display:flex;gap:10px">
+      <div style="flex:1;text-align:center;padding:13px 0;background:rgba(0,0,0,.05);color:#5A6478;border-radius:13px;font-size:13px;font-weight:600">上一题</div>
+      <div style="flex:1.6;text-align:center;padding:13px 0;background:linear-gradient(135deg,#6B7FB5,#A89AC7);color:#fff;border-radius:13px;font-size:13px;font-weight:600;box-shadow:0 8px 18px -6px rgba(107,127,181,.5)">下一题 →</div>
+    </div>
+    <div class="hpipe"></div>
+  </div>
+  <div class="cap">PHQ-9 EVAL</div>
+</div>
+
+<!-- ============= 3. RESULT ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:#FBF9F5">
+    <div class="stb light"><span class="t">9:46</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5zM9 10.4l2.2-2.4C10.6 7.4 9.8 7 9 7s-1.6.4-2.2 1z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/><rect x="2" y="2.5" width="17" height="8" rx="1.4" fill="#34C759"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".4"/></svg>
+    </span></div>
+    <div class="bod" style="overflow-y:auto">
+      <!-- Header -->
+      <div style="padding:8px 18px 6px;display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:11px;color:#9AA0B0;letter-spacing:1.2px;font-weight:600">2024-03 · 评估结果</div>
+        <div style="font-size:14px;color:#A89AC7;font-weight:700">↗</div>
+      </div>
+      <div style="padding:0 18px 14px"><div style="font-family:'Noto Serif SC';font-size:18px;font-weight:600;color:#2A3658">林昭，谢谢你的坦诚 🍃</div><div style="font-size:11.5px;color:#7E6FA0;margin-top:2px;line-height:1.6">最近你确实有些累了，我们一起慢慢看</div></div>
+      <!-- Gauges -->
+      <div style="padding:0 16px;display:flex;gap:10px;margin-bottom:14px">
+        <div style="flex:1;background:#fff;border-radius:14px;padding:14px 12px;border:1px solid rgba(0,0,0,.04);box-shadow:0 4px 12px -6px rgba(42,54,88,.08);position:relative;overflow:hidden">
+          <div style="font-size:9.5px;color:#9AA0B0;letter-spacing:1px;font-weight:600">PHQ-9</div>
+          <div style="display:flex;align-items:baseline;gap:3px;margin-top:2px"><span style="font-family:'Cormorant Garamond';font-size:32px;font-weight:700;color:#6B7FB5;line-height:1">14</span><span style="font-size:10px;color:#9AA0B0">/27</span></div>
+          <div style="font-size:11px;color:#D89A9A;font-weight:700;margin-top:4px">中度 · Moderate</div>
+          <div style="height:4px;background:rgba(0,0,0,.06);border-radius:2px;margin-top:8px;overflow:hidden">
+            <div style="height:100%;width:52%;background:linear-gradient(90deg,#8AAB91,#E5C285,#D89A9A);border-radius:2px"></div>
+          </div>
+        </div>
+        <div style="flex:1;background:#fff;border-radius:14px;padding:14px 12px;border:1px solid rgba(0,0,0,.04);box-shadow:0 4px 12px -6px rgba(42,54,88,.08);position:relative;overflow:hidden">
+          <div style="font-size:9.5px;color:#9AA0B0;letter-spacing:1px;font-weight:600">GAD-7</div>
+          <div style="display:flex;align-items:baseline;gap:3px;margin-top:2px"><span style="font-family:'Cormorant Garamond';font-size:32px;font-weight:700;color:#A89AC7;line-height:1">11</span><span style="font-size:10px;color:#9AA0B0">/21</span></div>
+          <div style="font-size:11px;color:#E5A66B;font-weight:700;margin-top:4px">轻中度 · Mild</div>
+          <div style="height:4px;background:rgba(0,0,0,.06);border-radius:2px;margin-top:8px;overflow:hidden">
+            <div style="height:100%;width:48%;background:linear-gradient(90deg,#8AAB91,#E5C285);border-radius:2px"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Insights -->
+      <div style="padding:0 18px 14px"><div style="font-size:11.5px;line-height:1.75;color:#5A6478;background:rgba(168,154,199,.08);border-left:2.5px solid #A89AC7;padding:11px 13px;border-radius:0 9px 9px 0">最近两周你出现了<b style="color:#7E6FA0">睡眠困扰、注意力下降、对事提不起劲</b>。这是身体在提醒你需要被照顾了 🌙 试试把它说出来 —— 我陪着你。</div></div>
+      <!-- Recommendations -->
+      <div style="padding:0 16px 8px"><div style="font-size:11px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700;margin-bottom:9px">为你准备的三条小路</div>
+      <div style="background:#fff;border-radius:13px;padding:12px 13px;display:flex;align-items:center;gap:11px;margin-bottom:8px;border:1px solid rgba(0,0,0,.04);box-shadow:0 2px 8px -4px rgba(42,54,88,.08)">
+        <div style="width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#A89AC7,#7E6FA0);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px">🌳</div>
+        <div style="flex:1"><div style="font-size:12.5px;color:#2A3658;font-weight:600">先和 AI 树洞聊聊</div><div style="font-size:10px;color:#9AA0B0;margin-top:2px">免费 · 24h 在线 · 端到端加密</div></div>
+        <div style="font-size:14px;color:#A89AC7;font-weight:700">→</div>
+      </div>
+      <div style="background:#fff;border-radius:13px;padding:12px 13px;display:flex;align-items:center;gap:11px;margin-bottom:8px;border:1px solid rgba(0,0,0,.04);box-shadow:0 2px 8px -4px rgba(42,54,88,.08)">
+        <div style="width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#6B7FB5,#4A5C8F);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px">💬</div>
+        <div style="flex:1"><div style="font-size:12.5px;color:#2A3658;font-weight:600">智能匹配持证咨询师</div><div style="font-size:10px;color:#9AA0B0;margin-top:2px">CBT · ¥199/30min · 注册号可查</div></div>
+        <div style="font-size:14px;color:#6B7FB5;font-weight:700">→</div>
+      </div>
+      <div style="background:#fff;border-radius:13px;padding:12px 13px;display:flex;align-items:center;gap:11px;margin-bottom:8px;border:1px solid rgba(0,0,0,.04);box-shadow:0 2px 8px -4px rgba(42,54,88,.08)">
+        <div style="width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#8AAB91,#5E7E66);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px">🧘</div>
+        <div style="flex:1"><div style="font-size:12.5px;color:#2A3658;font-weight:600">《焦虑舒缓》7 天冥想课</div><div style="font-size:10px;color:#9AA0B0;margin-top:2px">每天 8min · 王恬老师 · 试听 3 天</div></div>
+        <div style="font-size:14px;color:#8AAB91;font-weight:700">→</div>
+      </div></div>
+      <!-- Disclaimer -->
+      <div style="padding:8px 18px 14px"><div style="font-size:9.5px;color:#9AA0B0;line-height:1.6;background:rgba(232,158,158,.08);padding:8px 10px;border-radius:8px;border-left:2px solid #D89A9A">⚠ 评估结果仅供情绪整理参考，不构成医学诊断。如出现持续 2 周以上低落、自伤念头，请前往精神卫生专科就诊。</div></div>
+    </div>
+    <div class="hpipe"></div>
+  </div>
+  <div class="cap">RESULT</div>
+</div>
+
+<!-- ============= 4. HOME ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:linear-gradient(180deg,#F0EBF6 0%,#FBF9F5 30%,#FBF9F5 100%)">
+    <div class="stb light"><span class="t">9:48</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5zM9 10.4l2.2-2.4C10.6 7.4 9.8 7 9 7s-1.6.4-2.2 1z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/><rect x="2" y="2.5" width="17" height="8" rx="1.4" fill="#34C759"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".4"/></svg>
+    </span></div>
+    <div class="bod" style="overflow-y:auto">
+      <!-- Greeting -->
+      <div style="padding:6px 18px 16px;display:flex;align-items:center;gap:11px">
+        <div style="width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#F5C7C7 0%,#D89AC7 45%,#7E6FA0 100%);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Noto Serif SC';font-weight:700;font-size:17px;position:relative;box-shadow:0 6px 16px -4px rgba(126,111,160,.5),inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 4px rgba(126,111,160,.25);overflow:hidden">
+          <div style="position:absolute;top:-7px;left:-7px;width:26px;height:26px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.55),transparent 65%)"></div>
+          <div style="position:absolute;bottom:-5px;right:-5px;width:20px;height:20px;border-radius:50%;background:radial-gradient(circle,rgba(126,111,160,.55),transparent 60%)"></div>
+          <span style="position:relative;z-index:2;text-shadow:0 1px 3px rgba(126,111,160,.45);letter-spacing:.5px">林</span>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:10.5px;color:#9AA0B0;letter-spacing:.5px">早安 · 周三　3月 13 日</div>
+          <div style="font-family:'Noto Serif SC';font-size:18px;font-weight:600;color:#2A3658;margin-top:1px">林昭，今天感觉如何？</div>
+        </div>
+        <div style="width:30px;height:30px;border-radius:10px;background:rgba(168,154,199,.18);display:flex;align-items:center;justify-content:center;color:#7E6FA0;position:relative">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M12 3a6 6 0 0 0-6 6v3.5l-1.5 2.5h15L18 12.5V9a6 6 0 0 0-6-6z" stroke="#7E6FA0" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 18a2 2 0 0 0 4 0" stroke="#7E6FA0" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span style="position:absolute;top:5px;right:5px;width:6px;height:6px;border-radius:50%;background:#F5C7C7;box-shadow:0 0 4px #F5C7C7"></span>
+        </div>
+      </div>
+      <!-- Mood weather -->
+      <div style="margin:0 18px 18px;background:linear-gradient(135deg,#6B7FB5 0%,#A89AC7 100%);border-radius:18px;padding:16px 16px 14px;color:#fff;position:relative;overflow:hidden;box-shadow:0 14px 30px -10px rgba(107,127,181,.5)">
+        <div style="position:absolute;right:-15px;top:-15px;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.25),transparent 65%)"></div>
+        <div style="font-size:9.5px;letter-spacing:2.5px;color:rgba(255,255,255,.7);font-weight:600">TODAY · MOOD WEATHER</div>
+        <div style="display:flex;align-items:center;gap:9px;margin-top:6px"><div style="font-family:'Cormorant Garamond';font-size:30px;font-weight:600;line-height:1">雾蓝色</div><div style="background:rgba(255,255,255,.2);padding:3px 9px;border-radius:11px;font-size:10px;font-weight:600">☁️ 平静偏疲惫</div></div>
+        <div style="font-size:11px;line-height:1.65;margin-top:7px;color:rgba(255,255,255,.88)">基于昨日睡眠 5.8h、心率均值 78 与树洞情绪 → 建议<b>晚上 22:00 前入睡</b>，做一段 8 分钟的睡前冥想 🌙</div>
+      </div>
+      <!-- 4 cards -->
+      <div style="padding:0 16px;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+        <div style="background:#fff;border-radius:15px;padding:13px 13px 14px;border:1px solid rgba(0,0,0,.04);box-shadow:0 4px 14px -6px rgba(42,54,88,.1);position:relative">
+          <div style="width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#A89AC7 0%,#7E6FA0 100%);display:flex;align-items:center;justify-content:center;margin-bottom:9px;box-shadow:0 4px 10px -3px rgba(126,111,160,.45),inset 0 1px 0 rgba(255,255,255,.4);position:relative;overflow:hidden">
+            <div style="position:absolute;top:-3px;left:-3px;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.45),transparent 60%)"></div>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style="position:relative;z-index:2"><circle cx="12" cy="9" r="6" fill="rgba(255,255,255,.97)"/><circle cx="9" cy="7" r="2.2" fill="rgba(255,255,255,.55)"/><circle cx="14.5" cy="6.5" r="1.5" fill="rgba(255,255,255,.7)"/><rect x="11" y="13" width="2" height="7" rx="1" fill="rgba(255,255,255,.85)"/><ellipse cx="18.5" cy="15" rx="1.4" ry=".55" fill="rgba(255,255,255,.55)" transform="rotate(-25 18.5 15)"/></svg>
+          </div>
+          <div style="font-size:13px;font-weight:600;color:#2A3658">AI 树洞</div>
+          <div style="font-size:10px;color:#9AA0B0;margin-top:2px;line-height:1.5">温柔倾听者<br>· 24h 在线</div>
+          <div style="position:absolute;top:11px;right:11px;width:7px;height:7px;border-radius:50%;background:#8AAB91;box-shadow:0 0 8px #8AAB91"></div>
+        </div>
+        <div style="background:#fff;border-radius:15px;padding:13px 13px 14px;border:1px solid rgba(0,0,0,.04);box-shadow:0 4px 14px -6px rgba(42,54,88,.1)">
+          <div style="width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#F5C7C7 0%,#D89A9A 100%);display:flex;align-items:center;justify-content:center;margin-bottom:9px;box-shadow:0 4px 10px -3px rgba(216,154,154,.45),inset 0 1px 0 rgba(255,255,255,.5);position:relative;overflow:hidden">
+            <div style="position:absolute;top:-3px;left:-3px;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.5),transparent 60%)"></div>
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" style="position:relative;z-index:2"><rect x="5" y="3" width="14" height="18" rx="2" fill="rgba(255,255,255,.97)"/><line x1="8" y1="3" x2="8" y2="21" stroke="rgba(216,154,154,.5)" stroke-width="1"/><line x1="10.5" y1="8" x2="16.5" y2="8" stroke="#D89A9A" stroke-width="1.4" stroke-linecap="round"/><line x1="10.5" y1="11" x2="15" y2="11" stroke="#D89A9A" stroke-width="1.4" stroke-linecap="round" opacity=".65"/><path d="M13 16.2c-.6-.7-2-.5-2 .8 0 1.2 2 2.4 2 2.4s2-1.2 2-2.4c0-1.3-1.4-1.5-2-.8z" fill="#D89A9A"/></svg>
+          </div>
+          <div style="font-size:13px;font-weight:600;color:#2A3658">情绪日记</div>
+          <div style="font-size:10px;color:#9AA0B0;margin-top:2px;line-height:1.5">已坚持 17 天<br>本月 23 篇</div>
+        </div>
+        <div style="background:#fff;border-radius:15px;padding:13px 13px 14px;border:1px solid rgba(0,0,0,.04);box-shadow:0 4px 14px -6px rgba(42,54,88,.1)">
+          <div style="width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#6B7FB5 0%,#4A5C8F 100%);display:flex;align-items:center;justify-content:center;margin-bottom:9px;box-shadow:0 4px 10px -3px rgba(74,92,143,.5),inset 0 1px 0 rgba(255,255,255,.4);position:relative;overflow:hidden">
+            <div style="position:absolute;top:-3px;left:-3px;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.45),transparent 60%)"></div>
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" style="position:relative;z-index:2"><circle cx="15.5" cy="9" r="3" fill="rgba(255,255,255,.55)"/><path d="M9.5 19c0-3 2.5-5 6-5s6 2 6 5v2H9.5v-2z" fill="rgba(255,255,255,.55)"/><circle cx="9.5" cy="8" r="3.5" fill="rgba(255,255,255,.97)"/><path d="M3 21c0-3.5 2.8-6 6.5-6s6.5 2.5 6.5 6" fill="rgba(255,255,255,.97)"/></svg>
+          </div>
+          <div style="font-size:13px;font-weight:600;color:#2A3658">1V1 咨询</div>
+          <div style="font-size:10px;color:#9AA0B0;margin-top:2px;line-height:1.5">王安然咨询师<br>明晚 20:00</div>
+        </div>
+        <div style="background:#fff;border-radius:15px;padding:13px 13px 14px;border:1px solid rgba(0,0,0,.04);box-shadow:0 4px 14px -6px rgba(42,54,88,.1)">
+          <div style="width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,#8AAB91 0%,#5E7E66 100%);display:flex;align-items:center;justify-content:center;margin-bottom:9px;box-shadow:0 4px 10px -3px rgba(94,126,102,.45),inset 0 1px 0 rgba(255,255,255,.4);position:relative;overflow:hidden">
+            <div style="position:absolute;top:-3px;left:-3px;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.5),transparent 60%)"></div>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style="position:relative;z-index:2"><ellipse cx="6.5" cy="14" rx="1.6" ry="3.2" fill="rgba(255,255,255,.5)" transform="rotate(-50 6.5 14)"/><ellipse cx="17.5" cy="14" rx="1.6" ry="3.2" fill="rgba(255,255,255,.5)" transform="rotate(50 17.5 14)"/><ellipse cx="9" cy="12.5" rx="1.6" ry="3.5" fill="rgba(255,255,255,.7)" transform="rotate(-25 9 12.5)"/><ellipse cx="15" cy="12.5" rx="1.6" ry="3.5" fill="rgba(255,255,255,.7)" transform="rotate(25 15 12.5)"/><ellipse cx="12" cy="12" rx="1.5" ry="3.8" fill="rgba(255,255,255,.97)"/><path d="M3 19q3-1.4 6 0t6 0t6 0" stroke="rgba(255,255,255,.55)" stroke-width="1" fill="none" stroke-linecap="round"/></svg>
+          </div>
+          <div style="font-size:13px;font-weight:600;color:#2A3658">冥想课</div>
+          <div style="font-size:10px;color:#9AA0B0;margin-top:2px;line-height:1.5">焦虑舒缓 D3<br>今晚解锁</div>
+        </div>
+      </div>
+      <!-- Today plan -->
+      <div style="padding:0 18px 16px"><div style="font-size:10.5px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700;margin-bottom:8px">今 日 陪 伴</div>
+      <div style="background:#fff;border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:11px;border:1px solid rgba(0,0,0,.04);box-shadow:0 2px 8px -4px rgba(42,54,88,.08);margin-bottom:7px">
+        <div style="width:32px;height:32px;border-radius:9px;background:rgba(245,199,199,.3);display:flex;align-items:center;justify-content:center;font-size:14px">☀️</div>
+        <div style="flex:1"><div style="font-size:12.5px;color:#2A3658;font-weight:600">晨间 3 分钟正念呼吸</div><div style="font-size:10px;color:#9AA0B0;margin-top:1px">07:30 · 已完成 ✓</div></div>
+        <div style="font-size:9.5px;color:#8AAB91;font-weight:700">+10 🌱</div>
+      </div>
+      <div style="background:#fff;border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:11px;border:1px solid rgba(168,154,199,.3);background:linear-gradient(135deg,#F0EBF6,#FBF9F5);box-shadow:0 4px 12px -4px rgba(168,154,199,.25)">
+        <div style="width:32px;height:32px;border-radius:9px;background:rgba(168,154,199,.3);display:flex;align-items:center;justify-content:center;font-size:14px">🌙</div>
+        <div style="flex:1"><div style="font-size:12.5px;color:#2A3658;font-weight:600">睡前冥想 · 焦虑舒缓 8 min</div><div style="font-size:10px;color:#7E6FA0;margin-top:1px">22:00 · 待开始</div></div>
+        <div style="background:#A89AC7;color:#fff;padding:5px 11px;border-radius:11px;font-size:10.5px;font-weight:600">开始</div>
+      </div></div>
+    </div>
+    <!-- Tabbar -->
+    <div class="tabbar">
+      <div class="tab on"><svg viewBox="0 0 24 24" fill="none"><path d="M3 11l9-8 9 8v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>首页</div>
+      <div class="tab"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4C7 4 3 7.5 3 12c0 1.5.5 3 1.4 4.2L3 20l4-1c1.5.7 3.2 1 5 1 5 0 9-3.5 9-8s-4-8-9-8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>树洞</div>
+      <div class="tab"><svg viewBox="0 0 24 24" fill="none"><path d="M5 4h14v16l-7-3-7 3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>日记</div>
+      <div class="tab"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>咨询</div>
+      <div class="tab"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>我</div>
+    </div>
+    <div class="hpipe"></div>
+  </div>
+  <div class="cap">HOME</div>
+</div>
+
+</div>
+
+<div class="det"><b>// 状态机</b> · 用户首次进入 → <code>onboarding</code>（量表 3 张）→ <code>result</code>（结果页 1 张）→ <code>home</code>（主页停留）。<code>middleware.ts</code> 通过 <code>cookie.has('phq9_done')</code> 与 <code>profile.last_eval_at &gt; now-14d</code> 双重判断决定是否拦截到 onboarding。所有过渡动画用 <code>Framer Motion</code> 的 <code>AnimatePresence</code> + <code>x: 100→0</code>，<code>duration: 0.45</code>，<code>ease: [0.2, 0.8, 0.2, 1]</code>（iOS 标准曲线）。</div>
+<div class="step">
+<div class="step-num">03<small>AI CORE</small></div>
+<div class="step-title">
+<h2>AI 树洞 · 情绪图谱 · 危机干预<span class="en">AI Companion & Safety Net</span></h2>
+<p>这一步决定产品的灵魂 —— 一个温柔但理智的 AI 倾听者，不会越界，也绝不冷漠。</p>
+</div>
+</div>
+
+<div class="callout"><span class="ico">🌳</span><b>任务说明：</b>实现 <b>AI 树洞</b>的对话引擎、<b>情绪日记</b>的结构化记录、<b>30 天情绪图谱</b>的可视化、以及<b>实时危机干预</b>的旁路逻辑。AI 必须在<span class="em">"共情 → 澄清 → 引导自助 → 必要时转人工"</span>四步框架内输出，绝不主动给出诊断或药物建议。</div>
+
+<div class="det"><b>// AI 引擎</b> · 主模型 <code>DeepSeek-V3</code>，备模型 <code>Qwen-72B-Chat</code>（断流自动切换）。<code>system prompt</code> 模板按用户首选流派（<code>cbt</code> / <code>mindfulness</code> / <code>act</code>）注入，<code>temperature: 0.6</code>，<code>top_p: 0.9</code>，<code>max_tokens: 600</code>。每条消息走双管线：<b>① 主回复</b>用 <code>SSE streaming</code> 推回前端；<b>② 旁路</b>同一段文本喂给 <code>BERT-crisis</code> 二分类器，<code>p &gt; 0.85</code> 立即触发 <code>onCrisisDetected()</code> 中断 AI、弹出 SOS 卡。</div>
+
+<h3 class="sec">3.1 AI 树洞对话引擎 <span class="desc">// chat engine</span></h3>
+<div class="bullet"><b>四步框架</b>　每条 AI 回复必须按 <code>共情 ② 澄清 ③ 引导自助 ④ 兜底转人工</code> 的顺序生成；<b>禁止</b>第一句就给建议，必须先复述用户感受让其感到"被听见"。</div>
+<div class="bullet"><b>记忆机制</b>　近 <code>10</code> 轮对话保留全文，超出部分用 <code>BGE-M3</code> 向量化存入 <code>pgvector</code>，每次对话前通过 <code>cosine similarity</code> 召回 <code>top-3</code> 相关历史片段拼入 prompt，营造"它真的记得我"。</div>
+<div class="bullet"><b>多模态输入</b>　支持文字、语音（<code>Whisper</code> 实时转录）、照片（<code>BLIP-2</code> 描述天气/食物/宠物作为情绪线索）；语音消息保留<span class="em">原始波形</span>方便用户回听。</div>
+<div class="bullet"><b>禁忌输出库</b>　硬编码 <code>120</code> 条禁忌回复模板（"你只是想多了" / "别人比你更惨" / "想开点"），<code>moderation API</code> 二次过滤，命中即重生成。</div>
+
+<h3 class="sec">3.2 情绪日记 · 结构化记录 <span class="desc">// emotion diary</span></h3>
+<div class="det">每篇日记由 <code>{ mood: 1-10, emotions: string[], events: string[], body: string, photos: url[], gratitude: string }</code> 组成。<code>emotions</code> 用预设 <b>32 个细颗粒情绪词</b>（焦虑 / 委屈 / 释然 / 内疚 / 期待 …），不让用户面对空白输入框。<code>BERT</code> 自动从 <code>body</code> 抽取 <b>事件触发词</b>（"加班" / "和爸妈吵架" / "体检"）入 <code>events</code>，方便后期生成"压力源排行榜"。</div>
+
+<h3 class="sec">3.3 情绪图谱 · 30 天可视化 <span class="desc">// mood graph</span></h3>
+<div class="det"><b>① 热力日历</b>：13×30 网格按日 mood 着色（雪松绿 = 平稳，雾蓝 = 低落，晨曦粉 = 愉悦）；<b>② 情绪标签云</b>：词频前 <code>20</code> 个 emotion 按大小分布；<b>③ 压力源 Top 5</b>：events 聚合排行；<b>④ 周报告</b>：每周日早 8 点 GPT-4o 一句话总结："这周你出现 4 次焦虑高峰，多发生在周二早晨 — 是不是周一晚没睡好？"</div>
+
+<div class="comp">
+<h4>危机干预 SOP（最高优先级 · 每条消息必跑）</h4>
+<div class="row"><span class="ic">①</span><div><b>检测层</b>　<code>BERT-crisis</code> 模型（基于 <b>2.4w</b> 条标注语料微调）+ 关键词正则双保险，置信度 <code>≥ 0.85</code> 即视为高危。</div></div>
+<div class="row"><span class="ic">②</span><div><b>中断层</b>　立即 <code>abort()</code> 当前 AI 输出流，移除已显示的部分回复，全屏渐入安全卡（雾蓝半透明蒙层 + 月光图）。</div></div>
+<div class="row"><span class="ic">③</span><div><b>引导层</b>　卡上同时呈现：<b>北京心理援助 010-82951332</b>、<b>全国 12320</b>、<b>立即联系值班咨询师（自动接通）</b>三个一键按钮，并配一句"你愿意先深呼吸三次吗？"。</div></div>
+<div class="row"><span class="ic">④</span><div><b>跟进层</b>　对话上下文 <code>AES-256</code> 加密推送至 <b>SOS 队列</b>，值班咨询师 <code>5min</code> 内主动外呼；用户每 24h 自动收到一条温柔回访 push。</div></div>
+</div>
+
+<h3 class="sec">3.4 高保真原型预览 <span class="desc">// 4 phones · core feature</span></h3>
+
+<div class="phones">
+
+<!-- ============= 5. AI CHAT ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:linear-gradient(180deg,#F8F4EC 0%,#F0EBF6 60%,#E8DFEF 100%)">
+    <div class="stb light"><span class="t">21:08</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/><rect x="2" y="2.5" width="13" height="8" rx="1.4" fill="#FF9500"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".4"/></svg>
+    </span></div>
+    <!-- Header -->
+    <div style="padding:4px 14px 10px;display:flex;align-items:center;gap:10px;border-bottom:.5px solid rgba(0,0,0,.06);background:rgba(255,255,255,.55);backdrop-filter:blur(20px)">
+      <div style="font-size:18px;color:#5A6478">‹</div>
+      <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#A89AC7,#7E6FA0);display:flex;align-items:center;justify-content:center;font-size:15px;position:relative;flex-shrink:0">🌙<div style="position:absolute;bottom:-1px;right:-1px;width:11px;height:11px;border-radius:50%;background:#8AAB91;border:2px solid #fff"></div></div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:700;color:#2A3658;font-family:'Noto Serif SC'">月小酒 · AI 树洞</div><div style="font-size:10px;color:#8AAB91;font-weight:500">在线 · 温柔倾听中 ⋯⋯</div></div>
+      <div style="width:30px;height:30px;border-radius:50%;background:rgba(168,154,199,.18);display:flex;align-items:center;justify-content:center;color:#7E6FA0;font-size:13px">⋯</div>
+    </div>
+    <!-- Date pill -->
+    <div style="text-align:center;padding:9px 0;font-size:9.5px;color:#9AA0B0;letter-spacing:1px">今天 · 21:08 · 端到端加密 🔒</div>
+    <!-- Conversation -->
+    <div class="bod" style="padding:0 12px 8px;display:flex;flex-direction:column;gap:0;overflow-y:auto">
+      <div style="font-size:9.5px;color:#9AA0B0;text-align:center;margin:2px 0 8px">月小酒已读取你今天的情绪天气：雾蓝色 ☁️</div>
+      <div class="bub ai">嗨，林昭。<br>今天工作辛苦了 🍵 我看到你 19:43 才下班 —— 想说说今天的事吗？或者只是来安静坐一会儿，也可以的。</div>
+      <div class="bub me">领导今天又把项目推回来了。第三次了，我真的有点撑不住</div>
+      <div class="bub ai">三次被打回，听起来真的太难了。能感觉到你那种<b style="color:#7E6FA0">"用力很久但好像哪里都不对"</b>的疲惫，对吗？<br><br>我想先确认一下 —— 这次他给到的反馈，是否具体到「哪一段」需要改？</div>
+      <!-- voice -->
+      <div style="align-self:flex-end;display:flex;align-items:center;gap:7px;background:linear-gradient(135deg,#6B7FB5,#8475A8);padding:8px 14px;border-radius:18px;border-bottom-right-radius:5px;color:#fff;margin-bottom:9px;box-shadow:0 4px 12px -4px rgba(107,127,181,.4)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3z" fill="#fff"/><path d="M19 11a7 7 0 0 1-14 0M12 18v3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+        <div style="display:flex;align-items:center;gap:2px"><div style="width:2px;height:5px;background:rgba(255,255,255,.7);border-radius:1px"></div><div style="width:2px;height:9px;background:#fff;border-radius:1px"></div><div style="width:2px;height:14px;background:#fff;border-radius:1px"></div><div style="width:2px;height:11px;background:#fff;border-radius:1px"></div><div style="width:2px;height:7px;background:rgba(255,255,255,.7);border-radius:1px"></div><div style="width:2px;height:13px;background:#fff;border-radius:1px"></div><div style="width:2px;height:9px;background:rgba(255,255,255,.7);border-radius:1px"></div><div style="width:2px;height:5px;background:rgba(255,255,255,.5);border-radius:1px"></div></div>
+        <span style="font-size:11px;font-weight:600;font-variant-numeric:tabular-nums">0:23</span>
+      </div>
+      <div class="bub ai">嗯，方向不清的反馈最让人崩溃 —— 因为你不知道从哪里改起。<br><br>我们先做一件小事好吗？把"撑不住"这件事拆成具体的<b style="color:#7E6FA0">三个画面</b>。比如：① 此刻身体哪里最紧？② 今天最低落的那 5 分钟发生了什么？③ 一个让你今天还撑着的小理由。<br><br><span style="font-size:11px;color:#8B90A0">— 不用全部回答，挑一个就好 🌿</span></div>
+      <!-- typing -->
+      <div style="align-self:flex-start;background:#F0EBF6;border-radius:18px;border-bottom-left-radius:5px;padding:11px 14px;display:flex;gap:4px;margin-bottom:9px">
+        <div style="width:6px;height:6px;border-radius:50%;background:#A89AC7;animation:breathe 1.4s infinite;animation-delay:0s"></div>
+        <div style="width:6px;height:6px;border-radius:50%;background:#A89AC7;animation:breathe 1.4s infinite;animation-delay:.2s"></div>
+        <div style="width:6px;height:6px;border-radius:50%;background:#A89AC7;animation:breathe 1.4s infinite;animation-delay:.4s"></div>
+      </div>
+    </div>
+    <!-- Quick chips -->
+    <div style="padding:6px 12px 8px;display:flex;gap:6px;overflow-x:auto;flex-shrink:0">
+      <span style="background:rgba(168,154,199,.2);color:#7E6FA0;padding:6px 11px;border-radius:14px;font-size:11px;font-weight:600;white-space:nowrap">🫂 我需要拥抱</span>
+      <span style="background:rgba(245,199,199,.3);color:#B86464;padding:6px 11px;border-radius:14px;font-size:11px;font-weight:600;white-space:nowrap">😔 我快撑不住</span>
+      <span style="background:rgba(138,171,145,.25);color:#5E7E66;padding:6px 11px;border-radius:14px;font-size:11px;font-weight:600;white-space:nowrap">🌿 教我放松</span>
+    </div>
+    <!-- Input -->
+    <div style="padding:8px 10px 22px;background:rgba(255,255,255,.85);backdrop-filter:blur(20px);border-top:.5px solid rgba(0,0,0,.06);display:flex;align-items:center;gap:7px;flex-shrink:0">
+      <div style="width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.05);display:flex;align-items:center;justify-content:center;color:#5A6478;font-size:18px">+</div>
+      <div style="flex:1;background:#fff;border-radius:18px;border:1px solid rgba(0,0,0,.08);padding:8px 14px;display:flex;align-items:center;gap:6px;font-size:12px;color:#9AA0B0">把心里的话告诉小酒 🌙<div style="margin-left:auto;font-size:14px;color:#A89AC7">😊</div></div>
+      <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#6B7FB5,#A89AC7);display:flex;align-items:center;justify-content:center;color:#fff"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3z" fill="#fff"/></svg></div>
+    </div>
+    <div class="hpipe"></div>
+  </div>
+  <div class="cap">AI CHAT</div>
+</div>
+
+<!-- ============= 6. CRISIS ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:linear-gradient(180deg,#F8F4EC,#F0EBF6)">
+    <div class="stb light"><span class="t">23:12</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/><rect x="2" y="2.5" width="9" height="8" rx="1.4" fill="#FF3B30"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".4"/></svg>
+    </span></div>
+    <!-- backdrop chat (dimmed) -->
+    <div style="flex:1;position:relative;overflow:hidden">
+      <div style="position:absolute;inset:0;padding:4px 14px;opacity:.18;filter:blur(.5px)">
+        <div style="font-size:10px;color:#9AA0B0;text-align:center;margin:8px 0">23:08</div>
+        <div style="background:#F0EBF6;padding:8px 11px;border-radius:14px;font-size:11px;max-width:75%;margin-bottom:6px">嗯⋯ 你愿意告诉我现在身体哪里最紧吗？</div>
+        <div style="background:linear-gradient(135deg,#6B7FB5,#A89AC7);color:#fff;padding:8px 11px;border-radius:14px;font-size:11px;max-width:78%;margin-left:auto;margin-bottom:6px">我真的不想活了 没有人会想我</div>
+      </div>
+      <!-- SOS Card -->
+      <div style="position:absolute;left:14px;right:14px;top:50%;transform:translateY(-50%);background:linear-gradient(170deg,#FFFFFF 0%,#FBF9F5 100%);border-radius:22px;padding:22px 18px 18px;box-shadow:0 30px 60px -10px rgba(58,70,112,.35),0 0 0 1px rgba(216,154,154,.3);border:1.5px solid rgba(216,154,154,.4)">
+        <div style="display:flex;justify-content:center;margin-bottom:11px"><div style="width:54px;height:54px;border-radius:50%;background:radial-gradient(circle,#FFF8EC,#F5C7C7);display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 0 30px 6px rgba(245,199,199,.5)">🌙</div></div>
+        <div style="font-family:'Noto Serif SC';font-size:15.5px;font-weight:700;color:#2A3658;text-align:center;line-height:1.5">我感受到了你的痛<br>请先不要离开</div>
+        <div style="font-size:11px;line-height:1.7;color:#5A6478;text-align:center;margin:10px 4px 14px">你不必独自承担这一切。下面的电话<b style="color:#B86464">完全免费、全天接听</b>，会有真实的人接住你 🤍</div>
+        <!-- Buttons -->
+        <div style="background:linear-gradient(135deg,#D89A9A,#B86464);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:10px;color:#fff;margin-bottom:8px;box-shadow:0 8px 18px -6px rgba(184,100,100,.5)">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center"><svg width="14" height="14" viewBox="0 0 24 24" fill="#fff"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div style="flex:1"><div style="font-size:9.5px;letter-spacing:.5px;opacity:.85">立即拨打 · 24h 免费</div><div style="font-size:13px;font-weight:700;font-variant-numeric:tabular-nums">12320 · 全国心理援助</div></div>
+          <div style="font-size:11px;font-weight:700;background:rgba(255,255,255,.22);padding:4px 9px;border-radius:9px">拨打</div>
+        </div>
+        <div style="background:#fff;border:1px solid rgba(107,127,181,.3);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(107,127,181,.18);display:flex;align-items:center;justify-content:center;color:#4A5C8F"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div style="flex:1"><div style="font-size:9.5px;color:#9AA0B0">北京心理援助热线</div><div style="font-size:12.5px;font-weight:700;color:#2A3658;font-variant-numeric:tabular-nums">010 · 8295 · 1332</div></div>
+          <div style="font-size:11px;font-weight:700;color:#4A5C8F;background:rgba(107,127,181,.12);padding:4px 9px;border-radius:9px">拨打</div>
+        </div>
+        <div style="background:#fff;border:1px solid rgba(138,171,145,.3);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:10px;margin-bottom:11px">
+          <div style="width:32px;height:32px;border-radius:50%;background:rgba(138,171,145,.18);display:flex;align-items:center;justify-content:center;color:#5E7E66">💬</div>
+          <div style="flex:1"><div style="font-size:9.5px;color:#9AA0B0">值班咨询师 · 5 分钟接通</div><div style="font-size:12.5px;font-weight:700;color:#2A3658">王安然 · 国家二级 · 在线</div></div>
+          <div style="font-size:11px;font-weight:700;color:#5E7E66;background:rgba(138,171,145,.18);padding:4px 9px;border-radius:9px">联系</div>
+        </div>
+        <div style="text-align:center;font-size:10.5px;color:#7E6FA0;font-style:italic">你愿意先和我一起 · 深呼吸三次吗？</div>
+      </div>
+    </div>
+    <div class="hpipe"></div>
+  </div>
+  <div class="cap">CRISIS · 危机干预</div>
+</div>
+
+<!-- ============= 7. DIARY ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:linear-gradient(180deg,#FBF9F5 0%,#F8F4EC 100%)">
+    <div class="stb light"><span class="t">22:34</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/><rect x="2" y="2.5" width="14" height="8" rx="1.4" fill="#34C759"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".4"/></svg>
+    </span></div>
+    <div class="bod" style="overflow-y:auto">
+      <!-- Header -->
+      <div style="padding:6px 16px 12px;display:flex;align-items:center;gap:10px">
+        <div style="font-size:18px;color:#5A6478">×</div>
+        <div style="flex:1;text-align:center"><div style="font-family:'Noto Serif SC';font-size:14px;font-weight:600;color:#2A3658">3 月 13 日 · 周三</div><div style="font-size:9.5px;color:#9AA0B0;margin-top:1px">22:34 · 雨 · 北京</div></div>
+        <div style="background:linear-gradient(135deg,#A89AC7,#7E6FA0);color:#fff;padding:6px 13px;border-radius:13px;font-size:11px;font-weight:700">保存</div>
+      </div>
+      <!-- Mood slider -->
+      <div style="padding:0 18px 16px"><div style="font-size:10.5px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700;margin-bottom:10px">今日心情指数 · 4.2 / 10</div>
+        <div style="height:42px;background:linear-gradient(90deg,#6B7FB5 0%,#A89AC7 30%,#F5C7C7 60%,#E5C285 80%,#8AAB91 100%);border-radius:14px;position:relative;box-shadow:inset 0 2px 6px rgba(0,0,0,.1)">
+          <div style="position:absolute;left:32%;top:-6px;width:24px;height:54px;background:#fff;border-radius:7px;box-shadow:0 6px 14px -2px rgba(42,54,88,.35);border:1.5px solid rgba(168,154,199,.5);display:flex;align-items:center;justify-content:center;font-size:16px">😔</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:#9AA0B0;margin-top:6px;letter-spacing:1px"><span>极糟</span><span>低落</span><span>平静</span><span>愉快</span><span>幸福</span></div>
+      </div>
+      <!-- Emotion tags -->
+      <div style="padding:0 18px 16px"><div style="font-size:10.5px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700;margin-bottom:9px">此刻情绪 · 选一些标签</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <span style="background:linear-gradient(135deg,#A89AC7,#7E6FA0);color:#fff;padding:6px 11px;border-radius:13px;font-size:11px;font-weight:600">😟 焦虑 ✕</span>
+          <span style="background:linear-gradient(135deg,#6B7FB5,#4A5C8F);color:#fff;padding:6px 11px;border-radius:13px;font-size:11px;font-weight:600">😩 疲惫 ✕</span>
+          <span style="background:linear-gradient(135deg,#D89A9A,#B86464);color:#fff;padding:6px 11px;border-radius:13px;font-size:11px;font-weight:600">😞 委屈 ✕</span>
+          <span style="background:rgba(0,0,0,.05);color:#5A6478;padding:6px 11px;border-radius:13px;font-size:11px;font-weight:600">😐 麻木</span>
+          <span style="background:rgba(0,0,0,.05);color:#5A6478;padding:6px 11px;border-radius:13px;font-size:11px;font-weight:600">🌧 失落</span>
+          <span style="background:rgba(0,0,0,.05);color:#5A6478;padding:6px 11px;border-radius:13px;font-size:11px;font-weight:600">😤 烦躁</span>
+          <span style="background:rgba(0,0,0,.05);color:#5A6478;padding:6px 11px;border-radius:13px;font-size:11px;font-weight:600">+ 更多</span>
+        </div>
+      </div>
+      <!-- Body -->
+      <div style="padding:0 18px 14px"><div style="font-size:10.5px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700;margin-bottom:8px">今天发生了什么</div>
+        <div style="background:#fff;border-radius:13px;padding:13px 14px;border:1px solid rgba(0,0,0,.05);box-shadow:0 2px 8px -4px rgba(42,54,88,.06);font-size:12px;line-height:1.75;color:#2A3658;font-family:'Noto Serif SC'">项目第三次被打回来了。<br>我在工位上坐了很久，连水杯都没动。<br>开始怀疑是不是自己真的不适合这份工作⋯<br><span style="color:#A89AC7;background:rgba(168,154,199,.12);padding:1px 4px;border-radius:3px">#项目反复</span>　<span style="color:#A89AC7;background:rgba(168,154,199,.12);padding:1px 4px;border-radius:3px">#自我怀疑</span><span style="color:#9AA0B0">|</span></div>
+        <div style="font-size:9.5px;color:#9AA0B0;margin-top:6px;display:flex;align-items:center;gap:6px"><span>📷 添加照片</span><span>·</span><span>🎙 语音 0:00</span><span style="margin-left:auto;color:#7E6FA0">76 字 · AI 已识别 2 个事件</span></div>
+      </div>
+      <!-- Gratitude -->
+      <div style="padding:0 18px 18px"><div style="font-size:10.5px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700;margin-bottom:8px">一件让你今天还撑着的小事 🌱</div>
+        <div style="background:linear-gradient(135deg,#FBF9F5,#F0EBF6);border:1px dashed #A89AC7;border-radius:13px;padding:11px 13px;font-size:11.5px;line-height:1.65;color:#7E6FA0;font-style:italic">下班路上买了一杯热可可，握在手里很暖。</div>
+      </div>
+    </div>
+    <div class="hpipe"></div>
+  </div>
+  <div class="cap">DIARY · 情绪日记</div>
+</div>
+
+<!-- ============= 8. MOOD GRAPH ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:#FBF9F5">
+    <div class="stb light"><span class="t">10:15</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/><rect x="2" y="2.5" width="17" height="8" rx="1.4" fill="#34C759"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".4"/></svg>
+    </span></div>
+    <div class="bod" style="overflow-y:auto">
+      <!-- Header -->
+      <div style="padding:4px 16px 14px;display:flex;align-items:flex-end;justify-content:space-between">
+        <div><div style="font-size:10.5px;color:#9AA0B0;letter-spacing:1.5px;font-weight:600">MARCH 2024 · 30 DAYS</div><div style="font-family:'Noto Serif SC';font-size:18px;font-weight:600;color:#2A3658;margin-top:2px">情绪图谱</div></div>
+        <div style="display:flex;gap:4px">
+          <div style="background:#fff;border:1px solid rgba(0,0,0,.06);padding:5px 9px;border-radius:9px;font-size:10.5px;color:#5A6478;font-weight:600">月</div>
+          <div style="background:linear-gradient(135deg,#6B7FB5,#A89AC7);color:#fff;padding:5px 9px;border-radius:9px;font-size:10.5px;font-weight:600">周</div>
+        </div>
+      </div>
+      <!-- Trend chart (mini line) -->
+      <div style="margin:0 14px 16px;background:linear-gradient(135deg,#fff,#FBF9F5);border:1px solid rgba(0,0,0,.04);border-radius:14px;padding:12px 12px 8px;box-shadow:0 4px 12px -6px rgba(42,54,88,.08)">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px"><span style="font-size:10px;color:#9AA0B0;font-weight:600;letter-spacing:1px">本周心情</span><span style="font-family:'Cormorant Garamond';font-size:24px;font-weight:700;color:#6B7FB5">5.4<span style="font-size:11px;color:#9AA0B0">/10 · ↑ 0.6</span></span></div>
+        <svg viewBox="0 0 220 60" width="100%" height="58">
+          <defs><linearGradient id="grad1" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#A89AC7" stop-opacity=".5"/><stop offset="1" stop-color="#A89AC7" stop-opacity="0"/></linearGradient></defs>
+          <path d="M5 45 L37 38 L69 48 L101 30 L133 35 L165 22 L197 28 L213 18" stroke="#6B7FB5" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5 45 L37 38 L69 48 L101 30 L133 35 L165 22 L197 28 L213 18 L213 60 L5 60 Z" fill="url(#grad1)"/>
+          <circle cx="165" cy="22" r="3.5" fill="#fff" stroke="#6B7FB5" stroke-width="2"/>
+          <circle cx="69" cy="48" r="3.5" fill="#fff" stroke="#D89A9A" stroke-width="2"/>
+        </svg>
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:#9AA0B0;letter-spacing:1px;margin-top:2px"><span>周一</span><span>周二</span><span>周三</span><span>周四</span><span>周五</span><span>周六</span><span>周日</span></div>
+      </div>
+      <!-- Heatmap -->
+      <div style="margin:0 14px 16px;background:#fff;border:1px solid rgba(0,0,0,.04);border-radius:14px;padding:12px 13px;box-shadow:0 4px 12px -6px rgba(42,54,88,.08)">
+        <div style="font-size:10px;color:#9AA0B0;font-weight:600;letter-spacing:1px;margin-bottom:9px">30 天热力日历</div>
+        <div class="mood-grid" style="grid-template-columns:repeat(15,1fr);gap:2.5px">
+          <div class="c" style="background:#8AAB91"></div><div class="c" style="background:#A8C2A8"></div><div class="c" style="background:#C5D5BA"></div><div class="c" style="background:#A8C2A8"></div><div class="c" style="background:#A89AC7"></div><div class="c" style="background:#A89AC7"></div><div class="c" style="background:#C5D5BA"></div><div class="c" style="background:#8AAB91"></div><div class="c" style="background:#A8C2A8"></div><div class="c" style="background:#A89AC7"></div><div class="c" style="background:#7E6FA0"></div><div class="c" style="background:#7E6FA0"></div><div class="c" style="background:#A89AC7"></div><div class="c" style="background:#C5D5BA"></div><div class="c" style="background:#8AAB91"></div>
+          <div class="c" style="background:#C5D5BA"></div><div class="c" style="background:#A89AC7"></div><div class="c" style="background:#7E6FA0"></div><div class="c" style="background:#6B7FB5"></div><div class="c" style="background:#A89AC7"></div><div class="c" style="background:#C5D5BA"></div><div class="c" style="background:#8AAB91"></div><div class="c" style="background:#A8C2A8"></div><div class="c" style="background:#F5C7C7"></div><div class="c" style="background:#F5C7C7"></div><div class="c" style="background:#A89AC7"></div><div class="c" style="background:#A89AC7"></div><div class="c" style="background:#7E6FA0;outline:1.5px solid #2A3658;outline-offset:1px;border-radius:3px;position:relative"></div><div class="c" style="background:rgba(0,0,0,.04)"></div><div class="c" style="background:rgba(0,0,0,.04)"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:9px;font-size:9px;color:#9AA0B0"><span>低</span><div style="width:10px;height:10px;background:#6B7FB5;border-radius:2px"></div><div style="width:10px;height:10px;background:#A89AC7;border-radius:2px"></div><div style="width:10px;height:10px;background:#C5D5BA;border-radius:2px"></div><div style="width:10px;height:10px;background:#A8C2A8;border-radius:2px"></div><div style="width:10px;height:10px;background:#8AAB91;border-radius:2px"></div><span>高</span><span style="margin-left:auto;color:#7E6FA0;font-weight:600">今天 ●</span></div>
+      </div>
+      <!-- Stress sources -->
+      <div style="margin:0 14px 16px;background:#fff;border:1px solid rgba(0,0,0,.04);border-radius:14px;padding:12px 13px;box-shadow:0 4px 12px -6px rgba(42,54,88,.08)">
+        <div style="font-size:10px;color:#9AA0B0;font-weight:600;letter-spacing:1px;margin-bottom:11px">压力源 TOP 5 · 来自 23 篇日记</div>
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div style="width:18px;font-size:10px;color:#7E6FA0;font-weight:700">①</div><div style="flex:1;font-size:11.5px;color:#2A3658;font-weight:600">项目反复</div><div style="flex:1.2;height:6px;background:rgba(168,154,199,.18);border-radius:3px;overflow:hidden"><div style="height:100%;width:88%;background:linear-gradient(90deg,#A89AC7,#7E6FA0);border-radius:3px"></div></div><div style="font-size:10px;color:#7E6FA0;font-weight:700;width:24px;text-align:right">14</div></div>
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div style="width:18px;font-size:10px;color:#7E6FA0;font-weight:700">②</div><div style="flex:1;font-size:11.5px;color:#2A3658;font-weight:600">睡眠不足</div><div style="flex:1.2;height:6px;background:rgba(168,154,199,.18);border-radius:3px;overflow:hidden"><div style="height:100%;width:72%;background:linear-gradient(90deg,#6B7FB5,#4A5C8F);border-radius:3px"></div></div><div style="font-size:10px;color:#7E6FA0;font-weight:700;width:24px;text-align:right">11</div></div>
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div style="width:18px;font-size:10px;color:#7E6FA0;font-weight:700">③</div><div style="flex:1;font-size:11.5px;color:#2A3658;font-weight:600">和家人沟通</div><div style="flex:1.2;height:6px;background:rgba(168,154,199,.18);border-radius:3px;overflow:hidden"><div style="height:100%;width:54%;background:linear-gradient(90deg,#D89A9A,#B86464);border-radius:3px"></div></div><div style="font-size:10px;color:#7E6FA0;font-weight:700;width:24px;text-align:right">8</div></div>
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px"><div style="width:18px;font-size:10px;color:#7E6FA0;font-weight:700">④</div><div style="flex:1;font-size:11.5px;color:#2A3658;font-weight:600">身材焦虑</div><div style="flex:1.2;height:6px;background:rgba(168,154,199,.18);border-radius:3px;overflow:hidden"><div style="height:100%;width:38%;background:linear-gradient(90deg,#E5C285,#C9A866);border-radius:3px"></div></div><div style="font-size:10px;color:#7E6FA0;font-weight:700;width:24px;text-align:right">5</div></div>
+      </div>
+      <!-- Weekly insight -->
+      <div style="margin:0 14px 18px;background:linear-gradient(135deg,#A89AC7,#6B7FB5);border-radius:14px;padding:14px 13px;color:#fff;box-shadow:0 14px 26px -10px rgba(107,127,181,.45);position:relative;overflow:hidden">
+        <div style="position:absolute;right:-20px;top:-20px;font-size:90px;opacity:.13">🌙</div>
+        <div style="font-size:9.5px;letter-spacing:2px;color:rgba(255,255,255,.75);font-weight:600">WEEKLY INSIGHT · 周日 08:00</div>
+        <div style="font-family:'Noto Serif SC';font-size:13px;line-height:1.7;margin-top:6px">这周你出现 <b style="color:#FFE5E5">4 次焦虑高峰</b>，多发生在 <b style="color:#FFE5E5">周二早晨</b> —— 是不是周一晚没睡好？试试本周开始 <b>22:30 关屏</b> + 8 分钟睡前冥想 🌙</div>
+      </div>
+    </div>
+    <div class="hpipe"></div>
+  </div>
+  <div class="cap">MOOD GRAPH</div>
+</div>
+
+</div>
+
+<div class="det"><b>// 危机检测代码</b> · 在 <code>/api/chat/stream</code> 中维持双流：<code>const aiStream = openai.chat.completions.create({...,stream:true})</code> 推回前端的同时，把每个 <code>delta.content</code> 累加到 <code>buffer</code>，每 <code>200ms</code> 节流跑一次 <code>const risk = await crisisModel.predict(buffer)</code>。当 <code>risk.label === 'high' && risk.score &gt; 0.85</code>，立即 <code>aiStream.controller.abort()</code>，前端 <code>EventSource</code> 收到 <code>event: crisis</code> 后挂载 SOS 模态层，原始上下文加密推到 <code>sos_queue</code>（Supabase Realtime broadcast 到值班咨询师工作台）。</div>
+<div class="step">
+<div class="step-num">04<small>1V1 MATCH</small></div>
+<div class="step-title">
+<h2>咨询师匹配 · 1V1 安全围栏<span class="en">Therapist Match & Safety Net</span></h2>
+<p>从"试错式找咨询师"变成「<b>AI 精准推荐 + 持证可查 + 取消有规矩 + 督导抽审</b>」—— 让付费这一刻，比任何免费 AI 都让人安心。</p>
+</div>
+</div>
+
+<div class="callout"><span class="ico">💬</span><b>任务说明：</b>当用户从 AI 树洞自然过渡到付费咨询时，必须用最短路径让她<b>看见 → 信任 → 下单</b>。本步实现 <b>7 步问卷 → BGE-M3 召回 → 业务规则重排 → 持证档案规范 → 4 档定价 → 阶梯退款 → 督导抽审</b> 全链路，并提供 <span class="em">黑屏视频模式</span> 等心理咨询独有的隐私设计。</div>
+
+<div class="det"><b>// 匹配引擎</b> · 路由 <code>app/(main)/therapy</code> 下 <code>match/[step]</code>（7 步问卷）→ <code>match/result</code>（top-12 名单）→ <code>therapist/[id]</code>（详情）→ <code>booking/[id]</code>（排期下单）。问卷答案通过 <code>POST /api/match/recall</code> 走两阶段：① <b>召回</b> — 用户答案拼成 <code>"34岁女 已婚 主诉婚姻困扰 偏好女性 CBT 流派 价格 300-600 视频咨询"</code> 这种自然语言 query，<code>BGE-M3</code> 编码后在 <code>therapist_profile_vec</code>（pgvector）做 <code>cosine</code> 相似召回 <code>top-50</code>；② <b>重排</b> — Postgres 中跑业务规则 <code>SQL</code>：流派精确匹配 +20 分、当周可约 +12 分、女性匹配 +8 分、最近 30 天好评率 &gt; 95% +6 分、价格区间命中 +10 分，最终输出 <code>top-12</code>。整条链路 <code>p99 &lt; 380ms</code>。</div>
+
+<h3 class="sec">4.1 智能匹配引擎 <span class="desc">// 7-step questionnaire + AI recall</span></h3>
+<div class="bullet"><b>7 步问卷</b>　<code>step1</code> 困扰类型（情绪 / 关系 / 创伤 / 成瘾 / 性 / 自我认同 / 其他）→ <code>step2</code> 紧迫度（一周内必须谈 / 这个月内 / 慢慢来）→ <code>step3</code> 流派偏好（CBT / 精神动力 / 接纳承诺 / 家庭 / 萨提亚 / 不懂让 AI 帮选）→ <code>step4</code> 性别偏好 → <code>step5</code> 价格区间（≤ 300 / 300-600 / 600-1000 / 不限）→ <code>step6</code> 咨询模式（文字 / 语音 / 视频 / 到诊）→ <code>step7</code> 时段。<span class="em">step3 不懂时</span>显示一段 60 字流派科普 + AI 推荐按钮。</div>
+<div class="bullet"><b>召回算法</b>　<code>therapist_profile_vec</code> 表用 <code>BGE-M3</code> 把每位咨询师的 <b>主诉范围 + 流派 + 个人风格自述 + 5 篇科普文</b> 拼接成 <code>1024 维</code> 向量入库，用 <code>HNSW</code> 索引；用户查询走 <code>SELECT id, 1 - (vec &lt;=&gt; $1::vector) AS sim FROM therapist_profile_vec ORDER BY vec &lt;=&gt; $1::vector LIMIT 50</code>。<b>冷启动</b>：如果用户首次评估 PHQ-9 ≥ 15，自动跳过流派偏好步，<b>强制推荐</b>有抑郁主诉资质的督导级咨询师。</div>
+<div class="bullet"><b>重排规则</b>　业务层 <code>matchRerank(top50)</code>：流派 +20 / 性别 +8 / 价格 +10 / 当周可约 +12 / 30 天好评率 &gt; 95% +6 / 同语言（粤语/英语 等）+5 / 用户曾收藏 +3。同分时按<span class="em">"最近 7 天接单数 升序"</span>，避免热门咨询师永远排第一。</div>
+<div class="bullet"><b>反操纵</b>　咨询师不能<b>付费买排名</b>，平台只接受平台抽佣（25%）；问卷答案与匹配日志全量入 <code>match_audit_log</code>，每月由合规审计抽查，发现异常排序立即下架算法节点回滚。</div>
+
+<h3 class="sec">4.2 咨询师档案规范 <span class="desc">// trust spec</span></h3>
+<div class="comp">
+<h4>档案 8 项铁律（缺一项不予上架）</h4>
+<div class="row"><span class="ic">①</span><div><b>真人头像</b>　摄影棚标准证件照 + 工作场景照各 1 张，禁止卡通 / AI 生成 / 网图，<code>Face++</code> 接口检测同一性。</div></div>
+<div class="row"><span class="ic">②</span><div><b>注册编号</b>　<span class="em">中国心理学会注册系统</span> <code>X-YYYY-NNNN</code> 编号 或 <span class="em">中国心理卫生协会</span> 编号；详情页一键跳转 <code>https://rps.camh.org.cn/</code> 验真。</div></div>
+<div class="row"><span class="ic">③</span><div><b>资质链</b>　毕业院校 + 系统培训（中科院心理所基础培训 / 注册系统继续教育）+ 督导小时数 + 个人体验小时数，全部公示。</div></div>
+<div class="row"><span class="ic">④</span><div><b>流派标签</b>　CBT / 精神动力 / 接纳承诺 / 家庭治疗 / 正念 / 萨提亚 / 叙事 等，至多选 <b>3 个主修</b>，禁止"全能"标签。</div></div>
+<div class="row"><span class="ic">⑤</span><div><b>主诉范围</b>　从 <code>32 个细颗粒</code> 主诉中选（焦虑 / 抑郁 / 婚恋 / 原生家庭 / PTSD / 进食障碍 …），每位至多 <b>8 个</b>，避免广撒网。</div></div>
+<div class="row"><span class="ic">⑥</span><div><b>试听片段</b>　60 秒自我介绍音频或视频，必须包含<span class="em">"我擅长什么 / 我的咨询风格 / 我不接什么主诉"</span>三段，不接的主诉要明示边界。</div></div>
+<div class="row"><span class="ic">⑦</span><div><b>督导信息</b>　<b>督导级</b>必须公示督导被谁督导（中国心理学会注册督导师），<b>个人体验</b>已完成时长 ≥ 100h。</div></div>
+<div class="row"><span class="ic">⑧</span><div><b>评价闭环</b>　仅<span class="em">已结案</span>的咨询者可打分，结案 7 天后系统自动推送评价表；评分按<b>有效程度 / 安全感 / 共情 / 准时</b> 4 维各 5 分；评价不可删除，可<b>由咨询师署名回复一次</b>。</div></div>
+</div>
+
+<h3 class="sec">4.3 多模式咨询 · 4 档定价 <span class="desc">// pricing matrix</span></h3>
+
+<div class="pmat">
+  <div class="pm">
+    <div class="ttl">TEXT</div>
+    <div class="price">¥199<small>/30min</small></div>
+    <div class="desc"><b>文字咨询</b>　异步回复 + 24h 内 3 次往返，适合首次试水或不便语音的场景</div>
+  </div>
+  <div class="pm">
+    <div class="ttl">VOICE</div>
+    <div class="price">¥449<small>/45min</small></div>
+    <div class="desc"><b>语音咨询</b>　纯音频 1V1，弱网下也稳定，<code>Opus 32kbps</code> 编码，端到端加密</div>
+  </div>
+  <div class="pm hot">
+    <div class="ttl">VIDEO</div>
+    <div class="price">¥799<small>/60min</small></div>
+    <div class="desc"><b>视频咨询</b>　最贴近线下，支持<span class="em">黑屏模式</span>（屏蔽双方画面，仅留语音 + 字幕）</div>
+  </div>
+  <div class="pm">
+    <div class="ttl">IN-PERSON</div>
+    <div class="price">¥1500<small>/60min</small></div>
+    <div class="desc"><b>到诊咨询</b>　北京 / 上海 / 广深 12 家合作机构，提供独立咨询室与候诊区</div>
+  </div>
+</div>
+
+<div class="det"><b>// 视频咨询技术栈</b> · 用 <code>声网 Agora SD-RTN</code> 自建房间（避免直接用 <code>WebRTC P2P</code> 暴露 IP），<code>DTLS-SRTP</code> 端到端加密；房间号一次性，结束即销毁；<b>禁止任何录制</b>（前端隐藏录屏 API，移动端检测 <code>iOS screen recording</code> 时弹"为保护双方隐私，请关闭录屏后继续"模态）。<b>黑屏模式</b>：用户长按视频区一秒，向 <code>signaling</code> 发 <code>blackout: true</code>，双方画面变成动态星空，AI 实时把对方语音转成字幕（<code>Whisper streaming</code> + <code>VAD</code>）。</div>
+
+<div class="bullet"><b>套餐折扣</b>　视频 <code>5 次包 ¥3499</code>（省 ¥496）· <code>10 次包 ¥6499</code>（省 ¥1491）· <code>20 次包 ¥11999</code>（省 ¥3981）。<b>有效期 12 个月</b>，剩余次数可<span class="em">无限期续延</span>，符合心理咨询长程治疗特性。</div>
+<div class="bullet"><b>首单保障</b>　所有新用户首次咨询 <code>30 分钟内</code>不满意 → <b>一键无理由全额退款</b>，且不影响咨询师评分（成本由平台补贴），降低用户首次决策门槛。</div>
+
+<h3 class="sec">4.4 取消 / 退款 / 督导 / 投诉 <span class="desc">// fairness rails</span></h3>
+
+<div class="refund">
+  <div class="rl r100">
+    <div class="pct">100<span style="font-size:14px">%</span></div>
+    <div class="when">≥ 24H 前</div>
+    <div class="desc">全额退回原支付通道<br><code>3-5</code> 个工作日</div>
+  </div>
+  <div class="rl r50">
+    <div class="pct">50<span style="font-size:14px">%</span></div>
+    <div class="when">24H ~ 2H</div>
+    <div class="desc">原路退 50%<br>另 50% 转储值卡</div>
+  </div>
+  <div class="rl r0">
+    <div class="pct">0<span style="font-size:14px">%</span></div>
+    <div class="when">&lt; 2H 或缺席</div>
+    <div class="desc">不退款<br>但保留<span class="em">下次免迟到</span></div>
+  </div>
+  <div class="rl r100">
+    <div class="pct">100<span style="font-size:14px">%</span></div>
+    <div class="when">咨询师缺席</div>
+    <div class="desc">全额退 + ¥100<br>补偿券 + 优先匹配</div>
+  </div>
+</div>
+
+<div class="bullet"><b>督导抽审</b>　每位咨询师每月<b>随机抽 2 次</b>已结案案例（用户授权后），由 <span class="em">注册督导师</span>盲审：是否守边界、是否过度自我暴露、是否给医学诊断 / 药物建议。督导评分入<b>排序权重</b>，连续 3 次低于 4.0/5.0 → 强制再督导 30 小时。</div>
+<div class="bullet"><b>伦理投诉</b>　详情页固定挂<span class="em">"伦理投诉直通"</span>入口，<code>24h</code> 内合规专员响应，<code>7 天</code> 内核实，严重违规（性骚扰 / 双重关系 / 泄密）<b>立即下架 + 通报中国心理学会注册系统 + 全额退款</b>。</div>
+<div class="bullet"><b>个人体验补贴</b>　平台每月给签约咨询师补贴 <code>¥1500</code> 个人体验费用（即咨询师自己看咨询师），鼓励持续自我成长，避免共情耗竭。</div>
+
+<h3 class="sec">4.5 高保真原型预览 <span class="desc">// 4 phones · therapy flow</span></h3>
+
+<div class="phones">
+
+<!-- ============= 9. MATCH QUIZ ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:linear-gradient(180deg,#FBF9F5 0%,#F0EBF6 100%)">
+    <div class="stb light"><span class="t">19:24</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/><rect x="2" y="2.5" width="15" height="8" rx="1.4" fill="#34C759"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".4"/></svg>
+    </span></div>
+    <!-- Top -->
+    <div style="padding:6px 18px 12px;display:flex;align-items:center;gap:11px">
+      <div style="width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;font-size:16px;color:#5A6478">‹</div>
+      <div style="flex:1">
+        <div style="font-size:10.5px;color:#8B90A0;letter-spacing:1px;font-weight:600">智能匹配 · 7 步看见你</div>
+        <div style="height:4px;background:rgba(107,127,181,.18);border-radius:2px;margin-top:5px;overflow:hidden">
+          <div style="height:100%;width:57%;background:linear-gradient(90deg,#6B7FB5,#A89AC7);border-radius:2px"></div>
+        </div>
+      </div>
+      <div style="font-size:11.5px;font-weight:700;color:#6B7FB5;font-variant-numeric:tabular-nums">4<span style="color:#9AA0B0;font-weight:500">/7</span></div>
+    </div>
+    <!-- Question -->
+    <div style="padding:8px 22px 16px">
+      <div style="font-size:10px;color:#A89AC7;letter-spacing:2px;font-weight:700;margin-bottom:8px">QUESTION 04 · 流派偏好</div>
+      <div style="font-family:'Noto Serif SC';font-size:17px;line-height:1.55;color:#2A3658;font-weight:600">你希望咨询师<br>用什么<b style="color:#7E6FA0">"路数"</b>陪你？</div>
+      <div style="font-size:11px;color:#9AA0B0;line-height:1.65;margin-top:6px">不懂没关系 — 选完会有 60 字小科普</div>
+    </div>
+    <!-- Options -->
+    <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px;flex:1;overflow-y:auto">
+      <div style="background:linear-gradient(135deg,#F0EBF6,#FBF9F5);border:1.5px solid #A89AC7;border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 14px -6px rgba(168,154,199,.4)">
+        <div style="width:18px;height:18px;border-radius:50%;background:#A89AC7;flex-shrink:0;display:flex;align-items:center;justify-content:center"><svg width="10" height="8" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div style="flex:1"><div style="font-size:13px;color:#2A3658;font-weight:600">CBT · 认知行为</div><div style="font-size:10px;color:#7E6FA0;margin-top:1px">见效快 · 适合焦虑/失眠/强迫</div></div>
+        <div style="font-size:9px;color:#7E6FA0;background:rgba(168,154,199,.25);padding:2px 7px;border-radius:8px;font-weight:700">52% 选</div>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:10px">
+        <div style="width:18px;height:18px;border-radius:50%;border:1.5px solid #C9D0E0;flex-shrink:0"></div>
+        <div style="flex:1"><div style="font-size:13px;color:#1A1F2E;font-weight:500">精神动力</div><div style="font-size:10px;color:#9AA0B0;margin-top:1px">深挖原生家庭 · 长程</div></div>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:10px">
+        <div style="width:18px;height:18px;border-radius:50%;border:1.5px solid #C9D0E0;flex-shrink:0"></div>
+        <div style="flex:1"><div style="font-size:13px;color:#1A1F2E;font-weight:500">接纳承诺 ACT</div><div style="font-size:10px;color:#9AA0B0;margin-top:1px">学会与情绪共处 · 正念</div></div>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:10px">
+        <div style="width:18px;height:18px;border-radius:50%;border:1.5px solid #C9D0E0;flex-shrink:0"></div>
+        <div style="flex:1"><div style="font-size:13px;color:#1A1F2E;font-weight:500">家庭 / 萨提亚</div><div style="font-size:10px;color:#9AA0B0;margin-top:1px">关系议题 · 沟通模式</div></div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(168,154,199,.12),rgba(245,199,199,.12));border:1px dashed #A89AC7;border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:10px">
+        <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#F5C7C7,#A89AC7);display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px">✦</div>
+        <div style="flex:1"><div style="font-size:12.5px;color:#7E6FA0;font-weight:600">我不懂 · 让 AI 帮我选</div><div style="font-size:10px;color:#9AA0B0;margin-top:1px">基于你前 3 题答案智能推荐</div></div>
+        <div style="font-size:14px;color:#A89AC7">→</div>
+      </div>
+    </div>
+    <!-- Footer -->
+    <div style="padding:12px 18px 22px;display:flex;gap:9px;flex-shrink:0">
+      <div style="flex:1;text-align:center;padding:13px 0;background:rgba(0,0,0,.05);color:#5A6478;border-radius:13px;font-size:13px;font-weight:600">‹ 上一步</div>
+      <div style="flex:1.6;text-align:center;padding:13px 0;background:linear-gradient(135deg,#6B7FB5,#A89AC7);color:#fff;border-radius:13px;font-size:13px;font-weight:600;box-shadow:0 8px 18px -6px rgba(107,127,181,.5)">下一步 →</div>
+    </div>
+    <div class="hpipe"></div>
+  </div>
+  <div class="cap">MATCH QUIZ · 7 步</div>
+</div>
+
+<!-- ============= 10. THERAPIST LIST ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:#FBF9F5">
+    <div class="stb light"><span class="t">19:31</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/><rect x="2" y="2.5" width="15" height="8" rx="1.4" fill="#34C759"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".4"/></svg>
+    </span></div>
+    <div class="bod" style="overflow-y:auto">
+      <!-- Header -->
+      <div style="padding:4px 16px 8px;display:flex;align-items:flex-end;justify-content:space-between">
+        <div><div style="font-size:10.5px;color:#9AA0B0;letter-spacing:1.5px;font-weight:600">FOR YOU · 智能匹配</div><div style="font-family:'Noto Serif SC';font-size:17px;font-weight:600;color:#2A3658;margin-top:2px">为林昭精选 12 位</div></div>
+        <div style="display:flex;gap:5px">
+          <div style="background:#fff;border:1px solid rgba(0,0,0,.06);padding:5px 9px;border-radius:9px;font-size:10.5px;color:#5A6478;font-weight:600">⇅ 排序</div>
+          <div style="background:linear-gradient(135deg,#6B7FB5,#A89AC7);color:#fff;padding:5px 9px;border-radius:9px;font-size:10.5px;font-weight:600">筛选 ·3</div>
+        </div>
+      </div>
+      <!-- Filter chips -->
+      <div style="padding:0 16px 12px;display:flex;gap:5px;overflow-x:auto">
+        <span style="background:linear-gradient(135deg,#A89AC7,#7E6FA0);color:#fff;padding:5px 10px;border-radius:11px;font-size:10.5px;font-weight:600;white-space:nowrap">CBT ✕</span>
+        <span style="background:linear-gradient(135deg,#A89AC7,#7E6FA0);color:#fff;padding:5px 10px;border-radius:11px;font-size:10.5px;font-weight:600;white-space:nowrap">女性 ✕</span>
+        <span style="background:linear-gradient(135deg,#A89AC7,#7E6FA0);color:#fff;padding:5px 10px;border-radius:11px;font-size:10.5px;font-weight:600;white-space:nowrap">¥300-600 ✕</span>
+        <span style="background:rgba(0,0,0,.05);color:#5A6478;padding:5px 10px;border-radius:11px;font-size:10.5px;font-weight:600;white-space:nowrap">+ 视频</span>
+      </div>
+      <!-- List -->
+      <div style="padding:0 14px 12px">
+        <!-- Card 1 -->
+        <div class="tcard" style="border:1.5px solid rgba(168,154,199,.45);background:linear-gradient(135deg,#fff,#FBF9F5);box-shadow:0 8px 18px -8px rgba(168,154,199,.35)">
+          <div class="av" style="background:linear-gradient(135deg,#A89AC7,#7E6FA0)">王<div class="v">✓</div></div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px"><span style="font-size:13.5px;color:#2A3658;font-weight:700">王安然</span><span style="font-size:9px;color:#A6574E;background:rgba(216,154,154,.2);padding:1px 5px;border-radius:5px;font-weight:700">督 导 级</span><span style="font-size:9px;color:#5E7E66;background:rgba(138,171,145,.2);padding:1px 5px;border-radius:5px;font-weight:700">在 线</span></div>
+            <div style="font-size:10px;color:#7E6FA0;font-weight:600;margin-bottom:4px"><code style="background:rgba(168,154,199,.15);color:#7E6FA0;padding:1px 5px;border-radius:3px;font-size:9px;font-family:'JetBrains Mono'">X-2018-0241</code> · 中国心理学会注册系统</div>
+            <div style="font-size:11px;color:#5A6478;line-height:1.55;margin-bottom:5px">CBT · 接纳承诺 · 12 年临床<br>主诉：婚姻焦虑 / 自我价值感 / 完美主义</div>
+            <div style="display:flex;align-items:center;gap:7px;margin-top:4px">
+              <span style="font-size:10.5px;color:#C9A866;font-weight:700">★ 4.96</span>
+              <span style="font-size:10px;color:#9AA0B0">· 1,247 例</span>
+              <span style="margin-left:auto;font-family:'Cormorant Garamond';font-size:18px;font-weight:700;color:#6B7FB5">¥799<span style="font-size:10px;color:#9AA0B0;font-family:Inter">/60min</span></span>
+            </div>
+            <div style="display:flex;gap:5px;margin-top:7px">
+              <div style="font-size:9.5px;color:#7E6FA0;background:rgba(168,154,199,.15);padding:3px 7px;border-radius:7px;font-weight:600">📅 今晚 21:00 可约</div>
+              <div style="font-size:9.5px;color:#5E7E66;background:rgba(138,171,145,.15);padding:3px 7px;border-radius:7px;font-weight:600">🎧 试听 60s</div>
+            </div>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="tcard">
+          <div class="av" style="background:linear-gradient(135deg,#6B7FB5,#4A5C8F)">林<div class="v">✓</div></div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px"><span style="font-size:13.5px;color:#2A3658;font-weight:700">林知夏</span><span style="font-size:9px;color:#7E6FA0;background:rgba(168,154,199,.2);padding:1px 5px;border-radius:5px;font-weight:700">注 册 师</span></div>
+            <div style="font-size:10px;color:#7E6FA0;font-weight:600;margin-bottom:4px"><code style="background:rgba(168,154,199,.15);color:#7E6FA0;padding:1px 5px;border-radius:3px;font-size:9px;font-family:'JetBrains Mono'">X-2021-1108</code> · 注册系统在册</div>
+            <div style="font-size:11px;color:#5A6478;line-height:1.55;margin-bottom:5px">CBT · 正念 · 7 年临床<br>主诉：职场焦虑 / 失眠 / 拖延</div>
+            <div style="display:flex;align-items:center;gap:7px"><span style="font-size:10.5px;color:#C9A866;font-weight:700">★ 4.91</span><span style="font-size:10px;color:#9AA0B0">· 683 例</span><span style="margin-left:auto;font-family:'Cormorant Garamond';font-size:18px;font-weight:700;color:#6B7FB5">¥499<span style="font-size:10px;color:#9AA0B0;font-family:Inter">/45min</span></span></div>
+            <div style="display:flex;gap:5px;margin-top:7px"><div style="font-size:9.5px;color:#9AA0B0;background:rgba(0,0,0,.05);padding:3px 7px;border-radius:7px;font-weight:600">📅 周五 19:30 可约</div></div>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="tcard">
+          <div class="av" style="background:linear-gradient(135deg,#F5C7C7,#D89A9A)">苏<div class="v">✓</div></div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px"><span style="font-size:13.5px;color:#2A3658;font-weight:700">苏 婉</span><span style="font-size:9px;color:#7E6FA0;background:rgba(168,154,199,.2);padding:1px 5px;border-radius:5px;font-weight:700">注 册 师</span></div>
+            <div style="font-size:10px;color:#7E6FA0;font-weight:600;margin-bottom:4px"><code style="background:rgba(168,154,199,.15);color:#7E6FA0;padding:1px 5px;border-radius:3px;font-size:9px;font-family:'JetBrains Mono'">X-2019-0856</code> · 注册系统在册</div>
+            <div style="font-size:11px;color:#5A6478;line-height:1.55;margin-bottom:5px">家庭治疗 · 萨提亚 · 9 年临床<br>主诉：原生家庭 / 婆媳 / 育儿冲突</div>
+            <div style="display:flex;align-items:center;gap:7px"><span style="font-size:10.5px;color:#C9A866;font-weight:700">★ 4.88</span><span style="font-size:10px;color:#9AA0B0">· 521 例</span><span style="margin-left:auto;font-family:'Cormorant Garamond';font-size:18px;font-weight:700;color:#6B7FB5">¥599<span style="font-size:10px;color:#9AA0B0;font-family:Inter">/45min</span></span></div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;padding:6px 0 16px;font-size:10.5px;color:#A89AC7;font-weight:600">↓ 还有 9 位精选咨询师</div>
+    </div>
+    <div class="tabbar">
+      <div class="tab"><svg viewBox="0 0 24 24" fill="none"><path d="M3 11l9-8 9 8v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.8"/></svg>首页</div>
+      <div class="tab"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4C7 4 3 7.5 3 12c0 1.5.5 3 1.4 4.2L3 20l4-1c1.5.7 3.2 1 5 1 5 0 9-3.5 9-8s-4-8-9-8z" stroke="currentColor" stroke-width="1.8"/></svg>树洞</div>
+      <div class="tab"><svg viewBox="0 0 24 24" fill="none"><path d="M5 4h14v16l-7-3-7 3z" stroke="currentColor" stroke-width="1.8"/></svg>日记</div>
+      <div class="tab on"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>咨询</div>
+      <div class="tab"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>我</div>
+    </div>
+    <div class="hpipe"></div>
+  </div>
+  <div class="cap">THERAPIST LIST</div>
+</div>
+
+<!-- ============= 11. THERAPIST DETAIL ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:#FBF9F5">
+    <div class="stb light"><span class="t">19:35</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/><rect x="2" y="2.5" width="15" height="8" rx="1.4" fill="#34C759"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".4"/></svg>
+    </span></div>
+    <div class="bod" style="overflow-y:auto">
+      <!-- Hero -->
+      <div style="position:relative;height:170px;background:linear-gradient(135deg,#A89AC7 0%,#6B7FB5 50%,#4A5C8F 100%);overflow:hidden">
+        <div style="position:absolute;inset:0;background:radial-gradient(circle at 30% 30%,rgba(245,199,199,.2),transparent 50%)"></div>
+        <div style="position:absolute;top:14px;left:14px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px">‹</div>
+        <div style="position:absolute;top:14px;right:14px;display:flex;gap:7px"><div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px">♡</div><div style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px">↗</div></div>
+        <div style="position:absolute;left:50%;bottom:-26px;transform:translateX(-50%);width:84px;height:84px;border-radius:50%;border:4px solid #fff;background:linear-gradient(135deg,#A89AC7,#7E6FA0);box-shadow:0 14px 30px -10px rgba(42,54,88,.4);display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Noto Serif SC';font-size:28px;font-weight:700">王</div>
+      </div>
+      <div style="padding:34px 18px 0;text-align:center">
+        <div style="font-family:'Noto Serif SC';font-size:18px;font-weight:700;color:#2A3658">王安然　<span style="font-size:11px;color:#A6574E;background:rgba(216,154,154,.2);padding:2px 7px;border-radius:6px;font-weight:700;vertical-align:2px">督 导 级</span></div>
+        <div style="font-size:10px;color:#7E6FA0;margin-top:3px;font-weight:600;letter-spacing:.5px"><code style="background:rgba(168,154,199,.15);color:#7E6FA0;padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono';font-size:9.5px">X-2018-0241</code> · 中国心理学会注册系统 ↗</div>
+      </div>
+      <!-- Stats row -->
+      <div style="display:flex;justify-content:space-around;padding:14px 0 6px;margin:0 14px;background:#fff;border-radius:14px;margin-top:14px;border:1px solid rgba(0,0,0,.04);box-shadow:0 4px 12px -6px rgba(42,54,88,.08)">
+        <div style="text-align:center"><div style="font-family:'Cormorant Garamond';font-size:22px;font-weight:700;color:#6B7FB5">12<span style="font-size:11px;color:#9AA0B0">y</span></div><div style="font-size:9px;color:#9AA0B0;letter-spacing:1.5px;font-weight:600">临床</div></div>
+        <div style="width:1px;background:rgba(0,0,0,.05)"></div>
+        <div style="text-align:center"><div style="font-family:'Cormorant Garamond';font-size:22px;font-weight:700;color:#A89AC7">3,840<span style="font-size:11px;color:#9AA0B0">h</span></div><div style="font-size:9px;color:#9AA0B0;letter-spacing:1.5px;font-weight:600">咨询时长</div></div>
+        <div style="width:1px;background:rgba(0,0,0,.05)"></div>
+        <div style="text-align:center"><div style="font-family:'Cormorant Garamond';font-size:22px;font-weight:700;color:#5E7E66">280<span style="font-size:11px;color:#9AA0B0">h</span></div><div style="font-size:9px;color:#9AA0B0;letter-spacing:1.5px;font-weight:600">受督导</div></div>
+        <div style="width:1px;background:rgba(0,0,0,.05)"></div>
+        <div style="text-align:center"><div style="font-family:'Cormorant Garamond';font-size:22px;font-weight:700;color:#C9A866">4.96<span style="font-size:11px;color:#9AA0B0">★</span></div><div style="font-size:9px;color:#9AA0B0;letter-spacing:1.5px;font-weight:600">1247 例</div></div>
+      </div>
+      <!-- Audio preview -->
+      <div style="margin:14px;background:linear-gradient(135deg,#F0EBF6,#FBF9F5);border:1px solid rgba(168,154,199,.3);border-radius:13px;padding:12px 13px;display:flex;align-items:center;gap:11px">
+        <div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#A89AC7,#7E6FA0);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;box-shadow:0 6px 14px -4px rgba(168,154,199,.5)"><svg width="13" height="13" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></div>
+        <div style="flex:1"><div style="font-size:12px;color:#2A3658;font-weight:600">"我擅长焦虑与自我价值感 ⋯⋯"</div><div style="display:flex;align-items:center;gap:4px;margin-top:5px"><div style="flex:1;height:3px;background:rgba(168,154,199,.25);border-radius:2px;overflow:hidden"><div style="height:100%;width:35%;background:linear-gradient(90deg,#A89AC7,#7E6FA0);border-radius:2px"></div></div><span style="font-size:9.5px;color:#7E6FA0;font-weight:600">0:21 / 1:00</span></div></div>
+      </div>
+      <!-- Tags -->
+      <div style="padding:0 18px 12px"><div style="font-size:10px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700;margin-bottom:8px">流派 · 主诉</div>
+        <div style="display:flex;flex-wrap:wrap;gap:5px">
+          <span style="background:linear-gradient(135deg,#A89AC7,#7E6FA0);color:#fff;padding:4px 10px;border-radius:11px;font-size:10.5px;font-weight:600">CBT</span>
+          <span style="background:linear-gradient(135deg,#A89AC7,#7E6FA0);color:#fff;padding:4px 10px;border-radius:11px;font-size:10.5px;font-weight:600">接纳承诺</span>
+          <span style="background:rgba(168,154,199,.15);color:#7E6FA0;padding:4px 10px;border-radius:11px;font-size:10.5px;font-weight:600">焦虑</span>
+          <span style="background:rgba(168,154,199,.15);color:#7E6FA0;padding:4px 10px;border-radius:11px;font-size:10.5px;font-weight:600">完美主义</span>
+          <span style="background:rgba(168,154,199,.15);color:#7E6FA0;padding:4px 10px;border-radius:11px;font-size:10.5px;font-weight:600">婚姻关系</span>
+          <span style="background:rgba(168,154,199,.15);color:#7E6FA0;padding:4px 10px;border-radius:11px;font-size:10.5px;font-weight:600">自我价值感</span>
+        </div>
+      </div>
+      <!-- Schedule -->
+      <div style="padding:0 16px 14px"><div style="font-size:10px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700;margin-bottom:8px;padding-left:2px">最近 7 天可约</div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:5px">
+          <div style="background:rgba(0,0,0,.04);border-radius:9px;padding:8px 0;text-align:center;font-size:9.5px;color:#9AA0B0"><div style="font-weight:700">周一</div><div style="margin-top:2px;color:#9AA0B0">满</div></div>
+          <div style="background:rgba(0,0,0,.04);border-radius:9px;padding:8px 0;text-align:center;font-size:9.5px;color:#9AA0B0"><div style="font-weight:700">周二</div><div style="margin-top:2px">满</div></div>
+          <div style="background:linear-gradient(135deg,#A89AC7,#7E6FA0);border-radius:9px;padding:8px 0;text-align:center;font-size:9.5px;color:#fff;box-shadow:0 4px 10px -3px rgba(168,154,199,.5)"><div style="font-weight:700">今晚</div><div style="margin-top:2px;font-weight:700">21:00</div></div>
+          <div style="background:#fff;border:1px solid #A89AC7;border-radius:9px;padding:8px 0;text-align:center;font-size:9.5px;color:#7E6FA0"><div style="font-weight:700">周四</div><div style="margin-top:2px;font-weight:700">3 档</div></div>
+          <div style="background:#fff;border:1px solid #A89AC7;border-radius:9px;padding:8px 0;text-align:center;font-size:9.5px;color:#7E6FA0"><div style="font-weight:700">周五</div><div style="margin-top:2px;font-weight:700">5 档</div></div>
+          <div style="background:rgba(0,0,0,.04);border-radius:9px;padding:8px 0;text-align:center;font-size:9.5px;color:#9AA0B0"><div style="font-weight:700">周六</div><div style="margin-top:2px">满</div></div>
+          <div style="background:#fff;border:1px solid #A89AC7;border-radius:9px;padding:8px 0;text-align:center;font-size:9.5px;color:#7E6FA0"><div style="font-weight:700">周日</div><div style="margin-top:2px;font-weight:700">2 档</div></div>
+        </div>
+      </div>
+      <!-- Reviews -->
+      <div style="padding:0 18px 14px"><div style="font-size:10px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700;margin-bottom:8px">咨询者评价 · 仅结案后可评</div>
+        <div style="background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:12px;padding:11px 13px;margin-bottom:7px">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px"><div style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#F5C7C7,#D89A9A);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700">小</div><span style="font-size:11.5px;color:#2A3658;font-weight:600">小* · 已完成 8 次</span><span style="margin-left:auto;color:#C9A866;font-size:11px;font-weight:700">★★★★★</span></div>
+          <div style="font-size:11.5px;color:#5A6478;line-height:1.65">"安然老师不会急着给建议，会真的等我说完。最让我意外的是她在第三次提醒我'你说了 4 次「应该」'，那一刻我第一次意识到自己有多少枷锁。"</div>
+        </div>
+        <div style="background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:12px;padding:11px 13px">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:5px"><div style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,#8AAB91,#5E7E66);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700">阿</div><span style="font-size:11.5px;color:#2A3658;font-weight:600">阿* · 已完成 5 次</span><span style="margin-left:auto;color:#C9A866;font-size:11px;font-weight:700">★★★★★</span></div>
+          <div style="font-size:11.5px;color:#5A6478;line-height:1.65">"边界感很好。第二次咨询我想加微信，老师温和但坚定地说不可以，反而让我更信任她。"</div>
+        </div>
+      </div>
+    </div>
+    <!-- Sticky CTA -->
+    <div style="padding:10px 14px 22px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-top:.5px solid rgba(0,0,0,.06);display:flex;align-items:center;gap:9px;flex-shrink:0">
+      <div><div style="font-size:9.5px;color:#9AA0B0;letter-spacing:1px">视频咨询</div><div style="font-family:'Cormorant Garamond';font-size:22px;font-weight:700;color:#6B7FB5;line-height:1">¥799<span style="font-size:10px;color:#9AA0B0;font-family:Inter">/60min</span></div></div>
+      <div style="flex:1;text-align:center;padding:13px 0;background:linear-gradient(135deg,#6B7FB5,#A89AC7);color:#fff;border-radius:13px;font-size:13px;font-weight:700;box-shadow:0 8px 18px -6px rgba(107,127,181,.5);margin-left:auto;max-width:170px">预约今晚 21:00 →</div>
+    </div>
+    <div class="hpipe"></div>
+  </div>
+  <div class="cap">THERAPIST DETAIL</div>
+</div>
+
+<!-- ============= 12. VIDEO SESSION ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:#0E1622">
+    <div class="stb dark"><span class="t">21:18</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/><rect x="2" y="2.5" width="13" height="8" rx="1.4" fill="#34C759"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".4"/></svg>
+    </span></div>
+    <!-- Therapist video full bg -->
+    <div style="flex:1;position:relative;background:radial-gradient(circle at 50% 40%,#5A6B9A 0%,#3A4670 50%,#1A2032 100%);overflow:hidden">
+      <!-- Therapist face silhouette -->
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.85">
+        <div style="width:130px;height:160px;border-radius:50% 50% 45% 45%;background:radial-gradient(circle at 50% 35%,rgba(245,220,200,.55),rgba(122,98,84,.4) 70%);box-shadow:0 0 80px 20px rgba(245,199,199,.18);position:relative">
+          <div style="position:absolute;top:38%;left:30%;width:9px;height:5px;background:#2A1F1A;border-radius:50%"></div>
+          <div style="position:absolute;top:38%;right:30%;width:9px;height:5px;background:#2A1F1A;border-radius:50%"></div>
+          <div style="position:absolute;bottom:30%;left:40%;width:25px;height:5px;background:rgba(80,40,40,.7);border-radius:8px"></div>
+        </div>
+      </div>
+      <!-- Header overlay -->
+      <div style="position:absolute;top:8px;left:14px;right:14px;display:flex;align-items:center;gap:10px;background:rgba(14,22,34,.55);backdrop-filter:blur(20px);border-radius:14px;padding:8px 12px">
+        <div style="width:7px;height:7px;border-radius:50%;background:#FF3B30;animation:breathe 1.5s infinite"></div>
+        <div style="font-size:11px;color:#fff;font-weight:600">王安然 · 督导级</div>
+        <div style="font-size:9.5px;color:#A89AC7;font-family:'JetBrains Mono';margin-left:auto;font-weight:700">42:08 / 60:00</div>
+      </div>
+      <!-- E2E badge -->
+      <div style="position:absolute;top:54px;left:14px;background:rgba(94,126,102,.3);backdrop-filter:blur(20px);color:#B5D5BC;font-size:9px;letter-spacing:1.5px;padding:3px 9px;border-radius:8px;font-weight:700;border:1px solid rgba(94,126,102,.5)">🔒 E2E · 不录制</div>
+      <!-- Caption (黑屏模式提示) -->
+      <div style="position:absolute;bottom:118px;left:14px;right:14px;background:rgba(14,22,34,.7);backdrop-filter:blur(20px);border-radius:14px;padding:10px 13px;border:1px solid rgba(168,154,199,.25)">
+        <div style="font-size:9px;letter-spacing:1.5px;color:#A89AC7;font-weight:700;margin-bottom:4px">咨询师 · 实时字幕</div>
+        <div style="font-size:11.5px;color:#fff;line-height:1.6">"⋯ 你说项目第三次被打回，那一刻你身体里最先升起的是什么 —— 是脑子里的责备，还是<span style="background:rgba(245,199,199,.25);padding:1px 4px;border-radius:3px">胸口那种闷闷的感觉</span>？我们一起停在这个画面里待一会儿"</div>
+      </div>
+      <!-- Self preview -->
+      <div style="position:absolute;top:96px;right:12px;width:64px;height:84px;border-radius:11px;background:linear-gradient(160deg,#2A3658,#1A1F2E);border:1.5px solid rgba(255,255,255,.2);box-shadow:0 8px 18px -6px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.5);font-size:9px">您 · 黑屏中</div>
+      <!-- Controls -->
+      <div style="position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:11px">
+        <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;color:#fff;border:1px solid rgba(255,255,255,.15)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 14a3 3 0 0 0 3-3V5a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3z" fill="#fff"/><path d="M19 11a7 7 0 0 1-14 0M12 18v3" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
+        <div style="width:46px;height:46px;border-radius:50%;background:rgba(168,154,199,.4);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;color:#fff;border:1.5px solid rgba(216,204,229,.6)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 12h6m12 0h-6M9 12c0-1.5 1.5-3 3-3s3 1.5 3 3-1.5 3-3 3-3-1.5-3-3z" stroke="#fff" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="#fff" stroke-width="2" stroke-dasharray="3 3"/></svg></div>
+        <div style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#D89A9A,#B86464);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 10px 22px -6px rgba(216,154,154,.6)"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" transform="rotate(135 12 12)"/></svg></div>
+        <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;color:#fff;border:1px solid rgba(255,255,255,.15)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="14" height="12" rx="2" stroke="#fff" stroke-width="1.8"/><path d="M17 10l4-3v10l-4-3" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+        <div style="width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;color:#fff;border:1px solid rgba(255,255,255,.15);font-size:18px">⋯</div>
+      </div>
+      <!-- SOS shortcut -->
+      <div style="position:absolute;bottom:8px;left:14px;right:14px;background:rgba(216,154,154,.2);backdrop-filter:blur(20px);border:1px solid rgba(216,154,154,.45);border-radius:11px;padding:6px 11px;display:flex;align-items:center;gap:7px"><span style="font-size:13px">⚠</span><span style="font-size:10.5px;color:#FFB8B8;font-weight:600">如有危机感受 · 长按下方红键 5 秒</span><span style="margin-left:auto;font-size:9.5px;color:#FFD8D8;font-weight:700">12320</span></div>
+    </div>
+    <div class="hpipe light"></div>
+  </div>
+  <div class="cap">VIDEO · 黑屏模式</div>
+</div>
+
+</div>
+
+<div class="det"><b>// 视频房间生命周期</b> · 用户点 <code>预约今晚 21:00</code> → 后端 <code>POST /api/booking</code> 创建 <code>booking_id</code> 与 <code>声网 channel_token</code>（<code>有效期 = 预约时间 ± 10min</code>）→ 用户与咨询师双方在 <code>21:00</code> 前 5 分钟收到 push → 进入候诊室（<code>app/(main)/session/[id]/lobby</code>，仅显示倒计时与"咨询前小提醒"）→ <code>21:00</code> 自动建房 → 结束前 <code>5min</code> 全屏柔提示「最后 5 分钟，可以做总结了」→ 结束后 <code>3s</code> 倒计时自动断房 → 跳到 <b>结案表</b>（4 维评价 + 给咨询师留 3 句话）。</div>
+
+<div class="step">
+<div class="step-num">05<small>FLYWHEEL</small></div>
+<div class="step-title">
+<h2>冥想订阅 · 成长仪表盘 · 咨询师工作台<span class="en">Membership · Growth · Counselor SaaS</span></h2>
+<p>付费咨询是<b>事件型收入</b>，冥想订阅与数据资产才是<b>长期陪伴的飞轮</b> —— 一年后用户回头看，看到的是自己被一棵越来越茂盛的<span class="em">成长树</span>陪着走过来。</p>
+</div>
+</div>
+
+<div class="callout"><span class="ico">🌙</span><b>任务说明：</b>本步把"<b>留存 → 习惯 → 续费 → 转介绍</b>"做成一台自循环的飞轮。包括：<b>4 主题冥想内容矩阵 + IP 老师</b>、<b>21 天打卡 + 12 生肖勋章 + HealthKit 心率联动</b>、<b>5 档订阅与首单 7 天免费</b>、<b>个人成长仪表盘 + Spotify-Wrapped 年报</b>，以及给咨询师端用的<b>轻量级 SaaS 工作台</b>（排期 / 案例 / 督导 / 收入）。</div>
+
+<div class="det"><b>// 内容引擎</b> · 冥想课用 <code>app/(main)/meditation</code> 路由树承载 <code>theme/[slug]</code>（4 大主题）→ <code>course/[id]</code>（课程详情）→ <code>player/[id]</code>（播放器）。音频走 <code>HLS</code> 切片（<code>10s/段</code> + <code>AES-128</code> 加密），<b>不允许整段下载</b>但会员可<span class="em">离线缓存 60% 课程</span>。播放状态 <code>(courseId, position, duration, completed)</code> 每 <code>15s</code> 通过 <code>navigator.sendBeacon()</code> 异步上报，断网后入 <code>IndexedDB</code> 队列，下次打开补传。</div>
+
+<h3 class="sec">5.1 内容矩阵 · 4 主题 × IP 老师 <span class="desc">// content map</span></h3>
+<div class="bullet"><b>4 大主题</b>　<span class="em">睡眠 Sleep</span>（睡前冥想 / 故事 / 白噪音 / 双耳节拍 8Hz）· <span class="em">焦虑 Anxiety</span>（呼吸放松 / 接纳练习 / 急救式 5 分钟）· <span class="em">专注 Focus</span>（番茄前 3 分钟 / 4-7-8 呼吸 / 工作背景白噪）· <span class="em">自我接纳 Self-Acceptance</span>（自我慈悲 / 身体扫描 / 镜子练习）。</div>
+<div class="bullet"><b>课程结构</b>　<code>单课</code>（8-30min）/ <code>7 天系列</code>（每天解锁 1 课，配文字读物）/ <code>21 天计划</code>（结合打卡，完成获勋章）。每条音频含<span class="em">前奏定场</span>（30s 雨声/钵音）+ <span class="em">人声引导</span> + <span class="em">尾声留白</span>（30s 静音让用户自己沉淀），不直接切回 App 主界面。</div>
+<div class="bullet"><b>IP 老师矩阵</b>　<b>王恬</b>（睡眠主理 · 北医六院心理咨询师 · 嗓音磁性低频）· <b>林海</b>（焦虑主理 · 注册督导师 · 接纳承诺流派）· <b>苏珊</b>（自我接纳主理 · 美国注册临床社工 LCSW · 中英双语）· <b>子珩</b>（专注主理 · 正念减压 MBSR 认证）。每位老师有<span class="em">独立频道页</span>（封面图 + 个人音色样本 + 累计学员）。</div>
+<div class="bullet"><b>双耳节拍</b>　<code>40Hz Gamma</code>（专注）/ <code>10Hz Alpha</code>（放松）/ <code>4Hz Theta</code>（睡前）/ <code>1Hz Delta</code>（深睡）；<b>左右耳频率差</b>由前端 Web Audio <code>OscillatorNode</code> 实时合成，确保戴耳机生效；<b>不戴耳机</b>时弹"建议戴耳机以获得双耳节拍效果"提示。</div>
+
+<h3 class="sec">5.2 习惯养成 · 21 天 + 12 生肖勋章 <span class="desc">// habit loop</span></h3>
+<div class="bullet"><b>连签机制</b>　<code>D1 - D7</code> 文字鼓励 / <code>D8 - D14</code> 解锁专属白噪音 / <code>D15 - D21</code> 解锁勋章 / <code>D30</code> 送 1 个月会员 / <code>D100</code> 送 3 个月会员 / <code>D365</code> 送终身会员席位。<span class="em">断签不归零</span>：心理疗愈不该惩罚，按"最长连续天数"展示。</div>
+<div class="bullet"><b>12 生肖勋章</b>　按完成主题与课程数量颁发：<code>子鼠 · 静</code>（首次完成睡眠课）· <code>丑牛 · 稳</code>（21 天专注计划）· <code>寅虎 · 勇</code>（首次冥想超 30min）⋯ 共 12 枚，每枚带<span class="em">水墨手绘 + 治愈寄语</span>，可分享朋友圈（自动生成图片，不带二维码 / 价格 / 优惠 — 不是营销素材，是用户成就）。</div>
+<div class="bullet"><b>HealthKit / 华为运动健康</b>　冥想前后采集 <code>HRV</code> 心率变异、<code>RHR</code> 静息心率、<code>SpO₂</code>，结束后展示<span class="em">"今天放松了 14 bpm"</span>这种可感知的变化；写回 Apple Health 的 <code>Mindful Minutes</code> 字段。</div>
+<div class="bullet"><b>22:00 暗色模式</b>　每天 <code>22:00</code> 后自动切深色 UI（<code>prefers-color-scheme</code> 之外的额外硬约束），关闭<span class="em">所有营销 push / 红点 / 角标</span>，仅保留睡眠主题入口；<code>23:30</code> 后冥想播放器自动激活<b>"睡眠模式"</b>（30min 后渐隐音乐 + 关屏不挂起会话）。</div>
+
+<h3 class="sec">5.3 订阅商业化 · 5 档 <span class="desc">// pricing tiers</span></h3>
+
+<div class="subs">
+  <div class="sb">
+    <div class="nm">月 度</div>
+    <div class="pr"><sup>¥</sup>39<small>/月</small></div>
+    <div class="save">微信连续包月可随时取消</div>
+    <ul>
+      <li>4 大主题全部解锁</li>
+      <li>21 天计划无限参加</li>
+      <li>每周更新 2 条新课</li>
+      <li>HealthKit 数据回写</li>
+    </ul>
+  </div>
+  <div class="sb hi">
+    <div class="nm">年 度 · 推 荐</div>
+    <div class="pr"><sup>¥</sup>298<small>/年</small></div>
+    <div class="save">省 ¥170 · 月均 ¥24.8</div>
+    <ul>
+      <li>月度全部权益</li>
+      <li>解锁 IP 老师专属课</li>
+      <li>双耳节拍工作室</li>
+      <li>离线缓存 60% 课程</li>
+      <li>生日月免费咨询券 1 张</li>
+    </ul>
+  </div>
+  <div class="sb">
+    <div class="nm">家 庭 / 学 生</div>
+    <div class="pr"><sup>¥</sup>168<small>~ 498/年</small></div>
+    <div class="save">学生 ¥168 · 家庭 3 人 ¥498</div>
+    <ul>
+      <li>学生年度需校验学籍</li>
+      <li>家庭最多 3 个独立账号</li>
+      <li>未成年家庭模式（内容降级）</li>
+      <li>家长查看子女冥想分钟数</li>
+    </ul>
+  </div>
+</div>
+
+<div class="bullet"><b>7 天免费试听</b>　<span class="em">不绑卡</span>即可试听，下载首日只送 <b>3 节</b> 入门课（避免被薅羊毛拉走音频）；第 4 天起进入正式试听期。<b>到期前 24h</b> push 提醒"明天即将到期，可随时取消"，不偷偷扣费。</div>
+<div class="bullet"><b>终身会员</b>　<code>¥1888</code> 限定 <b>5000 份</b>，订单号 <code>LIFE-NNNN</code> 公开可查（链接到一个公开页面），<span class="em">不再开放第二批</span>。这是与早期用户的承诺，也是品牌资产。</div>
+<div class="bullet"><b>免责说明</b>　所有价格页底部固定一句：<span class="em">"会员不包含 1V1 咨询师服务，咨询费用按次或套餐另行支付。"</span> 避免用户混淆。</div>
+
+<h3 class="sec">5.4 个人成长仪表盘 · 数据资产沉淀 <span class="desc">// growth dashboard</span></h3>
+<div class="det"><b>// 资产化</b> · 用户的<b>正念分钟数 / 树洞对话条数 / 情绪日记篇数 / 咨询师小时数 / 勋章数</b>全部聚合到 <code>profile/dashboard</code>，按月度归档为不可变快照（<code>profile_snapshot</code> 表，每月 1 日 02:00 由 cron 写入），<span class="em">删除账号后用户可导出 PDF</span>，确保数据真正属于用户。每年 12 月 28 日生成<b>年度报告</b>（仿 Spotify Wrapped）：<code>"今年你陪自己走了 8,420 分钟。一开始你说不知道为什么哭，后来你说想拥抱小时候的自己。"</code></div>
+
+<div class="bullet"><b>成长树可视化</b>　Recharts <code>TreeMap</code> 自定义为一棵<b>水墨写意树</b>：树干 = 累计正念分钟，每片叶子 = 一篇日记或一次咨询，叶色随情绪图谱周报生成（雪松绿 = 平稳，雾蓝 = 低落，晨曦粉 = 愉悦）。<span class="em">数据越多，树越茂盛</span>。</div>
+<div class="bullet"><b>能力雷达</b>　基于 PHQ-9 / GAD-7 历次评估变化 + 情绪日记 BERT 抽取的 6 维（<b>觉察 / 接纳 / 复原力 / 边界感 / 关系 / 行动力</b>）做雷达图，跨时间叠加（半年前 vs 现在）。</div>
+<div class="bullet"><b>分享卡片</b>　仪表盘可生成<span class="em">竖版分享图</span>（隐去敏感数据，只展示"我陪自己 X 分钟 + 当前主题勋章 + 一句鼓励"），用户朋友圈分享一张，朋友扫码进来送 <code>3 天会员</code>。</div>
+
+<h3 class="sec">5.5 心理咨询师 SaaS 工作台 <span class="desc">// counselor desk · web</span></h3>
+<div class="callout"><span class="ico">⚙</span><b>架构提示：</b>用户端是 iOS 原生质感的 App / Web，咨询师端用<b>独立子域</b> <code>desk.mind.app</code>，桌面优先（咨询师工作时多用电脑），仅 <b>5 个核心模块</b>，<span class="em">没有 GMV 焦虑感的运营后台</span> —— 这是给一个临床心理工作者的桌面，不是给运营总监的。</div>
+
+<div class="bullet"><b>① 排期</b>　日历视图（周/月切换）+ 待确认预约 + 一键<span class="em">重置可约时段</span>（避免咨询师在评估完用户量后又改开放时段）。</div>
+<div class="bullet"><b>② 案例</b>　每位来访者一张<b>案例档案</b>：4 维评分 / 主诉 / 已结案次数 / 平台抽取的<span class="em">情绪日记摘要</span>（仅用户授权后可见）/ 咨询师私人备注（端到端加密）。</div>
+<div class="bullet"><b>③ 督导</b>　展示<b>本月被抽审的 2 个案例</b>（伦理盲审）+ 督导师评分 + 督导反馈 + 我的督导师在线预约入口。</div>
+<div class="bullet"><b>④ 收入</b>　月度结算（按周自动打款到银行卡 / 平台抽 25% 透明展示）+ 个人体验补贴 ¥1500 已消费 / 待消费 + 税务代缴汇总。</div>
+<div class="bullet"><b>⑤ 成长</b>　继续教育学时记录 + 督导小时数累计 + 个人体验小时数 + 注册系统继续教育对接接口。</div>
+
+<h3 class="sec">5.6 高保真原型预览 <span class="desc">// 4 phones + counselor desk</span></h3>
+
+<div class="phones">
+
+<!-- ============= 13. MEDITATION HOME ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:linear-gradient(180deg,#1F2A48 0%,#2A3658 60%,#4A5C8F 100%)">
+    <div class="stb dark"><span class="t">22:48</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/><rect x="2" y="2.5" width="11" height="8" rx="1.4" fill="#FF9500"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".5"/></svg>
+    </span></div>
+    <div class="bod" style="overflow-y:auto;color:#fff">
+      <div style="padding:6px 18px 18px">
+        <div style="font-size:10px;color:rgba(245,199,199,.65);letter-spacing:2px;font-weight:700;font-family:'Cormorant Garamond';font-style:italic">GOOD EVENING · LIN ZHAO</div>
+        <div style="font-family:'Noto Serif SC';font-size:20px;font-weight:600;margin-top:4px;line-height:1.45">夜深了，<br>把今天慢慢放下吧 🌙</div>
+      </div>
+      <div style="margin:0 14px 18px;border-radius:18px;padding:18px 16px;background:linear-gradient(135deg,#7E6FA0 0%,#A89AC7 60%,#D6CCE5 100%);position:relative;overflow:hidden;box-shadow:0 18px 40px -14px rgba(168,154,199,.5)">
+        <div style="position:absolute;right:-18px;top:-18px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.35),transparent 65%)"></div>
+        <div style="position:relative">
+          <div style="font-size:9px;letter-spacing:2.5px;color:rgba(255,255,255,.85);font-weight:700">TONIGHT FOR YOU</div>
+          <div style="font-family:'Noto Serif SC';font-size:18px;font-weight:600;margin-top:4px;line-height:1.4">焦虑舒缓 · D3<br><span style="font-size:13px;font-weight:400;color:rgba(255,255,255,.85)">睡前 8 分钟 · 王恬老师</span></div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:14px">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;color:#7E6FA0;box-shadow:0 8px 18px -6px rgba(0,0,0,.3)"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+            <div style="flex:1"><div style="font-size:11px;color:rgba(255,255,255,.85);font-weight:600">基于今日心情：雾蓝色</div><div style="display:flex;align-items:center;gap:5px;margin-top:3px"><div style="flex:1;height:3px;background:rgba(255,255,255,.25);border-radius:2px;overflow:hidden;max-width:120px"><div style="height:100%;width:18%;background:#fff;border-radius:2px"></div></div><span style="font-size:10px;color:rgba(255,255,255,.7);font-family:'JetBrains Mono';font-weight:600">1:24 / 8:00</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div style="padding:0 14px 18px"><div style="font-size:9.5px;color:rgba(255,255,255,.55);letter-spacing:2px;font-weight:700;margin-bottom:10px;padding:0 4px">4 个 主 题</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:linear-gradient(160deg,rgba(74,92,143,.7),rgba(168,154,199,.5));border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:13px 12px;backdrop-filter:blur(12px)">
+            <div style="font-size:21px">🌙</div>
+            <div style="font-family:'Noto Serif SC';font-size:14px;font-weight:600;margin-top:8px;color:#fff">睡 眠</div>
+            <div style="font-size:10.5px;color:rgba(255,255,255,.65);margin-top:2px;letter-spacing:.5px">42 节 · 王恬主理</div>
+          </div>
+          <div style="background:linear-gradient(160deg,rgba(168,154,199,.55),rgba(245,199,199,.4));border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:13px 12px;backdrop-filter:blur(12px)">
+            <div style="font-size:21px">🌿</div>
+            <div style="font-family:'Noto Serif SC';font-size:14px;font-weight:600;margin-top:8px;color:#fff">焦 虑</div>
+            <div style="font-size:10.5px;color:rgba(255,255,255,.65);margin-top:2px;letter-spacing:.5px">38 节 · 林海主理</div>
+          </div>
+          <div style="background:linear-gradient(160deg,rgba(138,171,145,.55),rgba(94,126,102,.5));border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:13px 12px;backdrop-filter:blur(12px)">
+            <div style="font-size:21px">☕</div>
+            <div style="font-family:'Noto Serif SC';font-size:14px;font-weight:600;margin-top:8px;color:#fff">专 注</div>
+            <div style="font-size:10.5px;color:rgba(255,255,255,.65);margin-top:2px;letter-spacing:.5px">26 节 · 子珩主理</div>
+          </div>
+          <div style="background:linear-gradient(160deg,rgba(245,199,199,.5),rgba(216,154,154,.45));border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:13px 12px;backdrop-filter:blur(12px)">
+            <div style="font-size:21px">🌸</div>
+            <div style="font-family:'Noto Serif SC';font-size:14px;font-weight:600;margin-top:8px;color:#fff">自我接纳</div>
+            <div style="font-size:10.5px;color:rgba(255,255,255,.65);margin-top:2px;letter-spacing:.5px">31 节 · 苏珊主理</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin:0 14px 14px;background:rgba(168,154,199,.18);border:1px solid rgba(168,154,199,.3);border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:11px;backdrop-filter:blur(12px)">
+        <div style="font-size:24px">🌱</div>
+        <div style="flex:1"><div style="font-size:9.5px;color:rgba(216,204,229,.7);letter-spacing:1.5px;font-weight:700">连 签 · 21 DAY PLAN</div><div style="font-size:13px;color:#fff;font-weight:600;margin-top:2px">已连续 17 天 · 还差 4 天解锁<b style="color:#F5C7C7">「丑牛 · 稳」</b>勋章</div></div>
+        <div style="font-family:'Cormorant Garamond';font-size:24px;font-weight:700;color:#F5C7C7">17</div>
+      </div>
+      <div style="margin:0 14px 22px;background:rgba(94,126,102,.2);border:1px solid rgba(138,171,145,.3);border-radius:13px;padding:11px 13px;display:flex;align-items:center;gap:10px;backdrop-filter:blur(12px)">
+        <div style="font-size:16px;color:#B5D5BC">♥︎</div>
+        <div style="font-size:11.5px;color:#B5D5BC;font-weight:600">HealthKit 已联动 · 昨晚冥想后心率 <b style="color:#fff">↓ 14 bpm</b></div>
+      </div>
+    </div>
+    <div class="tabbar" style="background:rgba(14,22,34,.85);border-top:.5px solid rgba(168,154,199,.18);color:rgba(216,204,229,.65)">
+      <div class="tab" style="color:rgba(216,204,229,.55)"><svg viewBox="0 0 24 24" fill="none"><path d="M3 11l9-8 9 8v10a2 2 0 0 1-2 2h-4v-7h-6v7H5a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.8"/></svg>首页</div>
+      <div class="tab" style="color:rgba(216,204,229,.55)"><svg viewBox="0 0 24 24" fill="none"><path d="M12 4C7 4 3 7.5 3 12c0 1.5.5 3 1.4 4.2L3 20l4-1c1.5.7 3.2 1 5 1 5 0 9-3.5 9-8s-4-8-9-8z" stroke="currentColor" stroke-width="1.8"/></svg>树洞</div>
+      <div class="tab" style="color:rgba(216,204,229,.55)"><svg viewBox="0 0 24 24" fill="none"><path d="M5 4h14v16l-7-3-7 3z" stroke="currentColor" stroke-width="1.8"/></svg>日记</div>
+      <div class="tab on" style="color:#F5C7C7"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 2 a 10 10 0 0 1 0 20" stroke="currentColor" stroke-width="1.8"/></svg>冥想</div>
+      <div class="tab" style="color:rgba(216,204,229,.55)"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="1.8"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.8"/></svg>我</div>
+    </div>
+    <div class="hpipe light"></div>
+  </div>
+  <div class="cap">MEDITATION · 22:00 暗色</div>
+</div>
+
+<!-- ============= 14. PLAYER ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:radial-gradient(circle at 50% 30%,#5A6B9A 0%,#2A3658 50%,#0E1622 100%);color:#fff">
+    <div class="stb dark"><span class="t">23:02</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/><rect x="2" y="2.5" width="11" height="8" rx="1.4" fill="#FF9500"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".5"/></svg>
+    </span></div>
+    <div style="padding:8px 18px 10px;display:flex;align-items:center;gap:10px">
+      <div style="font-size:18px;color:rgba(255,255,255,.65)">⌄</div>
+      <div style="flex:1;text-align:center;font-size:9.5px;color:rgba(216,204,229,.65);letter-spacing:2px;font-weight:600">焦 虑 系 列 · D3 / 21</div>
+      <div style="font-size:14px;color:rgba(255,255,255,.65)">⋯</div>
+    </div>
+    <div style="text-align:center;padding:14px 24px 12px">
+      <div style="font-family:'Cormorant Garamond';font-style:italic;font-size:13px;letter-spacing:4px;color:rgba(245,199,199,.7);font-weight:500">RELEASING TONIGHT</div>
+      <div style="font-family:'Noto Serif SC';font-size:21px;font-weight:600;margin-top:3px;line-height:1.45">把白天<br>装进一个抽屉</div>
+      <div style="font-size:11px;color:rgba(216,204,229,.7);margin-top:8px;letter-spacing:1px">王 恬 · 8:00 引 导 冥 想</div>
+    </div>
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:200px">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><div style="width:200px;height:200px;border-radius:50%;border:1px solid rgba(168,154,199,.18);animation:breathe 5s infinite;animation-delay:.2s"></div></div>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><div style="width:180px;height:180px;border-radius:50%;border:1px solid rgba(168,154,199,.25);animation:breathe 5s infinite"></div></div>
+      <div class="breath" style="width:148px;height:148px"></div>
+      <div style="position:absolute;font-family:'Noto Serif SC';font-size:13px;color:rgba(255,255,255,.85);letter-spacing:4px;font-weight:500;text-shadow:0 2px 8px rgba(0,0,0,.3)">吸 ⋯</div>
+    </div>
+    <div style="padding:8px 28px 16px;text-align:center"><div style="font-family:'Noto Serif SC';font-size:14px;color:rgba(255,255,255,.85);line-height:1.7;font-weight:500">"想象你把今天的所有念头<br>一片片放进一个雪松木抽屉⋯"</div></div>
+    <div style="padding:0 28px 14px"><div style="display:flex;justify-content:space-between;font-size:10px;color:rgba(216,204,229,.6);font-family:'JetBrains Mono';font-weight:600;margin-bottom:6px"><span>02:14</span><span>05:46</span></div>
+      <div style="height:3px;background:rgba(168,154,199,.2);border-radius:2px;overflow:hidden"><div style="height:100%;width:28%;background:linear-gradient(90deg,#A89AC7,#F5C7C7);border-radius:2px;box-shadow:0 0 12px rgba(245,199,199,.5)"></div></div>
+    </div>
+    <div style="padding:0 24px 18px;display:flex;align-items:center;justify-content:space-between">
+      <div style="font-size:10px;color:rgba(216,204,229,.7);font-weight:700;letter-spacing:1.5px">4Hz<br><span style="font-size:8.5px;color:rgba(216,204,229,.5);font-weight:500;letter-spacing:1px">Theta</span></div>
+      <div style="display:flex;align-items:center;gap:18px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 5V1L7 6l5 5V7a6 6 0 1 1-6 6" stroke="rgba(255,255,255,.7)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(255,255,255,.85)"><path d="M19 5l-9 7 9 7V5zM6 5h2v14H6z"/></svg>
+        <div style="width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#F5C7C7,#A89AC7);display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 14px 30px -8px rgba(168,154,199,.7)"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg></div>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(255,255,255,.85)"><path d="M5 5l9 7-9 7V5zM16 5h2v14h-2z"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 5V1l5 5-5 5V7a6 6 0 1 0 6 6" stroke="rgba(255,255,255,.7)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div style="font-size:10px;color:rgba(216,204,229,.7);font-weight:700;letter-spacing:1.5px;text-align:right">睡 眠<br><span style="font-size:8.5px;color:rgba(216,204,229,.5);font-weight:500;letter-spacing:1px">30 min</span></div>
+    </div>
+    <div class="hpipe light"></div>
+  </div>
+  <div class="cap">PLAYER · 4Hz Theta</div>
+</div>
+
+<!-- ============= 15. GROWTH DASHBOARD ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:linear-gradient(180deg,#FBF9F5 0%,#F8F4EC 100%)">
+    <div class="stb light"><span class="t">10:24</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"/><rect x="2" y="2.5" width="17" height="8" rx="1.4" fill="#34C759"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".4"/></svg>
+    </span></div>
+    <div class="bod" style="overflow-y:auto">
+      <div style="padding:6px 18px 14px;display:flex;align-items:flex-end;justify-content:space-between">
+        <div><div style="font-size:10px;color:#9AA0B0;letter-spacing:2px;font-weight:700">MY · GROWTH</div><div style="font-family:'Noto Serif SC';font-size:18px;font-weight:600;color:#2A3658;margin-top:2px">陪自己 · 第 173 天</div></div>
+        <div style="background:#fff;border:1px solid rgba(168,154,199,.3);padding:6px 11px;border-radius:9px;font-size:10px;color:#7E6FA0;font-weight:600">↗ 分享</div>
+      </div>
+      <div style="margin:0 14px 16px;background:linear-gradient(160deg,#F8F4EC 0%,#F0EBF6 100%);border-radius:18px;padding:18px 14px;position:relative;overflow:hidden;border:1px solid rgba(168,154,199,.18);box-shadow:0 14px 30px -16px rgba(168,154,199,.3)">
+        <div style="font-size:9.5px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700">YOUR TREE · 成长树</div>
+        <div style="position:relative;height:175px;margin-top:6px">
+          <svg viewBox="0 0 220 175" width="100%" height="175">
+            <circle cx="180" cy="28" r="14" fill="rgba(245,199,199,.45)"/>
+            <circle cx="180" cy="28" r="7" fill="#F5C7C7"/>
+            <path d="M110 165 Q108 130 105 100 Q103 85 110 70" stroke="#7E6FA0" stroke-width="5" fill="none" stroke-linecap="round"/>
+            <path d="M110 110 Q95 105 80 95" stroke="#7E6FA0" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M110 88 Q125 82 138 78" stroke="#7E6FA0" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <path d="M105 132 Q90 130 78 125" stroke="#7E6FA0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <g opacity=".95">
+              <circle cx="78" cy="92" r="13" fill="#A8C2A8" opacity=".8"/>
+              <circle cx="68" cy="118" r="10" fill="#C5D5BA" opacity=".75"/>
+              <circle cx="90" cy="78" r="9" fill="#8AAB91" opacity=".85"/>
+              <circle cx="138" cy="76" r="14" fill="#A89AC7" opacity=".85"/>
+              <circle cx="156" cy="62" r="10" fill="#D6CCE5" opacity=".8"/>
+              <circle cx="125" cy="58" r="11" fill="#7E6FA0" opacity=".75"/>
+              <circle cx="112" cy="50" r="13" fill="#F5C7C7" opacity=".8"/>
+              <circle cx="98" cy="65" r="8" fill="#8AAB91" opacity=".7"/>
+              <circle cx="148" cy="92" r="11" fill="#C5D5BA" opacity=".7"/>
+              <circle cx="62" cy="135" r="7" fill="#A8C2A8" opacity=".7"/>
+            </g>
+            <path d="M30 167 Q110 160 195 167" stroke="rgba(126,111,160,.3)" stroke-width="1.5" fill="none" stroke-dasharray="2 2"/>
+            <text x="14" y="30" font-family="JetBrains Mono" font-size="8.5" fill="#7E6FA0" font-weight="700">8420 min</text>
+            <text x="14" y="45" font-family="Cormorant Garamond" font-style="italic" font-size="9" fill="#9AA0B0">mindful</text>
+          </svg>
+        </div>
+        <div style="display:flex;gap:9px;margin-top:6px;font-size:9.5px;color:#7E6FA0;font-weight:600;align-items:center"><span style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#A89AC7"></span>对话</span><span style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#8AAB91"></span>日记</span><span style="display:flex;align-items:center;gap:4px"><span style="width:7px;height:7px;border-radius:50%;background:#F5C7C7"></span>咨询</span><span style="margin-left:auto;color:#A89AC7;font-style:italic;font-family:'Cormorant Garamond';font-size:11px">growing slowly</span></div>
+      </div>
+      <div style="padding:0 14px 14px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div style="background:#fff;border-radius:14px;padding:14px 13px;border:1px solid rgba(0,0,0,.04);box-shadow:0 4px 12px -6px rgba(42,54,88,.08)">
+          <div style="font-size:9.5px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700">正念分钟</div>
+          <div style="font-family:'Cormorant Garamond';font-size:30px;font-weight:700;color:#7E6FA0;line-height:1;margin-top:3px">8,420</div>
+          <div style="font-size:10px;color:#5E7E66;font-weight:600;margin-top:5px">↑ 本月 +320 min</div>
+        </div>
+        <div style="background:#fff;border-radius:14px;padding:14px 13px;border:1px solid rgba(0,0,0,.04);box-shadow:0 4px 12px -6px rgba(42,54,88,.08)">
+          <div style="font-size:9.5px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700">树洞对话</div>
+          <div style="font-family:'Cormorant Garamond';font-size:30px;font-weight:700;color:#A89AC7;line-height:1;margin-top:3px">312</div>
+          <div style="font-size:10px;color:#5E7E66;font-weight:600;margin-top:5px">条 · 累计共情</div>
+        </div>
+        <div style="background:#fff;border-radius:14px;padding:14px 13px;border:1px solid rgba(0,0,0,.04);box-shadow:0 4px 12px -6px rgba(42,54,88,.08)">
+          <div style="font-size:9.5px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700">情绪日记</div>
+          <div style="font-family:'Cormorant Garamond';font-size:30px;font-weight:700;color:#5E7E66;line-height:1;margin-top:3px">94</div>
+          <div style="font-size:10px;color:#5E7E66;font-weight:600;margin-top:5px">篇 · 自我觉察 ↑</div>
+        </div>
+        <div style="background:#fff;border-radius:14px;padding:14px 13px;border:1px solid rgba(0,0,0,.04);box-shadow:0 4px 12px -6px rgba(42,54,88,.08)">
+          <div style="font-size:9.5px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700">1V1 咨询</div>
+          <div style="font-family:'Cormorant Garamond';font-size:30px;font-weight:700;color:#C9A866;line-height:1;margin-top:3px">12<span style="font-size:14px;color:#9AA0B0">h</span></div>
+          <div style="font-size:10px;color:#7E6FA0;font-weight:600;margin-top:5px">3 位咨询师</div>
+        </div>
+      </div>
+      <div style="padding:0 18px 14px"><div style="font-size:10px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700;margin-bottom:8px">心 理 能 力 雷 达 · 半 年 变 化</div>
+        <div style="background:#fff;border-radius:14px;padding:12px;border:1px solid rgba(0,0,0,.04);box-shadow:0 4px 12px -6px rgba(42,54,88,.08);display:flex;align-items:center;gap:14px">
+          <svg viewBox="0 0 140 140" width="120" height="120">
+            <polygon points="70,15 117,42 117,98 70,125 23,98 23,42" fill="none" stroke="rgba(168,154,199,.2)" stroke-width="1"/>
+            <polygon points="70,33 102,49 102,91 70,107 38,91 38,49" fill="none" stroke="rgba(168,154,199,.18)" stroke-width="1"/>
+            <polygon points="70,51 87,57 87,83 70,89 53,83 53,57" fill="none" stroke="rgba(168,154,199,.16)" stroke-width="1"/>
+            <line x1="70" y1="70" x2="70" y2="15" stroke="rgba(168,154,199,.2)" stroke-width="1"/>
+            <line x1="70" y1="70" x2="117" y2="42" stroke="rgba(168,154,199,.2)" stroke-width="1"/>
+            <line x1="70" y1="70" x2="117" y2="98" stroke="rgba(168,154,199,.2)" stroke-width="1"/>
+            <line x1="70" y1="70" x2="70" y2="125" stroke="rgba(168,154,199,.2)" stroke-width="1"/>
+            <line x1="70" y1="70" x2="23" y2="98" stroke="rgba(168,154,199,.2)" stroke-width="1"/>
+            <line x1="70" y1="70" x2="23" y2="42" stroke="rgba(168,154,199,.2)" stroke-width="1"/>
+            <polygon points="70,42 95,55 90,90 70,100 50,88 47,55" fill="rgba(155,164,176,.18)" stroke="#9AA0B0" stroke-width="1.2" stroke-dasharray="3 2"/>
+            <polygon points="70,25 110,46 105,93 70,118 38,90 32,48" fill="rgba(168,154,199,.32)" stroke="#7E6FA0" stroke-width="1.8"/>
+            <text x="70" y="11" text-anchor="middle" font-family="Inter" font-size="7.5" fill="#5A6478" font-weight="700">觉察</text>
+            <text x="124" y="42" font-family="Inter" font-size="7.5" fill="#5A6478" font-weight="700">接纳</text>
+            <text x="124" y="103" font-family="Inter" font-size="7.5" fill="#5A6478" font-weight="700">复原力</text>
+            <text x="70" y="135" text-anchor="middle" font-family="Inter" font-size="7.5" fill="#5A6478" font-weight="700">边界</text>
+            <text x="2" y="103" font-family="Inter" font-size="7.5" fill="#5A6478" font-weight="700">关系</text>
+            <text x="2" y="42" font-family="Inter" font-size="7.5" fill="#5A6478" font-weight="700">行动</text>
+          </svg>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px"><span style="width:11px;height:2px;background:#9AA0B0;display:inline-block"></span><span style="font-size:10.5px;color:#9AA0B0;font-weight:600">半年前</span></div>
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:11px"><span style="width:11px;height:2px;background:#7E6FA0;display:inline-block"></span><span style="font-size:10.5px;color:#7E6FA0;font-weight:600">现在</span></div>
+            <div style="font-size:11px;color:#5A6478;line-height:1.65"><b style="color:#7E6FA0">「接纳」</b>从 <b>2.8</b> 涨到 <b>4.1</b>，<b style="color:#7E6FA0">「边界感」</b>从 <b>1.9</b> 涨到 <b>3.4</b> 🌱</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin:0 14px 22px;background:linear-gradient(135deg,#7E6FA0 0%,#A89AC7 50%,#F5C7C7 100%);border-radius:16px;padding:14px 14px;color:#fff;display:flex;align-items:center;gap:11px;box-shadow:0 18px 36px -14px rgba(168,154,199,.5)">
+        <div style="font-size:24px">🎁</div>
+        <div style="flex:1"><div style="font-family:'Cormorant Garamond';font-size:11px;letter-spacing:2.5px;color:rgba(255,255,255,.85);font-style:italic;font-weight:700">2024 · MIND WRAPPED</div><div style="font-size:12px;color:#fff;line-height:1.55;font-weight:600;margin-top:2px">你今年陪自己 8,420 分钟 ⋯</div></div>
+        <div style="font-size:14px;color:#fff;font-weight:700">→</div>
+      </div>
+    </div>
+    <div class="hpipe"></div>
+  </div>
+  <div class="cap">GROWTH DASHBOARD</div>
+</div>
+
+<!-- ============= 16. SUBSCRIPTION ============= -->
+<div class="ph">
+  <div class="island"></div>
+  <div class="scr" style="background:linear-gradient(180deg,#1F2A48 0%,#2A3658 35%,#7E6FA0 100%);color:#fff">
+    <div class="stb dark"><span class="t">14:38</span><span class="r">
+      <svg viewBox="0 0 18 12" width="18" height="11"><circle cx="2" cy="10" r="1.4" fill="currentColor"/><circle cx="6" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="14" cy="10" r="1.4" fill="currentColor"/></svg>
+      <svg viewBox="0 0 18 13" width="17" height="12"><path d="M9 2.5c2.5 0 4.8 1 6.5 2.5l1.2-1.3C14.6 1.7 11.9.5 9 .5S3.4 1.7 1.3 3.7l1.2 1.3C4.2 3.5 6.5 2.5 9 2.5z" fill="currentColor"/></svg>
+      <svg viewBox="0 0 27 13" width="26" height="12"><rect x=".5" y="1" width="22" height="11" rx="2.6" fill="none" stroke="currentColor" stroke-width="1" opacity=".5"/><rect x="2" y="2.5" width="15" height="8" rx="1.4" fill="#34C759"/><rect x="23.5" y="4.4" width="1.7" height="4.2" rx=".7" fill="currentColor" opacity=".5"/></svg>
+    </span></div>
+    <div class="bod" style="overflow-y:auto">
+      <div style="padding:6px 18px 16px;display:flex;align-items:center"><div style="font-size:18px;color:rgba(255,255,255,.7)">‹</div><div style="flex:1;text-align:center;font-family:'Cormorant Garamond';font-size:13px;letter-spacing:5px;font-style:italic;color:rgba(245,199,199,.85);font-weight:700">MIND ·  M E M B E R</div><div style="font-size:18px;color:rgba(255,255,255,.7)">⋯</div></div>
+      <div style="padding:8px 22px 22px;text-align:center">
+        <div style="font-family:'Noto Serif SC';font-size:22px;font-weight:600;line-height:1.45">把陪伴<br>变成一个习惯 🌙</div>
+        <div style="font-size:11px;color:rgba(216,204,229,.85);margin-top:8px;line-height:1.7">订阅会员 · 解锁 4 大主题 137 节冥想课<br>+ 双耳节拍工作室 + 离线缓存</div>
+      </div>
+      <div style="padding:0 14px 14px;display:flex;flex-direction:column;gap:9px">
+        <div style="background:rgba(255,255,255,.08);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:11px">
+          <div style="width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);flex-shrink:0"></div>
+          <div style="flex:1"><div style="font-size:12.5px;color:#fff;font-weight:600">月度 · ¥39 / 月</div><div style="font-size:10px;color:rgba(216,204,229,.65);margin-top:1px">微信连续包月 · 随时取消</div></div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(245,199,199,.25),rgba(168,154,199,.3));backdrop-filter:blur(20px);border:1.5px solid rgba(245,199,199,.55);border-radius:14px;padding:14px 14px;display:flex;align-items:center;gap:11px;box-shadow:0 14px 30px -10px rgba(245,199,199,.4);position:relative">
+          <div style="position:absolute;top:-9px;right:14px;background:linear-gradient(135deg,#F5C7C7,#D89A9A);color:#fff;font-size:9px;letter-spacing:2px;padding:3px 9px;border-radius:9px;font-weight:700">推 荐</div>
+          <div style="width:18px;height:18px;border-radius:50%;background:#F5C7C7;flex-shrink:0;display:flex;align-items:center;justify-content:center"><svg width="10" height="8" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="#7E6FA0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div style="flex:1"><div style="font-size:13px;color:#fff;font-weight:700">年度 · ¥298 / 年　<span style="font-size:9.5px;color:#FFD8D8;background:rgba(245,199,199,.25);padding:1px 5px;border-radius:5px;font-weight:700;margin-left:3px">省 ¥170</span></div><div style="font-size:10.5px;color:rgba(255,232,232,.85);margin-top:2px">月均 ¥24.8 · 含生日免费咨询券</div></div>
+        </div>
+        <div style="background:rgba(255,255,255,.08);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:11px">
+          <div style="width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);flex-shrink:0"></div>
+          <div style="flex:1"><div style="font-size:12.5px;color:#fff;font-weight:600">学生 · ¥168 / 年</div><div style="font-size:10px;color:rgba(216,204,229,.65);margin-top:1px">学信网或学生证认证</div></div>
+        </div>
+        <div style="background:rgba(255,255,255,.08);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:11px">
+          <div style="width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);flex-shrink:0"></div>
+          <div style="flex:1"><div style="font-size:12.5px;color:#fff;font-weight:600">家庭 · ¥498 / 年 · 3 账号</div><div style="font-size:10px;color:rgba(216,204,229,.65);margin-top:1px">未成年模式 · 家长可看冥想分钟</div></div>
+        </div>
+        <div style="background:linear-gradient(135deg,rgba(201,168,102,.18),rgba(168,154,199,.22));backdrop-filter:blur(20px);border:1px solid rgba(201,168,102,.4);border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:11px">
+          <div style="width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,236,200,.65);flex-shrink:0"></div>
+          <div style="flex:1"><div style="font-size:12.5px;color:#FFE5BB;font-weight:700">终身席位 · ¥1888　<span style="font-size:9px;color:#FFE5BB;background:rgba(201,168,102,.3);padding:1px 5px;border-radius:5px;font-weight:700;margin-left:3px">5000 限定</span></div><div style="font-size:10px;color:rgba(255,229,187,.7);margin-top:1px">订单号公开可查 · 不再开放第二批</div></div>
+        </div>
+      </div>
+      <div style="padding:0 18px 14px"><div style="font-size:10px;color:rgba(216,204,229,.55);line-height:1.7">⚠ 会员不包含 1V1 咨询师服务。咨询费用按次或套餐另行支付。开通后 7 天免费试听期内可<u>无理由全额退款</u>。</div></div>
+    </div>
+    <div style="padding:10px 18px 22px;flex-shrink:0">
+      <div style="background:linear-gradient(135deg,#F5C7C7,#A89AC7);border-radius:14px;padding:14px;text-align:center;color:#fff;font-size:13.5px;font-weight:700;box-shadow:0 14px 30px -10px rgba(245,199,199,.6),inset 0 1px 0 rgba(255,255,255,.2)">7 天免费试听 · 不绑卡 →</div>
+    </div>
+    <div class="hpipe light"></div>
+  </div>
+  <div class="cap">SUBSCRIPTION · 5 档</div>
+</div>
+</div>
+
+<div class="det"><b>// 订阅技术栈</b> · iOS 走 <code>App Store IAP</code>（强制 Apple 抽 30%）；Android / Web 走<code>微信支付</code>连续签约（<code>contract_id</code> 入 <code>profile.subscription</code>，每月续费扣款失败时短信 + push 三连提醒，3 次失败自动降级到免费层但不删数据）。<b>退款</b>：iOS 走 Apple 流程（不可控），微信侧由后端 <code>POST /api/refund</code> 调用<code>/pay/refund</code> API 完成。<b>会员到期前 7 天 / 3 天 / 1 天</b>各发一条柔和提醒（不是营销 push，是友善的回顾）。</div>
+
+<h3 class="sec">5.7 心理咨询师工作台 <span class="desc">// counselor desk preview · web</span></h3>
+
+<div class="pc">
+  <div class="topbar">
+    <div class="dot" style="background:#FF5F57"></div>
+    <div class="dot" style="background:#FEBC2E"></div>
+    <div class="dot" style="background:#28C840"></div>
+    <div class="url"><span class="lock">⚿</span>desk.mind.app/today</div>
+    <div style="margin-left:auto;color:#7E6FA0;font-size:11px;font-family:'JetBrains Mono';font-weight:600">王安然 · 督导级</div>
+  </div>
+  <div class="body">
+    <aside class="side">
+      <div class="brand"><div class="lg">M</div>Mind · Desk</div>
+      <div class="grp">本 日</div>
+      <div class="nav on">📅 今日排期 <span class="num">3</span></div>
+      <div class="grp">来 访</div>
+      <div class="nav">📁 案例档案</div>
+      <div class="nav">💬 异步答疑 <span class="num">5</span></div>
+      <div class="grp">合 规</div>
+      <div class="nav">🔍 督导抽审 <span class="num" style="background:rgba(201,168,102,.3);color:#FFD699">2</span></div>
+      <div class="nav">⚖ 伦理投诉</div>
+      <div class="grp">个 人</div>
+      <div class="nav">💰 收入</div>
+      <div class="nav">🌱 我的成长</div>
+      <div class="nav">⚙️ 设置</div>
+      <div style="margin-top:36px;padding:10px;background:rgba(168,154,199,.12);border:1px solid rgba(168,154,199,.2);border-radius:8px;font-size:10px;color:#A89AC7;line-height:1.6"><b style="color:#fff;font-size:10.5px">本周个人体验</b><br>已完成 1.5h<br>本月剩余补贴 ¥1500</div>
+    </aside>
+    <section class="main">
+      <div class="htop">
+        <h5>今日排期</h5>
+        <span class="crumbs">/ Today · 3 月 14 日 周四</span>
+        <div class="actions">
+          <span class="btn btn-sec">编辑可约时段</span>
+          <span class="btn btn-pri">+ 临时锁定</span>
+        </div>
+      </div>
+      <div class="stats4">
+        <div class="card"><div class="l">今日咨询</div><div class="v">3 / 5</div><div class="d">2 已完成 · 1 进行中</div></div>
+        <div class="card"><div class="l">本月收入</div><div class="v">¥38,470</div><div class="d">↑ 较上月 +12%</div></div>
+        <div class="card"><div class="l">来访满意度</div><div class="v">4.96 ★</div><div class="d">近 30 天 · 仅结案者</div></div>
+        <div class="card"><div class="l">督导评分</div><div class="v">4.7 / 5</div><div class="d dn">边界 4.5 待提升</div></div>
+      </div>
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:11px;padding:14px 16px;box-shadow:0 4px 14px -8px rgba(42,54,88,.1);margin-bottom:14px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:11px"><div style="font-size:11px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700">14:00 ~ 15:00 · 视频咨询 · 进行中</div><div style="margin-left:auto;display:flex;align-items:center;gap:5px"><span style="width:6px;height:6px;border-radius:50%;background:#FF3B30;animation:breathe 1.5s infinite"></span><span style="font-size:10px;color:#B86464;font-weight:700">REC OFF · E2E</span></div></div>
+        <div style="display:flex;align-items:center;gap:11px;padding:9px 11px;background:linear-gradient(135deg,#F0EBF6,#FBF9F5);border-radius:9px;border-left:3px solid #A89AC7">
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#F5C7C7,#A89AC7);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;font-family:'Noto Serif SC'">林</div>
+          <div style="flex:1;min-width:0"><div style="font-size:12.5px;color:#2A3658;font-weight:700">林* · 第 4 次咨询 · CBT</div><div style="font-size:10.5px;color:#7E6FA0;margin-top:2px">主诉：项目反复 + 自我怀疑　|　已结案 0 次　|　42:08 / 60:00</div></div>
+          <div style="display:flex;gap:5px"><span style="font-size:10.5px;color:#fff;background:linear-gradient(135deg,#6B7FB5,#A89AC7);padding:5px 11px;border-radius:7px;font-weight:600">进入房间 →</span></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:14px">
+        <div style="background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:11px;padding:14px 16px;box-shadow:0 4px 14px -8px rgba(42,54,88,.1)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:11px"><div style="font-size:11px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700">今 日 待 进 行</div><span style="font-size:10px;color:#7E6FA0;background:rgba(168,154,199,.15);padding:2px 8px;border-radius:7px;font-weight:600">2 场</span></div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;align-items:center;gap:10px;padding:9px 11px;background:#FBF9F5;border-radius:9px;border:1px solid rgba(0,0,0,.03)">
+              <div style="font-family:'JetBrains Mono';font-size:11px;color:#7E6FA0;font-weight:700;background:rgba(168,154,199,.15);padding:5px 8px;border-radius:6px">16:00</div>
+              <div style="flex:1"><div style="font-size:12px;color:#2A3658;font-weight:700">陈* · 首次咨询 · 60min</div><div style="font-size:10px;color:#9AA0B0;margin-top:2px">视频 · 主诉：婚姻焦虑 · ¥799 已支付</div></div>
+              <span style="font-size:10px;color:#5E7E66;background:rgba(138,171,145,.18);padding:3px 8px;border-radius:6px;font-weight:600">已确认</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:9px 11px;background:#FBF9F5;border-radius:9px;border:1px solid rgba(0,0,0,.03)">
+              <div style="font-family:'JetBrains Mono';font-size:11px;color:#7E6FA0;font-weight:700;background:rgba(168,154,199,.15);padding:5px 8px;border-radius:6px">21:00</div>
+              <div style="flex:1"><div style="font-size:12px;color:#2A3658;font-weight:700">林*（即下方 14:00 来访）· 套餐第 5/10 次</div><div style="font-size:10px;color:#9AA0B0;margin-top:2px">视频 · CBT · 已支付</div></div>
+              <span style="font-size:10px;color:#C9A866;background:rgba(201,168,102,.18);padding:3px 8px;border-radius:6px;font-weight:600">待确认</span>
+            </div>
+          </div>
+        </div>
+        <div style="background:#fff;border:1px solid rgba(0,0,0,.05);border-radius:11px;padding:14px 16px;box-shadow:0 4px 14px -8px rgba(42,54,88,.1)">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:11px"><div style="font-size:11px;color:#9AA0B0;letter-spacing:1.5px;font-weight:700">本 月 督 导 抽 审</div><span style="font-size:10px;color:#A6574E;background:rgba(216,154,154,.18);padding:2px 8px;border-radius:7px;font-weight:600">2 待 反 馈</span></div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="padding:10px 11px;background:linear-gradient(135deg,#FBF9F5,#F0EBF6);border-radius:9px;border:1px solid rgba(168,154,199,.2)">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#2A3658;font-weight:700;margin-bottom:4px">案例 #C-2024-0731 <span style="color:#7E6FA0;font-family:'JetBrains Mono';font-weight:600">3 / 8 次</span></div>
+              <div style="font-size:10.5px;color:#5A6478;line-height:1.6">主诉：自我价值感薄弱<br>督导师：李 X · 注册督导师</div>
+              <div style="display:flex;gap:5px;margin-top:7px"><span style="font-size:9.5px;color:#5E7E66;background:rgba(138,171,145,.18);padding:2px 6px;border-radius:5px;font-weight:600">边界 5/5</span><span style="font-size:9.5px;color:#C9A866;background:rgba(201,168,102,.18);padding:2px 6px;border-radius:5px;font-weight:600">共情 4.5/5</span></div>
+            </div>
+            <div style="padding:10px 11px;background:#FBF9F5;border-radius:9px;border:1px solid rgba(0,0,0,.03);opacity:.85">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:#2A3658;font-weight:700;margin-bottom:4px">案例 #C-2024-0892 <span style="color:#9AA0B0;font-family:'JetBrains Mono';font-weight:600">待 上 传</span></div>
+              <div style="font-size:10.5px;color:#9AA0B0;line-height:1.6">将于 3/20 前提交</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:14px;padding:12px 16px;background:linear-gradient(135deg,rgba(168,154,199,.08),rgba(245,199,199,.08));border:1px dashed rgba(168,154,199,.35);border-radius:10px;display:flex;align-items:center;gap:11px">
+        <div style="font-size:18px">🌱</div>
+        <div style="flex:1;font-size:11.5px;color:#5A6478;line-height:1.65"><b style="color:#7E6FA0">温柔提醒</b>　你这周已连续 4 天每天 4 场咨询 — 心理咨询师也需要被陪伴。要不要预约一次个人体验？平台本月还有 ¥1500 补贴。</div>
+        <span class="btn btn-pri" style="font-size:10.5px">预约 →</span>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="det"><b>// 工作台架构</b> · 子域 <code>desk.mind.app</code> 单独的 Next.js 应用，与用户端共享 <code>auth-service</code> 但走<b>不同 RBAC</b>（<code>role: counselor</code> 拿不到运营数据）。前后端走 <code>tRPC + Zod</code>，结合<code>Postgres RLS</code>：<code>policy "counselor sees only own bookings"</code> 保证就算 SQL 注入也只能看到自己的数据。<b>案例笔记</b>：用 <code>libsodium</code> 客户端加密（密钥从用户密码派生），平台只存密文 — 即便数据库泄露，也无法读取笔记内容。<b>督导审计</b>：被抽审的咨询录音在用户授权后才解密给督导师，督导师查看后立刻审计日志，平台不留副本。</div>
+
+<div style="margin:30px auto;text-align:center;padding:24px 30px;background:linear-gradient(135deg,#F0EBF6,#FBF9F5);border-radius:18px;border:1px solid rgba(168,154,199,.25);max-width:650px">
+  <div style="font-family:'Cormorant Garamond';font-style:italic;font-size:13px;letter-spacing:5px;color:#A89AC7;font-weight:600">EPILOGUE · 五步小结</div>
+  <div style="font-family:'Noto Serif SC';font-size:18px;font-weight:600;color:#2A3658;margin-top:6px;line-height:1.55">从一句"心很乱"到一棵越来越茂盛的成长树<br><span style="font-size:14px;color:#7E6FA0;font-weight:500">这是 Mind 想做的全部。</span></div>
+  <div style="display:flex;justify-content:center;gap:9px;margin-top:14px;flex-wrap:wrap">
+    <span style="background:#fff;border:1px solid rgba(168,154,199,.3);color:#7E6FA0;padding:5px 11px;border-radius:9px;font-size:11px;font-weight:600">01 · 合 规 底 线</span>
+    <span style="background:#fff;border:1px solid rgba(168,154,199,.3);color:#7E6FA0;padding:5px 11px;border-radius:9px;font-size:11px;font-weight:600">02 · 5 屏 动 线</span>
+    <span style="background:#fff;border:1px solid rgba(168,154,199,.3);color:#7E6FA0;padding:5px 11px;border-radius:9px;font-size:11px;font-weight:600">03 · 树 洞 + 危 机</span>
+    <span style="background:#fff;border:1px solid rgba(168,154,199,.3);color:#7E6FA0;padding:5px 11px;border-radius:9px;font-size:11px;font-weight:600">04 · 1V1 安 全 围 栏</span>
+    <span style="background:linear-gradient(135deg,#F5C7C7,#A89AC7);color:#fff;padding:5px 11px;border-radius:9px;font-size:11px;font-weight:700;border:1px solid transparent">05 · 长 期 飞 轮</span>
+  </div>
+</div>
+
+</main>
+
+<footer style="background:#2A3658;color:#A89AC7;padding:34px 56px;text-align:center;font-size:13px">
+<div style="height:1px;background:linear-gradient(90deg,transparent,#A89AC7,transparent);margin:0 auto 18px;width:80%"></div>
+<div>🌙 Mind · 配合 <code style="background:#1F2A48;padding:2px 8px;border-radius:4px;color:#D6CCE5;font-family:JetBrains Mono">行业06-AI心理疗愈-完整提示词.md</code> 使用</div>
+<div class="mt-3 text-xs" style="color:#7E6FA0">✦ v1.0 · 真实感版本 · 雾蓝紫 + 治愈渐变 ✦</div>
+</footer>
+
+</div>
+</body>
+</html>
