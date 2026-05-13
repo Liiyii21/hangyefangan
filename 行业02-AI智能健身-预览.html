@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FitForge · AI 智能健身 — 完整开发提示词与 UI 预览</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0A0C10;
+  --primary:#1A1D24;
+  --primary-2:#2A2F3A;
+  --primary-3:#3A4150;
+  --accent:#00E676;          /* 能量荧光绿 */
+  --accent-2:#66FFA6;
+  --accent-d:#00B248;
+  --warn:#FF5722;            /* 警戒橙 */
+  --hot:#FF1744;
+  --bg:#0F1116;
+  --paper:#F5F5F0;
+  --paper-2:#FAFAF7;
+  --line:#E5E5E0;
+  --gray:#8B8B85;
+  --text:#1A1D24;
+}
+*{box-sizing:border-box;-webkit-font-smoothing:antialiased}
+body{margin:0;font-family:Inter,'Noto Sans SC',sans-serif;background:var(--paper);color:var(--text);line-height:1.65}
+
+/* === Hero === */
+.hero{background:radial-gradient(ellipse at 30% 20%,#1A2330 0%,#0A0C10 60%);color:#fff;padding:90px 24px 80px;position:relative;overflow:hidden;border-bottom:3px solid var(--accent)}
+.hero::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,transparent 0,transparent 60px,rgba(0,230,118,.04) 60px,rgba(0,230,118,.04) 61px);pointer-events:none}
+.hero::after{content:'';position:absolute;right:-100px;top:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(0,230,118,.18) 0%,transparent 70%);pointer-events:none}
+.hero-c{max-width:1180px;margin:0 auto;position:relative;z-index:2}
+.crest{display:inline-flex;align-items:center;gap:14px;padding:8px 18px 8px 8px;border:1px solid rgba(0,230,118,.4);border-radius:30px;background:rgba(0,230,118,.06);backdrop-filter:blur(6px)}
+.crest .lg{width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#0A0C10;font-weight:900;font-family:'Bebas Neue';font-size:18px;box-shadow:0 0 20px rgba(0,230,118,.5)}
+.crest span{font-family:'Bebas Neue';letter-spacing:3px;font-size:13px;color:var(--accent-2)}
+.hero h1{font-family:'Bebas Neue','Noto Sans SC';font-size:88px;font-weight:900;letter-spacing:2px;margin:24px 0 12px;line-height:1;background:linear-gradient(90deg,#fff 0%,#fff 60%,var(--accent) 60%,var(--accent) 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero h1 .cn{font-family:'Noto Sans SC';font-weight:900;font-size:46px;display:block;margin-top:14px;letter-spacing:6px;background:linear-gradient(90deg,#fff,#fff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.sub{font-size:17px;color:#B8C0CC;max-width:680px;margin:24px 0 38px;line-height:1.85}
+.hero p.sub b{color:var(--accent);font-weight:700}
+.tags{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px}
+.tag-h{padding:7px 16px;background:rgba(255,255,255,.05);border:1px solid rgba(0,230,118,.3);border-radius:4px;font-size:11px;color:#B8C0CC;font-family:'Bebas Neue';letter-spacing:2px}
+.tag-h b{color:var(--accent)}
+.cta-row{display:flex;gap:14px;flex-wrap:wrap;margin-top:24px}
+.cta-btn{padding:16px 36px;background:var(--accent);color:#0A0C10;border:none;border-radius:4px;font-family:'Bebas Neue';font-size:18px;letter-spacing:2px;cursor:pointer;font-weight:700;box-shadow:0 8px 30px rgba(0,230,118,.35);position:relative;overflow:hidden;transition:all .25s}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(0,230,118,.45)}
+.cta-btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3);box-shadow:none}
+
+.heart-line{position:absolute;left:0;right:0;bottom:0;height:60px;opacity:.4;pointer-events:none}
+
+/* === Trust bar === */
+.trust{background:#0A0C10;padding:24px;border-bottom:1px solid var(--primary-2)}
+.trust-c{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;text-align:center}
+.trust-i{padding:14px;border-right:1px solid var(--primary-2)}
+.trust-i:last-child{border-right:0}
+.trust-i .num{font-family:'Bebas Neue';font-size:36px;font-weight:700;color:var(--accent);letter-spacing:1px;line-height:1}
+.trust-i .lab{font-size:11px;color:#888;margin-top:6px;font-family:'Bebas Neue';letter-spacing:2px}
+
+/* === Doc === */
+.doc{max-width:1180px;margin:0 auto;padding:64px 28px}
+.intro{padding:32px 36px;background:linear-gradient(135deg,#fff,var(--paper-2));border-left:4px solid var(--accent);border-radius:0 8px 8px 0;margin-bottom:50px;font-size:14.5px;line-height:1.95;color:#3A4150;box-shadow:0 2px 12px rgba(0,0,0,.04);position:relative}
+.intro::before{content:'BRIEF';position:absolute;right:24px;top:20px;font-family:'Bebas Neue';font-size:11px;letter-spacing:3px;color:var(--accent-d);padding:3px 10px;background:rgba(0,230,118,.1);border-radius:2px}
+.intro b{color:var(--ink);font-weight:700;border-bottom:1.5px solid var(--accent)}
+.intro .palette{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.intro .pchip{display:flex;align-items:center;gap:8px;padding:5px 12px;background:#fff;border:1px solid var(--line);border-radius:3px;font-size:11px;font-family:'JetBrains Mono'}
+.intro .pchip i{width:14px;height:14px;border-radius:2px;display:inline-block}
+
+/* Step header */
+.step{margin:80px 0 36px;display:flex;align-items:flex-end;gap:24px;padding-bottom:18px;border-bottom:1px solid var(--line);position:relative}
+.step::after{content:'';position:absolute;left:0;bottom:-1px;width:120px;height:3px;background:var(--accent)}
+.step-num{font-family:'Bebas Neue';font-size:90px;font-weight:700;color:var(--accent);line-height:.85;letter-spacing:-2px;text-shadow:2px 2px 0 var(--ink)}
+.step-num small{font-size:14px;letter-spacing:5px;color:var(--gray);display:block;margin-top:6px;text-shadow:none}
+.step-title h2{font-family:'Noto Sans SC';font-weight:900;font-size:30px;color:var(--ink);margin:0;letter-spacing:1px}
+.step-title h2 .en{font-family:'Bebas Neue';color:var(--accent-d);margin-left:12px;font-size:22px;letter-spacing:2px}
+.step-title p{font-size:13px;color:var(--gray);margin:8px 0 0;font-family:'JetBrains Mono'}
+
+.callout{background:#fff;border-left:3px solid var(--accent);padding:20px 24px 20px 30px;border-radius:0 6px 6px 0;font-size:14px;line-height:1.85;margin:18px 0;position:relative;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.callout .ico{position:absolute;left:-13px;top:20px;width:24px;height:24px;background:var(--accent);color:#0A0C10;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;box-shadow:0 4px 12px rgba(0,230,118,.4)}
+.callout b{color:var(--ink)}
+
+h3.sec{font-family:'Noto Sans SC';font-size:20px;font-weight:900;margin:36px 0 10px;color:var(--ink);position:relative;padding-left:16px;letter-spacing:1px}
+h3.sec::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:4px;background:var(--accent);border-radius:0}
+h3.sec .desc{font-family:'JetBrains Mono';font-size:11px;font-weight:400;color:var(--gray);margin-left:10px;letter-spacing:1px}
+
+h4.page{font-size:15px;font-weight:800;margin:18px 0 4px;color:var(--ink);font-family:'Noto Sans SC'}
+h4.page .num{font-family:'Bebas Neue';color:var(--accent-d);font-weight:700;margin-right:8px;font-size:18px;background:rgba(0,230,118,.1);padding:1px 7px;border-radius:2px}
+
+.det{font-size:13.5px;line-height:1.9;color:#3A4150;margin:6px 0 14px;padding:12px 14px;border-left:1px solid var(--accent);background:#fff;border-radius:0 4px 4px 0;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.det b{color:var(--ink);font-weight:700}
+.det .em{color:var(--accent-d);font-weight:700;background:rgba(0,230,118,.1);padding:0 5px;border-radius:2px}
+.det .em-warn{color:var(--warn);font-weight:700;background:rgba(255,87,34,.1);padding:0 5px;border-radius:2px}
+
+.bullet{padding:5px 0 5px 22px;position:relative;font-size:14px;line-height:1.75;color:#3A4150}
+.bullet::before{content:'';position:absolute;left:6px;top:13px;width:6px;height:6px;background:var(--accent);transform:rotate(45deg)}
+.bullet b{color:var(--ink)}
+
+.tag{font-size:10px;padding:2px 8px;border-radius:2px;display:inline-block;font-weight:700;font-family:'Bebas Neue';letter-spacing:1.5px}
+
+/* Phone gallery */
+.phones{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;padding:46px 18px;background:linear-gradient(135deg,#0A0C10 0%,#1A2330 100%);border-radius:6px;margin:28px 0;position:relative;overflow:hidden;border:1px solid var(--primary-2)}
+.phones::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,transparent 0,transparent 80px,rgba(0,230,118,.03) 80px,rgba(0,230,118,.03) 81px);pointer-events:none}
+.phones::after{content:'PROTOTYPE · UI PREVIEW';position:absolute;top:14px;left:24px;font-family:'Bebas Neue';font-size:10px;letter-spacing:4px;color:var(--accent);opacity:.7}
+.phone{width:240px;height:520px;border-radius:34px;background:#0A0C10;padding:5px;box-shadow:0 30px 60px -15px rgba(0,0,0,.7),0 0 0 1px rgba(0,230,118,.15);position:relative;flex-shrink:0;transition:transform .3s}
+.phone:hover{transform:translateY(-6px)}
+.scr{height:100%;background:#fff;border-radius:30px;overflow:hidden;display:flex;flex-direction:column;font-size:11px;position:relative}
+.notch{height:22px;background:#0A0C10;position:relative}
+.notch::after{content:'';position:absolute;left:50%;top:6px;transform:translateX(-50%);width:80px;height:18px;background:#0A0C10;border-radius:0 0 12px 12px}
+.sb{height:18px;font-size:9px;display:flex;justify-content:space-between;padding:0 14px;align-items:center;background:#fff;color:#0A0C10;font-weight:700;font-family:'Bebas Neue';letter-spacing:1px}
+.sb.dark{background:#0A0C10;color:#fff}
+.body{flex:1;overflow:hidden;position:relative}
+.cap{position:absolute;left:8px;bottom:8px;background:#0A0C10;color:var(--accent);font-size:8px;padding:2px 8px;border-radius:2px;font-family:'Bebas Neue';letter-spacing:1.5px;z-index:5;border:1px solid var(--accent-d)}
+
+/* === Phone screens === */
+
+/* P1 启动页 */
+.splash{height:100%;background:radial-gradient(ellipse at center,#1A2330 0%,#0A0C10 80%);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.splash::before{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,transparent 0,transparent 30px,rgba(0,230,118,.06) 30px,rgba(0,230,118,.06) 31px)}
+.splash-logo{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-d) 100%);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:38px;color:#0A0C10;font-weight:900;box-shadow:0 0 50px rgba(0,230,118,.6),inset 0 0 20px rgba(255,255,255,.2);position:relative;z-index:2}
+.splash h2{font-family:'Bebas Neue';font-size:34px;letter-spacing:5px;margin:18px 0 4px;color:#fff;z-index:2}
+.splash p{font-size:10px;color:var(--accent);margin:0;letter-spacing:6px;font-family:'Bebas Neue';z-index:2}
+.splash .heart{margin-top:30px;width:160px;height:30px;z-index:2}
+.splash .ver{position:absolute;bottom:18px;font-size:8px;color:#555;letter-spacing:2px;font-family:'Bebas Neue';z-index:2}
+
+/* P2 引导：选目标 */
+.goal{height:100%;background:#0A0C10;color:#fff;padding:18px 14px;overflow-y:auto}
+.goal h3{font-family:'Noto Sans SC';font-weight:900;font-size:18px;margin:6px 0 4px;letter-spacing:1px}
+.goal h3 small{display:block;font-family:'Bebas Neue';font-size:9px;color:var(--accent);letter-spacing:3px;margin-top:3px}
+.goal .step-bar{display:flex;gap:4px;margin:14px 0 18px}
+.goal .step-bar i{flex:1;height:3px;background:#2A2F3A;border-radius:0}
+.goal .step-bar i.on{background:var(--accent)}
+.goal-q{font-size:12px;color:#B8C0CC;margin-bottom:14px}
+.goal-list{display:flex;flex-direction:column;gap:10px}
+.goal-card{padding:12px 14px;background:#1A1D24;border:1px solid #2A2F3A;border-radius:4px;display:flex;align-items:center;gap:12px;position:relative;transition:all .2s}
+.goal-card.on{border-color:var(--accent);background:rgba(0,230,118,.08);box-shadow:0 0 20px rgba(0,230,118,.15)}
+.goal-card .ic{width:38px;height:38px;border-radius:4px;background:#2A2F3A;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.goal-card.on .ic{background:var(--accent);color:#0A0C10}
+.goal-card .t{font-weight:700;font-size:13px}
+.goal-card .d{font-size:9.5px;color:#888;margin-top:2px}
+.goal-card .chk{position:absolute;right:12px;width:14px;height:14px;border:1px solid #444;border-radius:50%}
+.goal-card.on .chk{background:var(--accent);border-color:var(--accent);display:flex;align-items:center;justify-content:center;color:#0A0C10;font-size:9px;font-weight:900}
+
+/* P3 首页 */
+.home{height:100%;background:#0A0C10;color:#fff;overflow-y:auto}
+.home-hd{padding:14px;background:linear-gradient(135deg,#1A2330,#0A0C10);position:relative;overflow:hidden}
+.home-hd::before{content:'';position:absolute;right:-30px;top:-30px;width:140px;height:140px;background:radial-gradient(circle,rgba(0,230,118,.2),transparent 70%)}
+.home-hd .row{display:flex;justify-content:space-between;align-items:center;position:relative}
+.home-hd .who{display:flex;gap:8px;align-items:center}
+.home-hd .av{width:32px;height:32px;border-radius:4px;background:linear-gradient(135deg,var(--accent),var(--accent-d));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue';font-size:14px;color:#0A0C10;font-weight:900}
+.home-hd .name{font-size:11px;color:#fff;font-weight:700}
+.home-hd .lvl{font-size:8.5px;color:var(--accent);font-family:'Bebas Neue';letter-spacing:1px;margin-top:1px}
+.home-hd .ico{width:28px;height:28px;background:rgba(255,255,255,.06);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:13px}
+/* 体测仪表盘 */
+.dash{margin:14px;padding:16px;background:linear-gradient(135deg,rgba(0,230,118,.12),rgba(0,230,118,.04));border:1px solid rgba(0,230,118,.3);border-radius:6px;position:relative;overflow:hidden}
+.dash::before{content:'';position:absolute;right:-20px;top:-20px;width:80px;height:80px;background:radial-gradient(circle,rgba(0,230,118,.3),transparent 70%)}
+.dash .lab{font-size:8.5px;color:var(--accent);font-family:'Bebas Neue';letter-spacing:2px}
+.dash .row{display:flex;justify-content:space-between;align-items:flex-end;margin-top:6px;position:relative;z-index:2}
+.dash .big{font-family:'Bebas Neue';font-size:38px;color:#fff;line-height:1;letter-spacing:1px}
+.dash .big .u{font-size:13px;color:var(--accent);margin-left:4px}
+.dash .delta{font-size:9px;color:var(--accent);background:rgba(0,230,118,.15);padding:2px 6px;border-radius:2px;font-family:'Bebas Neue';letter-spacing:1px}
+.dash .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;position:relative;z-index:2}
+.dash .grid3 div{padding:6px;background:rgba(0,0,0,.3);border-radius:3px;text-align:center}
+.dash .grid3 .v{font-family:'Bebas Neue';font-size:14px;color:#fff}
+.dash .grid3 .k{font-size:8px;color:#888;letter-spacing:1px;font-family:'Bebas Neue'}
+
+.cta-pri{margin:14px;padding:14px;background:var(--accent);color:#0A0C10;border-radius:4px;display:flex;align-items:center;justify-content:space-between;font-weight:900;font-size:12px;font-family:'Noto Sans SC';box-shadow:0 8px 20px rgba(0,230,118,.3)}
+.cta-pri .arr{font-family:'Bebas Neue';font-size:14px}
+/* 训练计划 */
+.plan{margin:0 14px 14px}
+.plan-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.plan-hd h4{font-size:11px;font-weight:900;color:#fff;margin:0}
+.plan-hd .more{font-size:9px;color:var(--accent);font-family:'Bebas Neue';letter-spacing:2px}
+.plan-card{padding:12px;background:#1A1D24;border:1px solid #2A2F3A;border-radius:5px;display:flex;gap:10px;margin-bottom:8px;position:relative}
+.plan-card .day{width:34px;height:38px;border-radius:3px;background:linear-gradient(135deg,#2A2F3A,#1A1D24);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Bebas Neue';color:var(--accent);flex-shrink:0;border:1px solid #2A2F3A}
+.plan-card .day .n{font-size:18px;line-height:1}
+.plan-card .day .l{font-size:7px;letter-spacing:1px;color:#888}
+.plan-card .info{flex:1}
+.plan-card .ttl{font-size:11px;color:#fff;font-weight:700}
+.plan-card .meta{display:flex;gap:6px;margin-top:4px}
+.plan-card .meta span{font-size:8px;color:#888;font-family:'Bebas Neue';letter-spacing:1px}
+.plan-card .meta span b{color:var(--accent)}
+.plan-card .pg{height:3px;background:#2A2F3A;border-radius:0;margin-top:6px;overflow:hidden}
+.plan-card .pg i{display:block;height:100%;width:60%;background:var(--accent)}
+/* tab */
+.tabbar{display:flex;background:#1A1D24;border-top:1px solid #2A2F3A;padding:6px 0 8px;flex-shrink:0}
+.tabbar div{flex:1;text-align:center;font-size:8px;color:#666;font-family:'Bebas Neue';letter-spacing:1px}
+.tabbar div.on{color:var(--accent)}
+.tabbar div .ic{font-size:14px;display:block;margin-bottom:2px}
+
+/* P4 AI 体测拍照 */
+.scan{height:100%;background:#0A0C10;color:#fff;position:relative;overflow:hidden}
+.scan::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,230,118,.1),transparent 70%)}
+.scan-bar{position:absolute;left:0;right:0;top:14px;display:flex;justify-content:space-between;padding:0 14px;z-index:5}
+.scan-bar .x{width:24px;height:24px;background:rgba(0,0,0,.5);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px}
+.scan-bar .ang{display:flex;gap:6px}
+.scan-bar .ang span{padding:4px 10px;background:rgba(0,0,0,.5);border-radius:3px;font-size:9px;font-family:'Bebas Neue';letter-spacing:2px;border:1px solid rgba(255,255,255,.1)}
+.scan-bar .ang span.on{background:var(--accent);color:#0A0C10;border-color:var(--accent)}
+.silhouette{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:80px;height:280px}
+.silhouette svg{width:100%;height:100%;filter:drop-shadow(0 0 8px rgba(0,230,118,.4))}
+.scan-frame{position:absolute;left:30px;right:30px;top:60px;bottom:140px;border:1px dashed var(--accent);border-radius:8px;animation:none}
+.scan-frame::before,.scan-frame::after{content:'';position:absolute;width:14px;height:14px;border:2px solid var(--accent)}
+.scan-frame::before{left:-2px;top:-2px;border-right:0;border-bottom:0}
+.scan-frame::after{right:-2px;bottom:-2px;border-left:0;border-top:0}
+.scan-line{position:absolute;left:30px;right:30px;top:50%;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);box-shadow:0 0 14px var(--accent);z-index:3}
+.scan-tip{position:absolute;left:14px;right:14px;bottom:88px;text-align:center;font-size:11px;color:#fff;font-weight:700;z-index:4}
+.scan-tip small{display:block;font-size:9px;color:var(--accent);font-family:'Bebas Neue';letter-spacing:2px;margin-top:4px}
+.scan-shot{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);width:54px;height:54px;border-radius:50%;background:#fff;border:4px solid var(--accent);box-shadow:0 0 20px rgba(0,230,118,.5);z-index:5}
+.scan-shot::before{content:'';position:absolute;inset:5px;border-radius:50%;background:var(--accent)}
+
+/* P5 体测报告 */
+.rpt{height:100%;background:#F5F5F0;overflow-y:auto}
+.rpt-hd{padding:14px;background:linear-gradient(135deg,#0A0C10,#1A2330);color:#fff;position:relative;overflow:hidden}
+.rpt-hd::before{content:'';position:absolute;right:-30px;top:-30px;width:120px;height:120px;background:radial-gradient(circle,rgba(0,230,118,.25),transparent 70%)}
+.rpt-hd h3{font-family:'Noto Sans SC';font-size:15px;margin:0;font-weight:900;letter-spacing:1px}
+.rpt-hd small{font-size:9px;color:var(--accent);font-family:'Bebas Neue';letter-spacing:2px;margin-top:2px;display:block}
+.rpt-hd .scoring{display:flex;gap:14px;margin-top:14px;align-items:center;position:relative;z-index:2}
+.rpt-hd .ring{width:78px;height:78px;border-radius:50%;background:conic-gradient(var(--accent) 0deg 270deg,#2A2F3A 270deg);display:flex;align-items:center;justify-content:center;position:relative;flex-shrink:0;box-shadow:0 0 20px rgba(0,230,118,.3)}
+.rpt-hd .ring::after{content:'';position:absolute;inset:6px;border-radius:50%;background:#0A0C10}
+.rpt-hd .ring span{position:relative;z-index:2;font-family:'Bebas Neue';font-size:30px;color:var(--accent);font-weight:700}
+.rpt-hd .ring small{position:relative;z-index:2;font-size:8px;color:#888;letter-spacing:1px}
+.rpt-hd .lbls{flex:1}
+.rpt-hd .lbls .cls{font-family:'Bebas Neue';font-size:13px;letter-spacing:3px;color:var(--accent)}
+.rpt-hd .lbls .ttl{font-size:13px;font-weight:900;margin:2px 0}
+.rpt-hd .lbls .desc{font-size:9.5px;color:#B8C0CC;line-height:1.6}
+
+.rpt-bd{padding:14px;background:#F5F5F0}
+.rpt-card{background:#fff;border-radius:5px;padding:12px;margin-bottom:10px;border:1px solid #E5E5E0;position:relative}
+.rpt-card .lbl{font-size:8.5px;color:var(--accent-d);font-family:'Bebas Neue';letter-spacing:2px;margin-bottom:6px}
+.rpt-card .ttl{font-size:12px;color:#0A0C10;font-weight:900;margin-bottom:8px;font-family:'Noto Sans SC'}
+/* 体脂肌肉条 */
+.bar-row{display:flex;justify-content:space-between;align-items:baseline;font-size:10px;margin-bottom:3px;color:#3A4150}
+.bar-row b{font-family:'Bebas Neue';color:#0A0C10;font-size:14px}
+.bar-row .em{color:var(--accent-d)}
+.bar-row .em-w{color:var(--warn)}
+.bar{height:6px;background:#E5E5E0;border-radius:0;overflow:hidden;margin-bottom:8px;position:relative}
+.bar i{display:block;height:100%}
+.bar.b1 i{width:65%;background:linear-gradient(90deg,var(--accent),var(--accent-d))}
+.bar.b2 i{width:78%;background:linear-gradient(90deg,var(--accent),var(--accent-d))}
+.bar.b3 i{width:42%;background:linear-gradient(90deg,var(--warn),#FFB300)}
+.bar .mark{position:absolute;top:-2px;width:1px;height:10px;background:#0A0C10}
+
+/* CTA */
+.rpt-cta{margin:14px;padding:14px;background:#0A0C10;border-radius:5px;color:#fff;border:1px solid var(--accent)}
+.rpt-cta .ttl{font-size:11px;font-weight:900;margin-bottom:3px;font-family:'Noto Sans SC'}
+.rpt-cta .desc{font-size:9px;color:#B8C0CC;margin-bottom:10px;line-height:1.5}
+.rpt-cta button{width:100%;padding:9px;background:var(--accent);color:#0A0C10;border:none;border-radius:3px;font-weight:900;font-size:10px;font-family:'Noto Sans SC';letter-spacing:2px}
+
+/* P6 训练计划详情 */
+.tp{height:100%;background:#0A0C10;color:#fff;overflow-y:auto}
+.tp-hero{padding:14px;background:linear-gradient(135deg,#1A2330,#0A0C10);position:relative}
+.tp-hero .tags{display:flex;gap:5px;margin-bottom:10px}
+.tp-hero .tags span{padding:2px 8px;background:rgba(0,230,118,.15);color:var(--accent);font-size:8px;border-radius:2px;font-family:'Bebas Neue';letter-spacing:1px;border:1px solid rgba(0,230,118,.3)}
+.tp-hero h3{font-family:'Noto Sans SC';font-size:16px;margin:0;font-weight:900;letter-spacing:1px}
+.tp-hero .meta{display:flex;gap:14px;margin-top:10px}
+.tp-hero .meta div{font-size:9px;color:#888;font-family:'Bebas Neue';letter-spacing:1.5px}
+.tp-hero .meta div b{color:var(--accent);font-size:13px;display:block}
+
+.tp-day{padding:10px 14px;background:#1A1D24;border-bottom:1px solid #2A2F3A;display:flex;align-items:center;gap:10px}
+.tp-day .d{font-family:'Bebas Neue';font-size:14px;color:var(--accent);width:34px}
+.tp-day .info{flex:1}
+.tp-day .info .t{font-size:11px;font-weight:700}
+.tp-day .info .s{font-size:9px;color:#888;margin-top:1px}
+.tp-day .badge{padding:2px 6px;background:rgba(0,230,118,.15);color:var(--accent);font-size:8px;border-radius:2px;font-family:'Bebas Neue';letter-spacing:1px}
+.tp-day.lock .badge{background:rgba(255,255,255,.05);color:#666}
+
+.tp-ex{padding:12px 14px;background:#1A1D24;border-top:1px solid #2A2F3A;display:flex;gap:10px;align-items:center}
+.tp-ex .vid{width:54px;height:54px;background:linear-gradient(135deg,#2A2F3A,#0A0C10);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--accent);flex-shrink:0;border:1px solid #2A2F3A;position:relative}
+.tp-ex .vid::after{content:'▶';position:absolute;font-size:14px;color:var(--accent)}
+.tp-ex .info{flex:1}
+.tp-ex .info .nm{font-size:11px;font-weight:700}
+.tp-ex .info .sets{font-size:9px;color:#B8C0CC;margin-top:3px;font-family:'Bebas Neue';letter-spacing:1px}
+.tp-ex .info .sets b{color:var(--accent)}
+
+/* P7 私教/课程列表 */
+.coach{height:100%;background:#F5F5F0;overflow-y:auto}
+.coach-hd{padding:14px;background:#0A0C10;color:#fff}
+.coach-hd h3{font-family:'Noto Sans SC';font-size:14px;margin:0;font-weight:900}
+.coach-hd small{font-size:9px;color:var(--accent);font-family:'Bebas Neue';letter-spacing:2px;display:block;margin-top:2px}
+.coach-tabs{display:flex;gap:0;background:#0A0C10;padding:0 14px;border-bottom:1px solid #2A2F3A}
+.coach-tabs span{padding:8px 12px;font-size:10px;color:#888;border-bottom:2px solid transparent;font-family:'Bebas Neue';letter-spacing:2px}
+.coach-tabs span.on{color:var(--accent);border-color:var(--accent)}
+
+.coach-card{background:#fff;margin:10px 14px 0;padding:12px;border-radius:5px;display:flex;gap:10px;border:1px solid #E5E5E0;position:relative}
+.coach-card .av{width:60px;height:60px;border-radius:4px;background:linear-gradient(135deg,#1A2330,#0A0C10);display:flex;align-items:center;justify-content:center;color:var(--accent);font-family:'Bebas Neue';font-size:24px;flex-shrink:0;position:relative;overflow:hidden}
+.coach-card .av::after{content:'';position:absolute;left:0;right:0;bottom:0;height:14px;background:linear-gradient(180deg,transparent,rgba(0,230,118,.3))}
+.coach-card .info{flex:1;min-width:0}
+.coach-card .nm{font-size:12px;font-weight:900;color:#0A0C10;display:flex;align-items:center;gap:5px}
+.coach-card .nm .v{font-size:8px;background:var(--accent);color:#0A0C10;padding:1px 5px;border-radius:2px;font-family:'Bebas Neue'}
+.coach-card .ttl{font-size:9.5px;color:var(--accent-d);font-weight:700;margin-top:2px;font-family:'Bebas Neue';letter-spacing:1px}
+.coach-card .skills{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap}
+.coach-card .skills span{padding:1px 6px;background:#F5F5F0;color:#3A4150;font-size:8px;border-radius:2px;border:1px solid #E5E5E0}
+.coach-card .stats{display:flex;gap:10px;margin-top:6px;font-size:8.5px;color:#888;font-family:'Bebas Neue';letter-spacing:1px}
+.coach-card .stats b{color:#0A0C10}
+.coach-card .pri{position:absolute;right:12px;bottom:10px;text-align:right}
+.coach-card .pri .p{font-family:'Bebas Neue';font-size:18px;color:var(--warn);line-height:1}
+.coach-card .pri .u{font-size:8px;color:#888;letter-spacing:1px}
+.coach-card .pri button{margin-top:5px;padding:4px 10px;background:var(--accent);color:#0A0C10;border:0;border-radius:2px;font-size:8.5px;font-weight:900;font-family:'Noto Sans SC'}
+
+/* P8 预约 */
+.book{height:100%;background:#F5F5F0;overflow-y:auto}
+.book-hd{padding:12px 14px;background:#0A0C10;color:#fff;display:flex;align-items:center;gap:10px}
+.book-hd .av{width:36px;height:36px;border-radius:4px;background:linear-gradient(135deg,var(--accent),var(--accent-d));display:flex;align-items:center;justify-content:center;color:#0A0C10;font-weight:900;font-family:'Bebas Neue';font-size:14px}
+.book-hd .nm{font-size:12px;font-weight:900}
+.book-hd .ttl{font-size:9px;color:var(--accent);font-family:'Bebas Neue';letter-spacing:2px}
+
+.cal{padding:14px;background:#fff;margin:10px 14px;border-radius:5px;border:1px solid #E5E5E0}
+.cal h4{font-size:10px;color:#0A0C10;margin:0 0 8px;font-weight:900;font-family:'Bebas Neue';letter-spacing:2px}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-grid .h{font-size:8px;color:#888;text-align:center;font-family:'Bebas Neue';letter-spacing:1px;padding:3px 0}
+.cal-grid .d{aspect-ratio:1;background:#F5F5F0;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#3A4150;font-family:'Bebas Neue';font-weight:700;cursor:pointer;border:1px solid transparent}
+.cal-grid .d.dis{color:#CCC;background:transparent}
+.cal-grid .d.has{background:rgba(0,230,118,.1);color:var(--accent-d);border-color:rgba(0,230,118,.3)}
+.cal-grid .d.on{background:var(--accent);color:#0A0C10;border-color:var(--accent);box-shadow:0 4px 10px rgba(0,230,118,.3)}
+
+.slots{padding:14px;background:#fff;margin:0 14px 10px;border-radius:5px;border:1px solid #E5E5E0}
+.slots h4{font-size:10px;color:#0A0C10;margin:0 0 8px;font-weight:900;font-family:'Bebas Neue';letter-spacing:2px}
+.slots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.slot{padding:8px 4px;text-align:center;background:#F5F5F0;border-radius:3px;font-size:9px;font-family:'Bebas Neue';color:#3A4150;border:1px solid #E5E5E0}
+.slot.full{color:#CCC;background:transparent}
+.slot.on{background:#0A0C10;color:var(--accent);border-color:#0A0C10}
+.slot b{display:block;font-size:11px;color:#0A0C10}
+.slot.on b{color:#fff}
+.slot.full b{color:#CCC}
+
+.book-cta{position:absolute;left:0;right:0;bottom:0;padding:10px 14px;background:#fff;border-top:1px solid #E5E5E0;display:flex;align-items:center;gap:10px}
+.book-cta .pri{flex:1}
+.book-cta .pri .p{font-family:'Bebas Neue';font-size:20px;color:var(--warn);line-height:1}
+.book-cta .pri .o{font-size:8px;color:#888;text-decoration:line-through}
+.book-cta button{padding:10px 16px;background:var(--accent);color:#0A0C10;border:0;border-radius:3px;font-weight:900;font-size:11px;font-family:'Noto Sans SC';letter-spacing:1px}
+
+/* P9 支付成功 + 加微信 */
+.pay{height:100%;background:linear-gradient(180deg,#0A0C10 0%,#1A2330 100%);color:#fff;padding:24px 16px;text-align:center;position:relative;overflow:hidden}
+.pay::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at top,rgba(0,230,118,.18),transparent 60%)}
+.pay-ic{width:64px;height:64px;border-radius:50%;background:var(--accent);margin:30px auto 18px;display:flex;align-items:center;justify-content:center;font-size:30px;color:#0A0C10;font-weight:900;box-shadow:0 0 40px rgba(0,230,118,.5);position:relative;z-index:2}
+.pay h3{font-family:'Noto Sans SC';font-size:17px;margin:0 0 6px;font-weight:900;letter-spacing:2px;position:relative;z-index:2}
+.pay .amt{font-family:'Bebas Neue';font-size:30px;color:var(--accent);letter-spacing:1px;margin:6px 0;position:relative;z-index:2}
+.pay .desc{font-size:10px;color:#B8C0CC;margin-bottom:18px;line-height:1.7;position:relative;z-index:2}
+.pay .qr-card{background:#fff;border-radius:6px;padding:14px;text-align:center;color:#0A0C10;margin:14px 0;position:relative;z-index:2;box-shadow:0 12px 40px rgba(0,230,118,.2)}
+.pay .qr-card .ttl{font-size:11px;font-weight:900;margin-bottom:3px;font-family:'Noto Sans SC'}
+.pay .qr-card .sub{font-size:9px;color:var(--accent-d);margin-bottom:10px;font-family:'Bebas Neue';letter-spacing:2px}
+.pay .qr{width:108px;height:108px;margin:0 auto;background:repeating-conic-gradient(#0A0C10 0% 25%,#fff 0% 50%) 50% / 8px 8px,#fff;border-radius:4px;border:1px solid #E5E5E0;position:relative}
+.pay .qr::after{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:24px;height:24px;background:var(--accent);border-radius:4px;border:3px solid #fff}
+.pay .save{font-size:9px;color:var(--accent);margin-top:10px;font-family:'Bebas Neue';letter-spacing:2px}
+.pay .coach-info{display:flex;align-items:center;gap:10px;justify-content:center;margin-top:12px;padding:8px;background:rgba(0,230,118,.08);border-radius:4px;border:1px solid rgba(0,230,118,.2);position:relative;z-index:2}
+.pay .coach-info .av{width:30px;height:30px;border-radius:4px;background:linear-gradient(135deg,var(--accent),var(--accent-d));display:flex;align-items:center;justify-content:center;color:#0A0C10;font-family:'Bebas Neue';font-size:12px;font-weight:900}
+.pay .coach-info .nm{font-size:10px;font-weight:700;text-align:left}
+.pay .coach-info .nm small{display:block;font-size:8px;color:var(--accent);font-family:'Bebas Neue';letter-spacing:1px;margin-top:1px}
+
+/* P10 个人中心 */
+.me{height:100%;background:#0A0C10;color:#fff;overflow-y:auto}
+.me-hd{padding:18px 14px;background:linear-gradient(135deg,#1A2330,#0A0C10);position:relative;overflow:hidden}
+.me-hd::before{content:'';position:absolute;right:-30px;top:-30px;width:140px;height:140px;background:radial-gradient(circle,rgba(0,230,118,.2),transparent 70%)}
+.me-hd .row{display:flex;align-items:center;gap:12px;position:relative;z-index:2}
+.me-hd .av{width:50px;height:50px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent-d));display:flex;align-items:center;justify-content:center;color:#0A0C10;font-family:'Bebas Neue';font-size:22px;font-weight:900}
+.me-hd .nm{font-size:13px;font-weight:900}
+.me-hd .lvl{font-size:9px;color:var(--accent);font-family:'Bebas Neue';letter-spacing:2px;margin-top:2px}
+.me-hd .lvl-bar{height:3px;background:rgba(255,255,255,.1);border-radius:0;margin-top:5px;width:120px;overflow:hidden}
+.me-hd .lvl-bar i{display:block;height:100%;width:42%;background:var(--accent)}
+/* 数据 */
+.me-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px;padding:12px;background:#1A1D24;border:1px solid #2A2F3A;border-radius:5px}
+.me-stats div{text-align:center}
+.me-stats .v{font-family:'Bebas Neue';font-size:18px;color:var(--accent);line-height:1}
+.me-stats .l{font-size:8px;color:#888;margin-top:3px;font-family:'Bebas Neue';letter-spacing:1.5px}
+/* 成就 */
+.me-ach{margin:0 14px 14px}
+.me-ach h4{font-size:10px;color:#fff;margin:0 0 8px;font-weight:900;font-family:'Bebas Neue';letter-spacing:2px;display:flex;justify-content:space-between}
+.me-ach h4 small{color:var(--accent)}
+.me-ach .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.me-ach .badge{aspect-ratio:1;background:#1A1D24;border:1px solid #2A2F3A;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--accent)}
+.me-ach .badge.lock{color:#444;background:#0A0C10}
+
+.me-list{margin:0 14px}
+.me-list .item{padding:10px;background:#1A1D24;border:1px solid #2A2F3A;border-radius:4px;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.me-list .item .ic{width:26px;height:26px;border-radius:3px;background:rgba(0,230,118,.1);display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:12px}
+.me-list .item .t{font-size:11px;flex:1}
+.me-list .item .arr{font-family:'Bebas Neue';font-size:11px;color:#444}
+
+/* === Sections === */
+.flow-block{background:linear-gradient(135deg,var(--paper-2) 0%,var(--paper) 100%);border:1px solid var(--line);border-radius:5px;padding:20px 24px;margin:20px 0;position:relative;border-left:3px solid var(--accent)}
+.flow-block::before{content:'CRITICAL FLOW';position:absolute;right:18px;top:14px;font-family:'Bebas Neue';font-size:10px;letter-spacing:3px;color:var(--accent-d);padding:2px 8px;background:rgba(0,230,118,.1);border-radius:2px}
+.flow-block h4{font-family:'Noto Sans SC';font-size:15px;margin:0 0 14px;color:var(--ink);font-weight:900}
+.flow{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:11px}
+.flow span{padding:8px 12px;background:#fff;border:1px solid var(--line);border-radius:3px;font-weight:700;color:#3A4150;font-family:'Noto Sans SC'}
+.flow span.key{background:var(--ink);color:var(--accent);border-color:var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.flow span.cv{background:var(--accent);color:#0A0C10;border-color:var(--accent);box-shadow:0 4px 14px rgba(0,230,118,.3)}
+.flow .ar{color:var(--accent-d);font-family:'Bebas Neue';font-size:14px;font-weight:700}
+
+/* 内联代码 */
+.det code,.callout code{font-family:'JetBrains Mono',Consolas,monospace;font-size:.86em;background:rgba(0,230,118,.1);color:var(--accent-d);padding:1px 7px;border-radius:3px;border:1px solid rgba(0,230,118,.25);font-weight:600;letter-spacing:.2px;white-space:nowrap}
+
+/* 代码片段 */
+.code-snip{background:#0A0C10;border:1px solid var(--primary-2);border-left:3px solid var(--accent);margin:18px 0;border-radius:4px;font-family:'JetBrains Mono','Cascadia Code',Consolas,monospace;font-size:12px;line-height:1.85;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.code-snip .bar{background:#0F1116;padding:8px 14px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--primary-2)}
+.code-snip .bar i{width:8px;height:8px;border-radius:50%;background:#FF5F57;display:inline-block}
+.code-snip .bar i:nth-child(2){background:#FFBD2E}
+.code-snip .bar i:nth-child(3){background:#27C93F}
+.code-snip .bar span{margin-left:14px;font-family:'JetBrains Mono';font-size:11px;color:var(--accent-2);letter-spacing:.5px}
+.code-snip .bar em{margin-left:auto;font-family:'Bebas Neue';font-style:normal;font-size:10px;color:var(--gray);letter-spacing:1.5px}
+.code-snip pre{margin:0;padding:14px 18px;color:#C9D0DC;overflow-x:auto;background:transparent;white-space:pre}
+.code-snip .k{color:var(--accent-2)}
+.code-snip .s{color:#FFD974}
+.code-snip .c{color:#5A6270;font-style:italic}
+.code-snip .f{color:#7AB8FF}
+.code-snip .v{color:var(--accent)}
+.code-snip .n{color:var(--warn)}
+
+/* PC backend */
+.pc{background:linear-gradient(135deg,#0A0C10 0%,#1A2330 100%);border-radius:6px;overflow:hidden;margin:24px 0;box-shadow:0 30px 60px rgba(0,0,0,.5);border:1px solid var(--primary-2)}
+.pc-bar{background:#000;padding:9px 14px;display:flex;align-items:center;gap:6px}
+.pc-bar i{width:10px;height:10px;border-radius:50%;background:#FF5F57}
+.pc-bar i:nth-child(2){background:#FFBD2E}
+.pc-bar i:nth-child(3){background:#27C93F}
+.pc-bar span{margin-left:14px;font-size:10px;color:#888;font-family:'JetBrains Mono'}
+.pc-body{display:flex;height:380px}
+.pc-side{width:160px;background:#0A0C10;border-right:1px solid var(--primary-2);padding:14px 0}
+.pc-side .logo{padding:0 14px 14px;color:var(--accent);font-family:'Bebas Neue';font-size:18px;letter-spacing:3px;border-bottom:1px solid var(--primary-2);margin-bottom:12px}
+.pc-side .item{padding:9px 14px;font-size:11px;color:#888;display:flex;align-items:center;gap:8px;font-family:'Noto Sans SC';font-weight:500}
+.pc-side .item.on{background:rgba(0,230,118,.1);color:var(--accent);border-left:2px solid var(--accent)}
+.pc-side .item .ic{font-size:11px;font-family:'Bebas Neue';width:14px;color:#666}
+.pc-side .item.on .ic{color:var(--accent)}
+.pc-main{flex:1;background:#0F1116;padding:18px;color:#fff;overflow:hidden}
+.pc-main h3{font-size:14px;margin:0 0 12px;font-family:'Noto Sans SC';font-weight:900}
+.pc-main .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.pc-main .kc{padding:10px;background:#1A1D24;border-radius:4px;border:1px solid var(--primary-2);position:relative;overflow:hidden}
+.pc-main .kc::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--accent)}
+.pc-main .kc .lab{font-size:9px;color:#888;font-family:'Bebas Neue';letter-spacing:1.5px}
+.pc-main .kc .v{font-family:'Bebas Neue';font-size:22px;color:var(--accent);margin-top:4px;line-height:1}
+.pc-main .kc .d{font-size:8.5px;color:var(--accent);margin-top:3px;font-family:'Bebas Neue'}
+.pc-main table{width:100%;border-collapse:collapse;font-size:10px}
+.pc-main th{padding:7px 8px;text-align:left;color:#888;font-weight:600;border-bottom:1px solid var(--primary-2);font-family:'Bebas Neue';letter-spacing:1.5px;font-size:9.5px}
+.pc-main td{padding:7px 8px;border-bottom:1px solid var(--primary-2);color:#B8C0CC}
+.pc-main td b{color:#fff}
+.pc-main td .gt{color:var(--accent)}
+.pc-main td .ot{color:var(--warn)}
+
+/* === Footer === */
+.foot{background:#0A0C10;color:#888;padding:48px 24px 30px;border-top:3px solid var(--accent);position:relative;overflow:hidden}
+.foot::before{content:'';position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--accent) 0%,var(--accent-2) 50%,var(--accent) 100%)}
+.foot-c{max-width:1180px;margin:0 auto}
+.foot-mark{font-family:'Bebas Neue';font-size:38px;color:var(--accent);letter-spacing:5px;margin-bottom:14px}
+.foot p{font-size:12px;line-height:1.85;margin:6px 0;font-family:'JetBrains Mono'}
+.foot p b{color:#fff}
+.foot .div{height:1px;background:var(--primary-2);margin:24px 0}
+.foot .copyright{font-size:11px;color:#555;font-family:'JetBrains Mono'}
+
+@media(max-width:720px){
+  .hero h1{font-size:48px}
+  .hero h1 .cn{font-size:26px}
+  .step{flex-direction:column;align-items:flex-start;gap:10px}
+  .step-num{font-size:60px}
+  .trust-c{grid-template-columns:repeat(2,1fr)}
+  .pc-body{height:auto;flex-direction:column}
+  .pc-side{width:100%;display:flex;overflow-x:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- =================== HERO =================== -->
+<section class="hero">
+  <div class="hero-c">
+    <div class="crest"><div class="lg">FF</div><span>FITFORGE · AI POWERED FITNESS</span></div>
+    <h1>FITFORGE<span class="cn">智炼 · AI 智能健身平台</span></h1>
+    <p class="sub">用一份完整的开发提示词，从 0 到 1 构建一款 <b>AI 体测 + 个性化训练 + 私教转化</b> 的健身科技产品。AI 单图体态分析、动作识别打卡、教练私域加微信 —— 数据驱动每一次训练。</p>
+    <div class="tags">
+      <div class="tag-h"><b>05</b> CHAPTERS</div>
+      <div class="tag-h"><b>10</b> SCREENS</div>
+      <div class="tag-h"><b>FITNESS</b> EDITION</div>
+      <div class="tag-h"><b>AI</b> POSE ANALYSIS</div>
+    </div>
+    <div class="cta-row">
+      <button class="cta-btn">▶ START BUILDING</button>
+      <button class="cta-btn ghost">VIEW UI KIT →</button>
+    </div>
+  </div>
+  <svg class="heart-line" viewBox="0 0 1200 60" preserveAspectRatio="none">
+    <polyline points="0,30 200,30 230,30 240,10 250,50 260,30 500,30 530,30 540,5 555,55 568,30 800,30 830,30 840,15 855,45 866,30 1200,30" stroke="#00E676" stroke-width="1.5" fill="none"/>
+  </svg>
+</section>
+
+<!-- =================== TRUST BAR =================== -->
+<div class="trust">
+  <div class="trust-c">
+    <div class="trust-i"><div class="num">128,567</div><div class="lab">ACTIVE MEMBERS</div></div>
+    <div class="trust-i"><div class="num">8.6 KG</div><div class="lab">AVG. FAT LOSS</div></div>
+    <div class="trust-i"><div class="num">365</div><div class="lab">CERTIFIED COACHES</div></div>
+    <div class="trust-i"><div class="num">4.9 / 5</div><div class="lab">USER RATING</div></div>
+  </div>
+</div>
+
+<!-- =================== DOC =================== -->
+<div class="doc">
+
+  <div class="intro">
+    <b>关于本提示词</b>　这是一份用于 AI 自动开发 <b>智能健身行业 C 端产品</b> 的完整提示词。围绕"AI 体测 → 体态分析 → 个性化训练计划 → 私教课程预约 → 加教练微信"这条核心增长闭环展开，可直接交付给 AI Coding 工具一次性生成 Next.js 14 + TailwindCSS 的产品原型。
+    <div class="palette">
+      <div class="pchip"><i style="background:#0A0C10"></i>深炭 / Carbon</div>
+      <div class="pchip"><i style="background:#00E676"></i>能量荧光绿 / Neo Green</div>
+      <div class="pchip"><i style="background:#FF5722"></i>警戒橙 / Hot Orange</div>
+      <div class="pchip"><i style="background:#F5F5F0"></i>暖灰白 / Off White</div>
+      <div class="pchip"><i style="background:#1A2330"></i>夜空蓝 / Night Steel</div>
+    </div>
+  </div>
+
+  <!-- ============ STEP 1 ============ -->
+  <div class="step">
+    <div class="step-num">01<small>STEP ONE</small></div>
+    <div class="step-title"><h2>项目规划<span class="en">/ PROJECT PLAN</span></h2><p>// define · positioning · feature scope · tech stack</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">i</div>本步骤目标：让 AI 准确理解一款"<b>AI 智能健身 C 端 App</b>"的产品定位、目标人群、核心功能与差异化。建议在 Cursor / Windsurf 中直接粘贴本步提示词作为项目首条 system 指令。</div>
+
+  <div class="det"><b>// 工程脚手架</b> · 通过 <code>pnpm create next-app@latest</code> 初始化，配 <code>App Router</code> + <code>TypeScript strict</code> + <code>TailwindCSS v3</code> + <code>shadcn/ui</code> + <code>Framer Motion</code>，体测拍照走 <code>getUserMedia()</code> + <code>WASM ImageMagick</code> 压缩至 800KB 以内，AI 调用封装为 <code>useScan()</code> Hook 统一对接 <code>Face++</code> + <code>TF PoseNet</code>，训练视频走 <code>HLS</code> 流媒体 + <code>video.js</code>。</div>
+
+  <h3 class="sec">1.1 产品定位 <span class="desc">// 一句话讲清楚做什么</span></h3>
+  <div class="det">面向 <b>22-40 岁城市白领与健身新人</b> 的 <span class="em">AI 体态体测 + 个性化训练 + 私教转化</span> 平台。用户上传 3 张照片（正/侧/背）即可获取专业体态评估报告，匹配 14/28/56 天训练计划，并可一键预约平台认证私教课程或添加教练微信进行 1V1 服务。</div>
+
+  <h3 class="sec">1.2 核心功能模块 <span class="desc">// 6 大模块</span></h3>
+  <div class="bullet"><b>AI 体测</b>：单图体态分析（高低肩、骨盆前倾、X/O 型腿、含胸等 12 项指标）+ 体脂率估算 + 三维体型重建</div>
+  <div class="bullet"><b>训练计划</b>：基于体测结果的 14/28/56 天 AI 训练计划，每日 4-8 个动作，含视频示范与计数</div>
+  <div class="bullet"><b>动作识别打卡</b>：摄像头实时识别动作标准度，AI 计数 + 鼓励语音 + 分数</div>
+  <div class="bullet"><b>私教课程</b>：认证教练库、单次/课程包/月卡、在线预约 + 到店扫码核销</div>
+  <div class="bullet"><b>转化引流</b>：支付成功后自动展示 <span class="em">教练专属微信二维码</span>，进入私域 1V1 服务</div>
+  <div class="bullet"><b>成长体系</b>：训练记录、体测对比、成就徽章、连续打卡天数（PK 与社区可选）</div>
+
+  <h3 class="sec">1.3 技术栈与 AI 能力 <span class="desc">// stack</span></h3>
+  <div class="det"><b>前端</b>：Next.js 14 App Router · TypeScript · TailwindCSS · Framer Motion · Lucide React · <span class="em">react-webcam</span>（拍照） · MediaPipe / TensorFlow.js（动作识别）<br><b>AI</b>：Face++ / 商汤 体态分析 API · 通义千问-VL 多模态生成训练建议 · 自训练 YOLO 姿态检测<br><b>后端</b>：Next.js API Routes · Supabase（用户/订单/打卡）· 微信支付 V3 · 阿里云 OSS（视频）</div>
+
+  <!-- ============ STEP 2 ============ -->
+  <div class="step">
+    <div class="step-num">02<small>STEP TWO</small></div>
+    <div class="step-title"><h2>页面架构与导航<span class="en">/ ARCHITECTURE</span></h2><p>// info hierarchy · navigation · state map</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">i</div>整个 App 围绕"<b>测 → 练 → 约 → 加</b>"四步动线设计，确保每一屏都向"加教练微信 / 完成支付"推进。底部 Tab 4 项：<b>训练 / 体测 / 课程 / 我的</b>。</div>
+
+  <div class="det"><b>// 路由 / 状态 / 主题</b> · 路由按 <code>app/(train)/</code>、<code>app/(scan)/</code>、<code>app/(course)/</code> 三大动线分组，状态管理走 <code>Zustand</code> + <code>persist</code> 本地化训练草稿，训练计划日历用 <code>react-day-picker</code>，动作视频走 <code>HLS</code> 流媒体，体测页使用 <code>Suspense</code> + <code>Streaming SSR</code> 首屏不白。</div>
+
+  <div class="flow-block">
+    <h4>核心动线 · 从打开 App 到完成转化</h4>
+    <div class="flow">
+      <span>启动</span><span class="ar">→</span>
+      <span>引导选目标</span><span class="ar">→</span>
+      <span class="key">AI 体测</span><span class="ar">→</span>
+      <span class="key">体态报告</span><span class="ar">→</span>
+      <span>训练计划</span><span class="ar">→</span>
+      <span>预约私教</span><span class="ar">→</span>
+      <span class="cv">支付 + 加微信</span>
+    </div>
+  </div>
+
+  <h3 class="sec">2.1 引导与首页（4 屏） <span class="desc">// onboarding & home</span></h3>
+
+  <h4 class="page"><span class="num">P01</span>启动页 Splash <span class="tag" style="background:#0A0C10;color:#00E676">DARK</span></h4>
+  <div class="det">深炭背景 + <b>荧光绿 LOGO 心跳动画</b>（从 1.0 缩放到 1.08 循环）。底部"FITFORGE · 智炼"+ 心电波形 SVG 装饰，1.5 秒后自动跳转。<span class="em">设计语言定调</span>：科技、运动、力量。</div>
+
+  <h4 class="page"><span class="num">P02</span>目标选择引导 Goal Onboarding</h4>
+  <div class="det">3 步进度条（性别身高体重 → 训练目标 → 训练频率）。目标卡片支持 4 种：<b>增肌 / 减脂 / 塑形 / 康复</b>，每张卡片附带专业图标和说明。<b>选中态</b>：荧光绿描边 + 浅绿底色 + 绿色对勾。这里收集的数据将直接用于后续 AI 训练计划生成。</div>
+
+  <h4 class="page"><span class="num">P03</span>首页 Home <span class="tag" style="background:#00E676;color:#0A0C10">CORE</span></h4>
+  <div class="det"><b>顶部</b>：方形头像（运动风，不用圆形）+ 用户名 + 当前等级（<span class="em">LV.5 RUNNER</span>）+ 消息铃铛。<b>体测仪表盘卡片</b>（最重要）：当前体脂率大数字 <b>22.3%</b>（Bebas Neue 38px）+ 较上次变化 <b>↓ 1.2%</b> 绿色徽章 + 三宫格副指标（肌肉量/基础代谢/体重）。<b>主 CTA</b>：荧光绿大按钮 "立即 AI 体测"。下方 <b>今日训练计划卡片</b>：第 8 天 / 28 天 · 胸部+三头训练 · 4 个动作 · 进度条 60%。</div>
+
+  <h4 class="page"><span class="num">P04</span>AI 体测拍照页 Body Scan <span class="tag" style="background:#FF5722;color:#fff">CRITICAL</span></h4>
+  <div class="det">全屏黑底 + <b>人形剪影 SVG</b> 居中（半透明荧光绿描边）+ 顶部 3 个角度切换（<b>正 / 侧 / 背</b>）+ 中部水平扫描线动画 + 四角对焦框。底部荧光绿大圆形拍照按钮 + 左侧角度提示"<span class="em">请正面对镜，全身入框</span>"。<b>关键交互</b>：拍照后调用体态分析 API，返回 12 项指标。</div>
+
+  <div class="phones">
+    <!-- P1 启动 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body splash">
+      <div class="splash-logo">F</div>
+      <h2>FITFORGE</h2>
+      <p>S M A R T  ·  S T R O N G</p>
+      <svg class="heart" viewBox="0 0 200 30">
+        <polyline points="0,15 60,15 70,5 80,25 90,15 110,15 120,2 132,28 142,15 200,15" stroke="#00E676" stroke-width="1.5" fill="none"/>
+      </svg>
+      <div class="ver">VER 1.0 · 备案号 ICP-20260001</div>
+    </div><div class="cap">P01 SPLASH</div></div></div>
+
+    <!-- P2 目标 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body goal">
+      <h3>选择训练目标<small>STEP 02 / 03</small></h3>
+      <div class="step-bar"><i class="on"></i><i class="on"></i><i></i></div>
+      <div class="goal-q">告诉我们你的目标，AI 将为你定制专属训练计划</div>
+      <div class="goal-list">
+        <div class="goal-card on"><div class="ic">🔥</div><div><div class="t">减脂塑形</div><div class="d">高强度间歇 + 有氧 · 平均 8.6kg/月</div></div><div class="chk">✓</div></div>
+        <div class="goal-card"><div class="ic">💪</div><div><div class="t">增肌强体</div><div class="d">力量训练 + 蛋白补充建议</div></div><div class="chk"></div></div>
+        <div class="goal-card"><div class="ic">🧘</div><div><div class="t">体态康复</div><div class="d">改善高低肩、骨盆前倾、含胸</div></div><div class="chk"></div></div>
+        <div class="goal-card"><div class="ic">⚡</div><div><div class="t">运动表现</div><div class="d">提升爆发力、心肺、核心稳定</div></div><div class="chk"></div></div>
+      </div>
+    </div><div class="cap">P02 GOAL</div></div></div>
+
+    <!-- P3 首页 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body home">
+      <div class="home-hd"><div class="row"><div class="who"><div class="av">M</div><div><div class="name">Mike Chen</div><div class="lvl">LV.5 · RUNNER</div></div></div><div class="ico">🔔</div></div></div>
+      <div class="dash">
+        <div class="lab">BODY FAT · 体脂率</div>
+        <div class="row"><div class="big">22.3<span class="u">%</span></div><div class="delta">↓ 1.2%</div></div>
+        <div class="grid3">
+          <div><div class="v">52.8</div><div class="k">MUSCLE KG</div></div>
+          <div><div class="v">1,580</div><div class="k">BMR KCAL</div></div>
+          <div><div class="v">68.5</div><div class="k">WEIGHT KG</div></div>
+        </div>
+      </div>
+      <div class="cta-pri">立即 AI 体测 · 1 分钟生成报告 <span class="arr">→</span></div>
+      <div class="plan">
+        <div class="plan-hd"><h4>今日训练 · DAY 08</h4><span class="more">VIEW ALL →</span></div>
+        <div class="plan-card">
+          <div class="day"><div class="n">08</div><div class="l">DAY</div></div>
+          <div class="info">
+            <div class="ttl">胸部 + 三头肌训练</div>
+            <div class="meta"><span><b>45</b> MIN</span><span><b>6</b> EX</span><span><b>320</b> KCAL</span></div>
+            <div class="pg"><i></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <div class="on"><span class="ic">🏠</span>HOME</div>
+        <div><span class="ic">📊</span>SCAN</div>
+        <div><span class="ic">🏋</span>COACH</div>
+        <div><span class="ic">👤</span>ME</div>
+      </div>
+    </div><div class="cap">P03 HOME</div></div></div>
+
+    <!-- P4 体测 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body scan">
+      <div class="scan-bar"><div class="x">×</div><div class="ang"><span class="on">FRONT</span><span>SIDE</span><span>BACK</span></div></div>
+      <div class="scan-frame"></div>
+      <div class="silhouette"><svg viewBox="0 0 80 280" fill="none" stroke="#00E676" stroke-width="1.5">
+        <circle cx="40" cy="22" r="14"/>
+        <path d="M40 36 L40 130 M22 60 L58 60 M22 60 L18 110 M58 60 L62 110 M30 130 L30 250 M50 130 L50 250 M30 250 L26 270 M50 250 L54 270"/>
+      </svg></div>
+      <div class="scan-line"></div>
+      <div class="scan-tip">请正面对镜，全身入框<small>FULL BODY · GOOD LIGHTING</small></div>
+      <div class="scan-shot"></div>
+    </div><div class="cap">P04 BODY SCAN</div></div></div>
+  </div>
+
+  <!-- ============ STEP 3 ============ -->
+  <div class="step">
+    <div class="step-num">03<small>STEP THREE</small></div>
+    <div class="step-title"><h2>核心闭环 · AI 报告与训练计划<span class="en">/ AI CORE</span></h2><p>// the value moment</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">★</div>这是产品最关键的“<b>价值时刻</b>”——用户在看完 AI 报告的 60 秒内决定是否信任你的产品、是否愿意付费。报告越专业、越个性化，付费转化率越高。</div>
+
+  <div class="det"><b>// AI 体测实现</b> · 用户上传正 / 侧 / 背三张照片后，前端调用 <code>POST /api/fitness/scan</code>，后端并行调用 <code>Face++ Body Attribute</code> 识别胸围 / 腰围 / 臀围 / 体脂率，并以 <code>TensorFlow PoseNet</code> 提取 17 关键点进行体态分析（高低肩 / 含胸 / 圆肩 / 骨盆前倾等 6 项）；随后交予营养学语料微调的 <code>GPT-4 Fitness</code> 模型，通过 <code>Server-Sent Events</code> 流式输出 <code>BMI / bodyFat / posture / plan</code> 四项核心结论，同时推荐 <code>14 / 28 / 56</code> 天个性化计划，全程 60 秒内完成。</div>
+
+  <h3 class="sec">3.1 AI 体测报告页 Body Report <span class="desc">// the moment of truth</span></h3>
+
+  <h4 class="page"><span class="num">P05</span>体测报告 Body Report <span class="tag" style="background:#FF5722;color:#fff">⭐ KEY</span></h4>
+  <div class="det"><b>顶部</b>：深炭渐变 + 270° 圆环（综合评分 75/100）+ 体型分类标签 <span class="em">"轻度脂肪型"</span> + 一句话总结。<b>核心数据卡片</b>：<br>① <b>体脂率 22.3%</b>（标准 15-20%，超出 2.3%，警戒橙警示条）<br>② <b>肌肉量 52.8kg</b>（绿条满意）<br>③ <b>体态雷达图</b>：6 维度（高低肩/骨盆/含胸/X 腿/头前引/平背）<br>④ <b>三维体型</b>：可旋转的 3D 人形（标记问题部位红点）。<br><b>底部 CTA</b>：黑底荧光绿按钮 <span class="em">"领取专属 28 天训练计划 · ¥0 试用"</span>。</div>
+
+  <h4 class="page"><span class="num">P06</span>训练计划详情 Training Plan</h4>
+  <div class="det"><b>顶部 Hero</b>：标签条（减脂 / 中级 / 在家 / 无器械）+ 计划名"<b>28 天减脂塑形计划</b>"+ 三宫格 metric（28 DAYS / 240 MIN/W / 12 EX/D）。<br><b>日历列表</b>：横向 Day1-Day28 滑动条，点击展开当日详情。<br><b>动作卡片列</b>：左侧 54×54 视频缩略图（带播放图标和荧光绿渐变蒙层），右侧动作名 <b>俯卧撑</b> + <b>4 组 × 12 次</b>（数字标荧光绿）。<br><b>训练目标</b>：完成今日训练即可解锁明日内容（游戏化）。</div>
+
+  <div class="phones">
+    <!-- P5 报告 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body rpt">
+      <div class="rpt-hd">
+        <h3>AI 体态评估报告</h3><small>BODY ANALYSIS · 2026.05.08</small>
+        <div class="scoring">
+          <div class="ring"><span>75</span><small></small></div>
+          <div class="lbls"><div class="cls">CLASS B</div><div class="ttl">轻度脂肪型</div><div class="desc">体脂略高，肌肉量良好<br>建议高强度间歇训练 + 控制碳水</div></div>
+        </div>
+      </div>
+      <div class="rpt-bd">
+        <div class="rpt-card"><div class="lbl">FAT · 体脂率</div><div class="ttl">22.3% · 高于标准 2.3%</div>
+          <div class="bar-row"><span>当前</span><b class="em-w">22.3%</b></div>
+          <div class="bar b3"><i></i></div>
+          <div class="bar-row"><span>理想范围</span><b class="em">15-20%</b></div>
+        </div>
+        <div class="rpt-card"><div class="lbl">MUSCLE · 肌肉量</div><div class="ttl">52.8 KG · 优秀</div>
+          <div class="bar-row"><span>当前</span><b class="em">52.8 KG</b></div>
+          <div class="bar b2"><i></i></div>
+        </div>
+      </div>
+      <div class="rpt-cta">
+        <div class="ttl">⚡ AI 已为你生成专属计划</div>
+        <div class="desc">基于 12 项体态数据，匹配 28 天减脂塑形计划<br>预计 4 周可降体脂 3-5%</div>
+        <button>领取 28 天计划 · 立即开始 →</button>
+      </div>
+    </div><div class="cap">P05 REPORT</div></div></div>
+
+    <!-- P6 训练计划 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body tp">
+      <div class="tp-hero">
+        <div class="tags"><span>减脂</span><span>中级</span><span>在家</span><span>无器械</span></div>
+        <h3>28 天减脂塑形计划</h3>
+        <div class="meta">
+          <div><b>28</b>DAYS</div>
+          <div><b>240</b>MIN/W</div>
+          <div><b>12</b>EX/DAY</div>
+        </div>
+      </div>
+      <div class="tp-day"><div class="d">D08</div><div class="info"><div class="t">胸 + 三头肌训练</div><div class="s">45 分钟 · 6 个动作 · 320 千卡</div></div><div class="badge">TODAY</div></div>
+      <div class="tp-ex"><div class="vid"></div><div class="info"><div class="nm">标准俯卧撑</div><div class="sets"><b>4</b> SETS × <b>12</b> REPS · 60S REST</div></div></div>
+      <div class="tp-ex"><div class="vid"></div><div class="info"><div class="nm">窄距俯卧撑</div><div class="sets"><b>3</b> SETS × <b>10</b> REPS · 90S REST</div></div></div>
+      <div class="tp-ex"><div class="vid"></div><div class="info"><div class="nm">三头屈伸</div><div class="sets"><b>4</b> SETS × <b>15</b> REPS · 45S REST</div></div></div>
+      <div class="tp-day lock"><div class="d">D09</div><div class="info"><div class="t">背部 + 二头肌</div><div class="s">完成 D08 后解锁</div></div><div class="badge">🔒 LOCK</div></div>
+    </div><div class="cap">P06 PLAN</div></div></div>
+  </div>
+
+  <!-- ============ STEP 4 ============ -->
+  <div class="step">
+    <div class="step-num">04<small>STEP FOUR</small></div>
+    <div class="step-title"><h2>转化模块 · 私教课程与加微信<span class="en">/ CONVERSION</span></h2><p>// not a mall · industry-specific funnel</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">★</div>健身行业的核心转化路径不是"商城购买"——而是 <b>课程预约 + 加教练微信进入私域 1V1 服务</b>。整个模块包含：教练列表 → 教练详情 → 选课预约 → 支付 → <span class="em">添加教练微信</span>。</div>
+
+  <div class="det"><b>// 转化实现</b> · 教练列表走 <code>useInfiniteQuery</code> 分页 + <code>IntersectionObserver</code> 懒加载，下单触发 <code>wx.chooseWXPay</code>，回调 <code>Webhook</code> 写 <code>orders</code> 表并把状态机推到 <code>PAID</code>，<code>Realtime channel</code> 立刻推送教练企业微信二维码与首课预约面板，全程 <code>Sentry</code> 错误上报 + 退款走 <code>BullMQ</code> 异步队列。</div>
+
+  <h3 class="sec">4.1 教练匹配 <span class="desc">// coach matching</span></h3>
+
+  <h4 class="page"><span class="num">P07</span>私教/课程列表 Coach List</h4>
+  <div class="det"><b>顶部 Tab</b>：减脂 / 增肌 / 体态 / 产后 / 康复。<br><b>教练卡片</b>（必看亮点）：左侧 60×60 方形头像（运动风，深底荧光绿压底）+ 姓名 + <b>认证徽章 V</b>（CSCS、NSCA、ACE 等）+ 头衔 "5A 级私教"+ 标签（减脂塑形 / HIIT / 力量）+ 数据条（教龄 8 年 / 服务 1280 人 / 评分 4.9）+ 右下角 <b>¥299 / 节</b>（警戒橙）+ 立即预约按钮。<br>整体让人感受"这个教练专业可信，价格合理"。</div>
+
+  <h4 class="page"><span class="num">P08</span>预约课程 Book Class</h4>
+  <div class="det"><b>顶部</b>：教练浮条（头像 + 姓名 + 头衔）。<br><b>日历选择</b>：当月日历，可约日期标绿色小圆点，今日选中态。<br><b>时段选择</b>：3 列网格 9:00 / 10:00 / 11:00 ... 灰色为已满，黑色为已选。<br><b>底部固定栏</b>：左侧 ¥299（警戒橙）+ 划线原价 ¥399 + 右侧 <span class="em">"立即支付"</span> 荧光绿按钮。</div>
+
+  <h3 class="sec">4.2 支付与加微信 <span class="desc">// the goal</span></h3>
+
+  <h4 class="page"><span class="num">P09</span>支付成功 + 加教练微信 Payment Success <span class="tag" style="background:#00E676;color:#0A0C10">⭐ ULTIMATE</span></h4>
+  <div class="det"><b>这是整个 App 的最终转化目标页</b>。深炭渐变背景 + 顶部荧光绿成功圆形图标 + 大数字 <span class="em">¥299.00</span> 已支付 + "课程已预约：5/12 周日 10:00"。<br><b>关键卡片</b>（必须做炫）：白色卡片浮起 + "添加教练微信 · 1V1 训练督导" + 二维码（中心荧光绿色块）+ "长按二维码保存"。<br><b>下方</b>：教练信息条（头像 + 姓名 + 头衔 + "教练 5 分钟内联系你"）。<br><span class="em">设计要点</span>：让用户立刻就想加微信——突出"专属"、"督导"、"5 分钟内联系"。</div>
+
+  <h4 class="page"><span class="num">P10</span>个人中心 My <span class="tag" style="background:#0A0C10;color:#00E676">RETENTION</span></h4>
+  <div class="det"><b>顶部</b>：方形头像 + 姓名 + 等级条（LV.5 → LV.6 进度 42%）。<b>三宫格数据</b>：连续打卡 12 / 总训练 86 / 总卡路里 24,580。<b>成就墙</b>：4×2 徽章网格（首次体测、首次训练、连续 7 天、付费会员、私教 1V1...，未解锁灰色）。<b>列表项</b>：体测历史、训练记录、我的课程、我的教练（直达微信）、订单、设置。</div>
+
+  <div class="phones">
+    <!-- P7 教练 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body coach">
+      <div class="coach-hd"><h3>认证私教</h3><small>CERTIFIED COACHES · 365</small></div>
+      <div class="coach-tabs"><span class="on">减脂</span><span>增肌</span><span>体态</span><span>产后</span></div>
+      <div class="coach-card">
+        <div class="av">RY</div>
+        <div class="info">
+          <div class="nm">Ryan Wang <span class="v">V</span></div>
+          <div class="ttl">5A · CSCS 认证</div>
+          <div class="skills"><span>减脂</span><span>HIIT</span><span>体态</span></div>
+          <div class="stats"><span>教龄 <b>8</b>Y</span><span>服务 <b>1,280</b></span><span>★ <b>4.9</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥299</div><div class="u">/ 节</div><button>预约</button></div>
+      </div>
+      <div class="coach-card">
+        <div class="av">LJ</div>
+        <div class="info">
+          <div class="nm">Linda Jin <span class="v">V</span></div>
+          <div class="ttl">4A · NSCA 认证</div>
+          <div class="skills"><span>产后</span><span>瑜伽</span><span>康复</span></div>
+          <div class="stats"><span>教龄 <b>5</b>Y</span><span>服务 <b>820</b></span><span>★ <b>4.8</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥249</div><div class="u">/ 节</div><button>预约</button></div>
+      </div>
+      <div class="coach-card">
+        <div class="av">DK</div>
+        <div class="info">
+          <div class="nm">Derek Liu <span class="v">V</span></div>
+          <div class="ttl">5A · NASM 认证</div>
+          <div class="skills"><span>增肌</span><span>力量</span><span>体能</span></div>
+          <div class="stats"><span>教龄 <b>10</b>Y</span><span>服务 <b>1,580</b></span><span>★ <b>5.0</b></span></div>
+        </div>
+        <div class="pri"><div class="p">¥399</div><div class="u">/ 节</div><button>预约</button></div>
+      </div>
+    </div><div class="cap">P07 COACHES</div></div></div>
+
+    <!-- P8 预约 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb"><span>9:41</span><span>● ● ●</span></div><div class="body book">
+      <div class="book-hd"><div class="av">RY</div><div><div class="nm">Ryan Wang</div><div class="ttl">5A · CSCS</div></div></div>
+      <div class="cal">
+        <h4>SELECT DATE · 5 月</h4>
+        <div class="cal-grid">
+          <div class="h">日</div><div class="h">一</div><div class="h">二</div><div class="h">三</div><div class="h">四</div><div class="h">五</div><div class="h">六</div>
+          <div class="d dis"></div><div class="d dis"></div><div class="d dis"></div><div class="d dis"></div><div class="d">1</div><div class="d">2</div><div class="d">3</div>
+          <div class="d">4</div><div class="d">5</div><div class="d has">6</div><div class="d has">7</div><div class="d">8</div><div class="d">9</div><div class="d">10</div>
+          <div class="d">11</div><div class="d on">12</div><div class="d has">13</div><div class="d has">14</div><div class="d has">15</div><div class="d">16</div><div class="d">17</div>
+          <div class="d">18</div><div class="d has">19</div><div class="d">20</div><div class="d">21</div><div class="d has">22</div><div class="d">23</div><div class="d">24</div>
+        </div>
+      </div>
+      <div class="slots">
+        <h4>SELECT TIME · 5/12</h4>
+        <div class="slots-grid">
+          <div class="slot full"><b>09:00</b>已满</div>
+          <div class="slot on"><b>10:00</b>可约</div>
+          <div class="slot"><b>11:00</b>可约</div>
+          <div class="slot"><b>14:00</b>可约</div>
+          <div class="slot full"><b>15:00</b>已满</div>
+          <div class="slot"><b>19:00</b>可约</div>
+        </div>
+      </div>
+      <div class="book-cta">
+        <div class="pri"><div class="p">¥299</div><div class="o">¥399</div></div>
+        <button>立即支付</button>
+      </div>
+    </div><div class="cap">P08 BOOK</div></div></div>
+
+    <!-- P9 支付 + 加微信 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body pay">
+      <div class="pay-ic">✓</div>
+      <h3>支付成功</h3>
+      <div class="amt">¥ 299.00</div>
+      <div class="desc">课程已预约 · 5/12 周日 10:00<br>Ryan Wang · CSCS 认证私教</div>
+      <div class="qr-card">
+        <div class="ttl">添加教练微信</div>
+        <div class="sub">1V1 训练督导 · 营养建议</div>
+        <div class="qr"></div>
+        <div class="save">长按保存 · 5 分钟内回复</div>
+      </div>
+      <div class="coach-info">
+        <div class="av">RY</div>
+        <div class="nm">Ryan Wang<small>5A · CSCS · 教龄 8 年</small></div>
+      </div>
+    </div><div class="cap">P09 PAY ⭐</div></div></div>
+
+    <!-- P10 个人中心 -->
+    <div class="phone"><div class="scr"><div class="notch"></div><div class="sb dark"><span>9:41</span><span>● ● ●</span></div><div class="body me">
+      <div class="me-hd"><div class="row"><div class="av">M</div><div><div class="nm">Mike Chen</div><div class="lvl">LV.5 · RUNNER</div><div class="lvl-bar"><i></i></div></div></div></div>
+      <div class="me-stats">
+        <div><div class="v">12</div><div class="l">DAY STREAK</div></div>
+        <div><div class="v">86</div><div class="l">WORKOUTS</div></div>
+        <div><div class="v">24,580</div><div class="l">CALORIES</div></div>
+      </div>
+      <div class="me-ach">
+        <h4>ACHIEVEMENTS<small>4 / 12 UNLOCKED</small></h4>
+        <div class="grid">
+          <div class="badge">🔥</div><div class="badge">💪</div><div class="badge">⚡</div><div class="badge">🏆</div>
+          <div class="badge lock">🔒</div><div class="badge lock">🔒</div><div class="badge lock">🔒</div><div class="badge lock">🔒</div>
+        </div>
+      </div>
+      <div class="me-list">
+        <div class="item"><div class="ic">📊</div><div class="t">体测历史</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">🏋</div><div class="t">我的教练（微信群）</div><div class="arr">›</div></div>
+        <div class="item"><div class="ic">📅</div><div class="t">我的课程</div><div class="arr">›</div></div>
+      </div>
+    </div><div class="cap">P10 PROFILE</div></div></div>
+  </div>
+
+  <!-- ============ STEP 5 ============ -->
+  <div class="step">
+    <div class="step-num">05<small>STEP FIVE</small></div>
+    <div class="step-title"><h2>管理后台 · 教练 / 订单 / 数据<span class="en">/ ADMIN</span></h2><p>// PC console for ops & coaches</p></div>
+  </div>
+
+  <div class="callout"><div class="ico">i</div>后台供 <b>运营总监 / 金牌教练 / 财务主管</b> 三类角色基于 <code>RBAC</code> 权限模型分级使用，共覆盖 <b>8 大核心模块</b>：数据看板（实时 DAU / 营收漏斗 / 转化热图）、会员档案（体测历史 / 训练记录 / 续费提醒 / 流失预警）、教练管理（资质 OCR 审核 + 课时统计 + 评分排行）、课程预约（多店多时段调度 + 双预约防冲突）、订单财务（微信支付对账 + 退款审批 + T+1 提现）、教练排班（拖拽式班表 + 休假申请）、AI 体测报告复核、系统设置。前端采用 <code>Next.js 14 + React Server Components</code> 构建，关键指标走 <code>useSWR</code> 秒级同步，后端走 <code>Supabase RLS</code> 行级权限 + 全链路操作审计，AI 体测接口 <code>POST /api/fitness/scan</code> 走 <code>Face++ + TF PoseNet</code> 双控，所有会员生物识别数据加密存储符合 <code>GDPR</code> 与《个人信息保护法》。深炭 + 荧光绿配色与 App 端完全一致，强化品牌识别。</div>
+
+  <div class="pc">
+    <div class="pc-bar"><i></i><i></i><i></i><span>FitForge Admin · admin.fitforge.cn</span></div>
+    <div class="pc-body">
+      <div class="pc-side">
+        <div class="logo">FITFORGE</div>
+        <div class="item on"><span class="ic">01</span>数据看板</div>
+        <div class="item"><span class="ic">02</span>会员管理</div>
+        <div class="item"><span class="ic">03</span>教练排班</div>
+        <div class="item"><span class="ic">04</span>课程订单</div>
+        <div class="item"><span class="ic">05</span>体测报告</div>
+        <div class="item"><span class="ic">06</span>财务结算</div>
+        <div class="item"><span class="ic">07</span>系统设置</div>
+      </div>
+      <div class="pc-main">
+        <h3>数据看板 · 今日实时</h3>
+        <div class="kpi">
+          <div class="kc"><div class="lab">DAU</div><div class="v">12,486</div><div class="d">↑ 8.6%</div></div>
+          <div class="kc"><div class="lab">REVENUE 今日</div><div class="v">¥86,420</div><div class="d">↑ 12.4%</div></div>
+          <div class="kc"><div class="lab">课程预约</div><div class="v">328</div><div class="d">↑ 5.2%</div></div>
+          <div class="kc"><div class="lab">体测完成</div><div class="v">1,256</div><div class="d">↑ 18.6%</div></div>
+        </div>
+        <table>
+          <tr><th>订单号</th><th>会员</th><th>教练</th><th>课程</th><th>金额</th><th>状态</th></tr>
+          <tr><td>FF20260508-0086</td><td><b>Mike Chen</b></td><td>Ryan Wang</td><td>减脂私教 1 节</td><td>¥299</td><td><span class="gt">已预约</span></td></tr>
+          <tr><td>FF20260508-0085</td><td><b>Linda Z</b></td><td>Linda Jin</td><td>产后 10 节包</td><td>¥2,490</td><td><span class="gt">已支付</span></td></tr>
+          <tr><td>FF20260508-0084</td><td><b>张磊</b></td><td>Derek Liu</td><td>增肌月卡</td><td>¥3,990</td><td><span class="ot">待支付</span></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- =================== FOOTER =================== -->
+<footer class="foot">
+  <div class="foot-c">
+    <div class="foot-mark">FITFORGE · 智炼</div>
+    <p><b>// 一份完整提示词，从 0 到 1 构建 AI 智能健身 C 端产品</b></p>
+    <p>本提示词适用于 <b>Cursor / Windsurf / Claude Code / GPT Codex</b> 等 AI Coding 工具，可一次性生成 Next.js 14 工程骨架。</p>
+    <p>配套：完整提示词 .md · UI 预览 .html · Midjourney 素材包 · Figma 设计稿（可选）</p>
+    <div class="div"></div>
+    <p class="copyright">© 2026 FitForge AI · 行业 02 / 05 — Smart Fitness Edition · 内部交付物 · v1.0</p>
+  </div>
+</footer>
+
+</body>
+</html>
