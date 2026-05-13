@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>行业智能体 · IndustryMind / 输入行业 → 一键生成提示词 + 原型 + 飞书 docx</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-0:#070A14;
+  --bg-1:#0E1424;
+  --bg-2:#161E33;
+  --line:rgba(255,255,255,.08);
+  --line-2:rgba(255,255,255,.14);
+  --ink:#F5F2EA;
+  --ink-2:#C7CCD9;
+  --muted:#8B92A3;
+  --gold:#C9A876;
+  --gold-2:#E2C896;
+  --teal:#2BC5C5;
+  --teal-2:#5EE3E3;
+  --pink:#FF7AA8;
+  --shadow:0 30px 60px -20px rgba(0,0,0,.55),0 0 40px rgba(43,197,197,.04);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+html,body{background:var(--bg-0);color:var(--ink);font-family:Inter,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;font-size:15px;line-height:1.65;overflow-x:hidden}
+body{
+  background:
+    radial-gradient(1200px 600px at 80% -10%,rgba(43,197,197,.08),transparent 60%),
+    radial-gradient(900px 500px at -10% 40%,rgba(201,168,118,.05),transparent 60%),
+    radial-gradient(700px 400px at 50% 110%,rgba(255,122,168,.04),transparent 60%),
+    var(--bg-0);
+  min-height:100vh;
+}
+::selection{background:var(--gold);color:var(--bg-0)}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+
+/* ============ 顶部导航 ============ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 48px;
+  backdrop-filter:saturate(180%) blur(14px);
+  background:rgba(7,10,20,.65);
+  border-bottom:1px solid var(--line);
+}
+.logo{display:flex;align-items:center;gap:10px;font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:600;letter-spacing:.5px}
+.logo .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);box-shadow:0 0 16px var(--gold)}
+.logo .en{color:var(--gold);font-style:italic;margin-left:4px}
+.nav-r{display:flex;align-items:center;gap:32px;font-size:13.5px;color:var(--muted)}
+.nav-r a{transition:color .2s}
+.nav-r a:hover{color:var(--ink)}
+.badge{
+  padding:5px 10px;border:1px solid var(--line-2);border-radius:99px;
+  font-size:11px;letter-spacing:.12em;color:var(--gold);background:rgba(201,168,118,.06)
+}
+
+/* ============ Hero ============ */
+.hero{padding:160px 48px 80px;max-width:1280px;margin:0 auto;text-align:center;position:relative}
+.kicker{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.25em;color:var(--gold);
+  padding:8px 16px;border:1px solid rgba(201,168,118,.3);border-radius:99px;
+  background:rgba(201,168,118,.05);margin-bottom:24px;
+}
+.kicker .pulse{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 12px var(--teal);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+h1.hero-t{
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(48px,7vw,84px);
+  line-height:1.05;letter-spacing:-.02em;font-weight:500;
+  margin-bottom:24px;
+}
+h1.hero-t b{
+  background:linear-gradient(120deg,var(--gold) 0%,var(--gold-2) 40%,var(--teal) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;font-weight:600
+}
+.hero-sub{font-size:18px;color:var(--ink-2);max-width:720px;margin:0 auto 16px;font-weight:300}
+.hero-meta{display:flex;align-items:center;justify-content:center;gap:32px;color:var(--muted);font-size:13px;margin-top:8px}
+.hero-meta span{display:inline-flex;align-items:center;gap:8px}
+.hero-meta .ic{width:5px;height:5px;border-radius:50%;background:var(--teal)}
+
+/* ============ 输入区(命令面板风) ============ */
+.cmd{
+  max-width:780px;margin:48px auto 0;
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+  border:1px solid var(--line-2);border-radius:20px;
+  padding:8px 8px 8px 24px;
+  display:flex;align-items:center;gap:12px;
+  box-shadow:var(--shadow);
+  position:relative;
+}
+.cmd::before{
+  content:"";position:absolute;inset:-1px;border-radius:20px;
+  background:linear-gradient(120deg,transparent 30%,rgba(201,168,118,.35),transparent 70%);
+  -webkit-mask:linear-gradient(#000,#000) content-box,linear-gradient(#000,#000);
+  -webkit-mask-composite:xor;mask-composite:exclude;padding:1px;pointer-events:none;opacity:0;transition:opacity .3s
+}
+.cmd:focus-within::before{opacity:1}
+.cmd .prefix{color:var(--gold);font-family:"JetBrains Mono",monospace;font-size:14px;letter-spacing:.1em}
+.cmd input{
+  flex:1;background:none;border:none;outline:none;color:var(--ink);
+  font-size:18px;font-weight:400;padding:18px 0;font-family:inherit;
+}
+.cmd input::placeholder{color:var(--muted)}
+.cmd-btn{
+  padding:14px 28px;border-radius:13px;
+  background:linear-gradient(120deg,var(--gold) 0%,var(--gold-2) 100%);
+  color:var(--bg-0);font-weight:600;font-size:14.5px;letter-spacing:.04em;
+  transition:transform .15s,box-shadow .2s;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.cmd-btn:hover{transform:translateY(-1px);box-shadow:0 12px 30px -10px rgba(201,168,118,.6)}
+.cmd-btn:active{transform:translateY(0)}
+.cmd-btn .arrow{transition:transform .2s}
+.cmd-btn:hover .arrow{transform:translateX(3px)}
+
+/* 行业建议 chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:24px;max-width:780px;margin-left:auto;margin-right:auto}
+.chip{
+  padding:8px 16px;border:1px solid var(--line-2);border-radius:99px;
+  font-size:13px;color:var(--ink-2);background:rgba(255,255,255,.02);
+  transition:all .2s;cursor:pointer;
+}
+.chip:hover{border-color:var(--gold);color:var(--gold);background:rgba(201,168,118,.06)}
+.chip.done{border-color:rgba(43,197,197,.3);color:var(--teal)}
+.chip.done::before{content:"✓ ";opacity:.7}
+
+/* ============ Section 通用 ============ */
+section{padding:80px 48px;max-width:1280px;margin:0 auto}
+.sec-head{display:flex;align-items:end;justify-content:space-between;margin-bottom:40px;gap:24px;flex-wrap:wrap}
+.sec-head h2{
+  font-family:"Cormorant Garamond",serif;font-size:42px;font-weight:500;letter-spacing:-.01em;
+}
+.sec-head h2 .num{color:var(--gold);font-family:"JetBrains Mono",monospace;font-size:14px;letter-spacing:.2em;display:block;margin-bottom:8px;font-weight:400}
+.sec-head p{color:var(--muted);font-size:14px;max-width:480px}
+
+/* ============ 已交付库 网格 ============ */
+.lib{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+.card{
+  position:relative;
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.015));
+  border:1px solid var(--line);border-radius:18px;
+  padding:24px;
+  transition:all .25s;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  cursor:pointer;
+  min-height:220px;
+}
+.card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent,var(--gold)),transparent);
+  opacity:.5;transition:opacity .25s;
+}
+.card:hover{
+  transform:translateY(-3px);
+  border-color:var(--line-2);
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+}
+.card:hover::before{opacity:1}
+.card.gold{border-color:rgba(201,168,118,.25);background:linear-gradient(180deg,rgba(201,168,118,.05),rgba(201,168,118,.01))}
+.card.gold::before{background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.8}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;gap:12px}
+.card-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,var(--accent,var(--gold)) 0%,rgba(255,255,255,.1) 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;line-height:1;
+  flex-shrink:0;
+}
+.card-tag{
+  font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.15em;color:var(--muted);
+  padding:4px 8px;border:1px solid var(--line);border-radius:6px;white-space:nowrap;
+}
+.card.gold .card-tag{color:var(--gold);border-color:rgba(201,168,118,.3)}
+.card h3{font-size:18px;font-weight:600;margin-bottom:4px;letter-spacing:-.01em}
+.card .brand{font-family:"Cormorant Garamond",serif;color:var(--accent,var(--gold));font-style:italic;font-size:14px;margin-bottom:14px}
+.card .tagline{font-size:13.5px;color:var(--ink-2);line-height:1.6;flex:1}
+.card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+.card-foot a{color:var(--ink-2);transition:color .2s}
+.card-foot a:hover{color:var(--gold)}
+.card .play{
+  margin-top:12px;
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:12.5px;color:var(--accent,var(--gold));font-weight:500;
+  opacity:0;transform:translateX(-4px);transition:all .2s
+}
+.card:hover .play{opacity:1;transform:translateX(0)}
+
+/* ============ 工作流可视化 ============ */
+.flow{
+  margin-top:80px;
+  background:linear-gradient(180deg,rgba(255,255,255,.025),transparent);
+  border:1px solid var(--line);border-radius:24px;
+  padding:48px;
+  display:grid;grid-template-columns:repeat(5,1fr);gap:14px;position:relative
+}
+.flow-step{
+  background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:14px;
+  padding:20px;text-align:left;position:relative
+}
+.flow-step .n{
+  font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;color:var(--gold);
+  display:block;margin-bottom:10px
+}
+.flow-step h5{font-size:14.5px;font-weight:600;margin-bottom:8px;color:var(--ink)}
+.flow-step p{font-size:12px;color:var(--muted);line-height:1.6}
+.flow-step .out{
+  margin-top:14px;padding-top:12px;border-top:1px solid var(--line);
+  font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--teal);letter-spacing:.05em
+}
+
+/* ============ 运行模态层 ============ */
+.modal{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(7,10,20,.85);backdrop-filter:blur(20px);
+  display:none;align-items:center;justify-content:center;
+  padding:48px 24px;
+}
+.modal.show{display:flex;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.run{
+  width:100%;max-width:780px;
+  background:linear-gradient(180deg,rgba(22,30,51,.95),rgba(14,20,36,.95));
+  border:1px solid var(--line-2);border-radius:20px;
+  padding:36px;
+  box-shadow:0 40px 80px rgba(0,0,0,.6);
+  position:relative;
+}
+.run-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.run-head .title{display:flex;align-items:center;gap:14px}
+.run-head .title .spin{
+  width:24px;height:24px;border-radius:50%;
+  border:2px solid rgba(201,168,118,.2);border-top-color:var(--gold);
+  animation:spin 1s linear infinite;
+  display:flex;align-items:center;justify-content:center;color:transparent;font-weight:700;font-size:14px;
+  transition:all .3s;
+}
+.run-head .title .spin.done{
+  background:var(--teal);border-color:var(--teal);color:var(--bg-0);
+  animation:none;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.run-head h3{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:500}
+.run-head h3 .ind{color:var(--gold);font-style:italic}
+.run-close{
+  width:32px;height:32px;border-radius:8px;border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;color:var(--muted);
+  transition:all .2s
+}
+.run-close:hover{border-color:var(--line-2);color:var(--ink)}
+.bar-wrap{height:6px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;margin-bottom:8px}
+.bar{height:100%;background:linear-gradient(90deg,var(--gold),var(--teal));border-radius:99px;width:0%;transition:width .4s ease}
+.percent{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted);text-align:right;margin-bottom:24px}
+
+.stages{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.stage{display:flex;align-items:flex-start;gap:14px;padding:12px 16px;border-radius:10px;transition:background .2s}
+.stage.active{background:rgba(201,168,118,.08)}
+.stage.done{opacity:.55}
+.stage .ico{
+  width:22px;height:22px;border-radius:50%;
+  border:1.5px solid var(--line-2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:var(--muted);flex-shrink:0;margin-top:2px;
+  transition:all .2s
+}
+.stage.active .ico{border-color:var(--gold);color:var(--gold);background:rgba(201,168,118,.1)}
+.stage.active .ico::after{content:"";position:absolute;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--gold);animation:ping 1.5s infinite}
+@keyframes ping{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.6);opacity:0}}
+.stage.done .ico{background:var(--teal);border-color:var(--teal);color:var(--bg-0);font-weight:700}
+.stage .meta{flex:1;min-width:0}
+.stage .label{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:2px}
+.stage .desc{font-size:12px;color:var(--muted)}
+.stage.active .desc{color:var(--gold-2)}
+.stage .t{
+  font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);
+  white-space:nowrap;margin-left:auto;flex-shrink:0;
+}
+
+.log{
+  background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:10px;
+  font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-2);
+  padding:16px;max-height:160px;overflow-y:auto;
+  line-height:1.8;
+}
+.log .line{display:block}
+.log .ts{color:var(--muted);margin-right:8px}
+.log .ok{color:var(--teal)}
+.log .gold{color:var(--gold)}
+
+/* 完成卡片网格 */
+.results{display:none;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+.results.show{display:grid}
+.res{
+  background:linear-gradient(180deg,rgba(43,197,197,.06),rgba(43,197,197,.01));
+  border:1px solid rgba(43,197,197,.2);border-radius:12px;
+  padding:18px;display:flex;flex-direction:column;
+}
+.res .ic{font-size:24px;margin-bottom:10px}
+.res h4{font-size:14.5px;font-weight:600;margin-bottom:4px}
+.res p{font-size:12px;color:var(--muted);margin-bottom:14px;flex:1}
+.res .b{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:8px 14px;border-radius:8px;
+  background:rgba(43,197,197,.1);color:var(--teal);
+  font-size:12.5px;font-weight:500;transition:all .2s;
+}
+.res .b:hover{background:rgba(43,197,197,.2)}
+.res.gold{
+  background:linear-gradient(180deg,rgba(201,168,118,.06),rgba(201,168,118,.01));
+  border-color:rgba(201,168,118,.25)
+}
+.res.gold .b{background:rgba(201,168,118,.12);color:var(--gold)}
+.res.gold .b:hover{background:rgba(201,168,118,.22)}
+
+/* 演示模式提示 */
+.demo-note{
+  margin-top:18px;padding:14px 18px;border-radius:10px;
+  background:rgba(255,122,168,.06);border:1px dashed rgba(255,122,168,.3);
+  font-size:12.5px;color:var(--pink);line-height:1.7;
+}
+.demo-note b{color:#FFA6C5}
+.demo-note code{
+  font-family:"JetBrains Mono",monospace;font-size:12px;
+  background:rgba(0,0,0,.4);padding:2px 7px;border-radius:5px;color:var(--gold);margin:0 2px;
+}
+
+/* ============ Footer ============ */
+footer{
+  margin-top:120px;padding:48px;border-top:1px solid var(--line);
+  text-align:center;color:var(--muted);font-size:13px;
+}
+footer h4{font-family:"Cormorant Garamond",serif;font-size:22px;color:var(--ink);margin-bottom:8px;font-weight:500}
+footer .links{display:flex;gap:32px;justify-content:center;margin:24px 0 18px;font-size:13px}
+footer .links a:hover{color:var(--gold)}
+footer .end{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;color:var(--gold);margin-top:24px}
+
+@media (max-width:900px){
+  .nav{padding:14px 20px}
+  .nav-r{gap:18px;font-size:12.5px}
+  .hero{padding:120px 20px 60px}
+  section{padding:60px 20px}
+  .cmd{padding:6px 6px 6px 16px}
+  .cmd input{font-size:16px;padding:14px 0}
+  .cmd-btn{padding:10px 18px;font-size:13px}
+  .flow{grid-template-columns:1fr 1fr;padding:24px}
+  .results{grid-template-columns:1fr}
+  .run{padding:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ 顶部导航 ============ -->
+<nav class="nav">
+  <div class="logo"><span class="dot"></span>行业智能体<span class="en">/ IndustryMind</span></div>
+  <div class="nav-r">
+    <a href="#library">已交付库</a>
+    <a href="#workflow">工作流</a>
+    <span class="badge">DEMO · v0.1</span>
+  </div>
+</nav>
+
+<!-- ============ Hero ============ -->
+<header class="hero">
+  <div class="kicker"><span class="pulse"></span>AI AGENT · 行业到产品 5 分钟</div>
+  <h1 class="hero-t">输入一个<b>行业</b>,生成一整套<br>能落地的 <b>AI 产品方案</b></h1>
+  <p class="hero-sub">从行业调研到提示词手册,从高保真 HTML 原型到飞书可导入的 docx 三模式 — 一个智能体跑完整条交付链。</p>
+  <div class="hero-meta">
+    <span><i class="ic"></i>行业调研</span>
+    <span><i class="ic"></i>MD 提示词</span>
+    <span><i class="ic"></i>HTML 原型</span>
+    <span><i class="ic"></i>docx ×3</span>
+  </div>
+
+  <!-- 命令面板 -->
+  <form class="cmd" id="cmd">
+    <span class="prefix">/new-industry</span>
+    <input id="ind-input" type="text" placeholder="输入行业,例如:智能法务 / AI 健身 / 跨境电商 / 母婴亲子 / 银发健康..." autocomplete="off">
+    <button class="cmd-btn" type="submit">生成 <span class="arrow">→</span></button>
+  </form>
+
+  <!-- 快捷标签:7 个已交付 + 5 个新建议 -->
+  <div class="chips" id="chips"></div>
+</header>
+
+<!-- ============ 已交付库 ============ -->
+<section id="library">
+  <div class="sec-head">
+    <h2><span class="num">SECTION · 01</span>已交付库 · 7 个行业</h2>
+    <p>每个行业 = 1 份提示词手册 (MD) + 1 个高保真原型 (HTML) + 3 个飞书 docx。<b style="color:var(--gold)">金标</b>表示完整版,<b>预览</b>表示 v0 框架版。</p>
+  </div>
+  <div class="lib" id="lib"></div>
+</section>
+
+<!-- ============ 工作流 ============ -->
+<section id="workflow">
+  <div class="sec-head">
+    <h2><span class="num">SECTION · 02</span>智能体工作流 · 5 阶段</h2>
+    <p>输入行业名后,智能体串行跑完 5 个阶段 — 每个阶段都有可见产物落到本机。</p>
+  </div>
+  <div class="flow">
+    <div class="flow-step">
+      <span class="n">STAGE 01</span>
+      <h5>行业调研</h5>
+      <p>扫描行业报告 / 用户访谈 / 监管文件,提炼 5 大痛点 + 合规红线</p>
+      <div class="out">→ research.json</div>
+    </div>
+    <div class="flow-step">
+      <span class="n">STAGE 02</span>
+      <h5>产品规划</h5>
+      <p>命名品牌、设计 5 屏主线、定义用户画像、设计商业闭环</p>
+      <div class="out">→ memo.md</div>
+    </div>
+    <div class="flow-step">
+      <span class="n">STAGE 03</span>
+      <h5>提示词手册</h5>
+      <p>撰写 5 步骤 + 附录 A-E,共 ~600 行,含技术栈 / SQL / API / Prompt</p>
+      <div class="out">→ 行业XX-XXX-完整提示词.md</div>
+    </div>
+    <div class="flow-step">
+      <span class="n">STAGE 04</span>
+      <h5>HTML 原型</h5>
+      <p>Hero + 5 Step + 5 屏 iOS 真机原型 + PC SaaS 工作台</p>
+      <div class="out">→ 行业XX-XXX-真实版.html</div>
+    </div>
+    <div class="flow-step">
+      <span class="n">STAGE 05</span>
+      <h5>docx 三模式</h5>
+      <p>可编辑版 (1.5MB) + 真实版 (3.8MB) + 视觉版 (6.1MB),飞书一键导入</p>
+      <div class="out">→ scripts/out/*.docx</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Footer ============ -->
+<footer>
+  <h4>IndustryMind · 行业智能体</h4>
+  <p>从一个行业名,到一整套可交付的 AI 产品方案。</p>
+  <div class="links">
+    <a href="#library">已交付库</a>
+    <a href="#workflow">工作流</a>
+    <a href="./AI开发提示词-万能行业框架.md">框架说明</a>
+  </div>
+  <p style="opacity:.6">DEMO 版基于本机已有的 7 个行业产物 · 真生成接入 LLM 后流程不变</p>
+  <div class="end">v0.1 · 2026-05 · MADE WITH CASCADE</div>
+</footer>
+
+<!-- ============ 运行模态层 ============ -->
+<div class="modal" id="modal">
+  <div class="run">
+    <div class="run-head">
+      <div class="title">
+        <div class="spin" id="spin">✓</div>
+        <h3>正在生成 · <span class="ind" id="run-ind">智能法务</span></h3>
+      </div>
+      <button class="run-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="bar-wrap"><div class="bar" id="bar"></div></div>
+    <div class="percent" id="percent">0% · 准备启动智能体...</div>
+
+    <div class="stages" id="stages"></div>
+
+    <div class="log" id="log"></div>
+
+    <div class="results" id="results"></div>
+
+    <div class="demo-note" id="demo-note" style="display:none">
+      <b>这是 DEMO 模式</b> — 当前没有接 LLM,演示流程跑通了,但 <b>新行业</b> 的真实 MD / HTML / docx 还没生成。<br>
+      想要真实产物,请在 Cascade 中输入:<code>/new-industry <span id="cmd-ind">智能法务</span></code> 我会按完整 SOP 跑一次。
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ 行业元数据 ============
+const INDUSTRIES = [
+  { id:'01', name:'AI 智能教育', brand:'EduMind',     icon:'🎓', color:'#5B7BD8', tagline:'一对一定制学习路径 · K12 / 留学 / 职业',
+    file:'行业01-AI智能教育-预览.html', md:'行业01-AI智能教育-完整提示词.md', status:'preview' },
+  { id:'02', name:'AI 智能健身', brand:'FitMind',     icon:'🏋', color:'#E26B4F', tagline:'体态识别 + 个性化训练计划 + 食谱',
+    file:'行业02-AI智能健身-预览.html', status:'preview' },
+  { id:'03', name:'AI 智能法律', brand:'LawMind',     icon:'⚖', color:'#7A86B0', tagline:'合规咨询 + 案例检索 + 合同审核',
+    file:'行业03-AI智能法律-预览.html', status:'preview' },
+  { id:'04', name:'AI 智能家具', brand:'HomeMind',    icon:'🛋', color:'#B5894F', tagline:'空间设计 + 风格匹配 + 选品助手',
+    file:'行业04-AI智能家具-预览.html', status:'preview' },
+  { id:'05', name:'AI 智能玄学', brand:'FateMind',    icon:'🔮', color:'#9B6FB8', tagline:'命理咨询 + 文化娱乐 + 合规边界',
+    file:'行业05-AI智能玄学-预览.html', status:'preview' },
+  { id:'06', name:'AI 心理疗愈', brand:'HealMind',    icon:'💝', color:'#9FB8D8', tagline:'情绪树洞 + 持证咨询师匹配 + 冥想订阅',
+    file:'行业06-AI心理疗愈Mind-真实版.html', md:'行业06-AI心理疗愈-完整提示词.md', status:'gold', date:'2026-04' },
+  { id:'07', name:'AI 智能金融', brand:'WealthMind',  icon:'⚓', color:'#C9A876', tagline:'高净值家族财富陪伴 · 不投顾不卖货',
+    file:'行业07-AI智能金融WealthMind-真实版.html', md:'行业07-AI智能金融-完整提示词.md', status:'gold', date:'2026-05',
+    docx:[
+      '行业07-AI智能金融WealthMind-可编辑版-飞书可导入.docx',
+      '行业07-AI智能金融WealthMind-真实版-飞书可导入.docx',
+      '行业07-AI智能金融WealthMind-视觉版-飞书可导入.docx'
+    ]}
+]
+
+const NEW_SUGGEST = ['智能法务','跨境电商','母婴亲子','银发健康','宠物医疗','汽车后市场','SaaS 客服','农产品供应链']
+
+// 已完成行业(用于 chip 标识)
+const DONE_NAMES = INDUSTRIES.map(i => i.name.replace(/^AI\s*/, ''))
+
+// ============ 工作流阶段定义 ============
+const STAGES = [
+  { label:'阶段 01 · 行业调研',     desc:'扫描行业报告 / 用户访谈 / 监管文件',     t:8000 },
+  { label:'阶段 02 · 产品规划',     desc:'命名品牌 + 5 屏主线 + 用户画像',         t:6000 },
+  { label:'阶段 03 · 提示词手册',   desc:'撰写 5 步骤 + 附录 A-E · ~600 行',       t:10000 },
+  { label:'阶段 04 · HTML 原型',    desc:'Hero + 5 Step + 5 屏 iOS + PC SaaS',     t:12000 },
+  { label:'阶段 05 · docx 三模式',  desc:'可编辑 / 真实 / 视觉 · 飞书可导入',      t:8000 },
+]
+
+// ============ 模拟日志 ============
+function logsFor(name){
+  const b = name.replace(/^AI\s*/,'').replace(/\s/g,'')
+  return [
+    [800,   '🔍 扫描行业研究报告 · 已收录 47 篇',                      'gold'],
+    [1800,  '📊 用户痛点提炼 · 识别 5 大核心场景',                    ''],
+    [3200,  '⚠ 合规红线识别 · '+b+'相关法规 12 条',                  ''],
+    [4800,  '👥 用户画像构建 · 3-4 类典型用户',                       ''],
+    [6800,  '✓ STAGE 01 完成 · research.json',                       'ok'],
+    [7800,  '✏ 品牌命名生成中...',                                  'gold'],
+    [9200,  '✓ 品牌锚定 · '+brandFor(name)+' · slogan 候选 5 条',     'ok'],
+    [11000, '🎬 5 屏主线设计 · 起→看→问→选→留',                      ''],
+    [13500, '💰 商业闭环设计 · 4-5 档订阅矩阵',                       ''],
+    [14000, '✓ STAGE 02 完成 · memo.md',                            'ok'],
+    [15500, '📝 撰写 Step 01 · 项目规划',                            'gold'],
+    [17500, '📝 撰写 Step 02 · 页面架构 · 含 Next.js 路由表',        ''],
+    [19500, '📝 撰写 Step 03 · AI 核心 · 含 RAG / Prompt / SQL',     ''],
+    [21500, '📝 撰写 Step 04 · 服务闭环',                            ''],
+    [23500, '📝 撰写 Step 05 · 飞轮 + SaaS 工作台',                  ''],
+    [24000, '✓ STAGE 03 完成 · ~600 行 markdown',                   'ok'],
+    [25500, '🎨 设计 Hero · 渐变 + 字体配色',                        'gold'],
+    [28000, '📱 绘制 4 屏 iOS 真机原型 · 状态栏 9:41',              ''],
+    [31000, '📱 绘制 4 屏 AI 核心 · 树洞 / 风险雷达 / 仪表盘',       ''],
+    [33500, '📱 绘制 4 屏 1V1 闭环 · 问卷 + 匹配 + 详情 + 双录',     ''],
+    [35000, '🖥 绘制 PC SaaS 工作台 · 客户分层 + 周结算',           ''],
+    [36000, '✓ STAGE 04 完成 · 真实版.html',                        'ok'],
+    [37500, '📸 Playwright 启动 chrome · 截图 4 屏 phones',         'gold'],
+    [39500, '📸 截图 PC SaaS 工作台',                               ''],
+    [41000, '📦 HTML → DOCX · 可编辑版 1.58 MB',                    ''],
+    [42500, '📦 HTML → DOCX · 真实版 3.81 MB',                      ''],
+    [43500, '📦 HTML → DOCX · 视觉版 6.12 MB',                      ''],
+    [44000, '✓ STAGE 05 完成 · 3 份 docx 飞书可导入',               'ok'],
+  ]
+}
+
+function brandFor(name){
+  for (const i of INDUSTRIES) if (name.includes(i.name.replace(/^AI\s*/,''))) return i.brand
+  const m = { '法务':'LegalMind','电商':'CrossMind','母婴':'BabyMind','银发':'SilverMind',
+              '宠物':'PetMind','汽车':'AutoMind','客服':'CareMind','农':'FarmMind' }
+  for (const k in m) if (name.includes(k)) return m[k]
+  return 'XMind'
+}
+
+// ============ 渲染已交付库 ============
+function renderLib(){
+  const root = document.getElementById('lib')
+  root.innerHTML = INDUSTRIES.map(i => `
+    <div class="card ${i.status==='gold'?'gold':''}" style="--accent:${i.color}" onclick="window.open('${i.file}','_blank')">
+      <div class="card-head">
+        <div class="card-icon">${i.icon}</div>
+        <span class="card-tag">${i.status==='gold'?'⭐ 金标':'预览版'} · ${i.id}</span>
+      </div>
+      <h3>${i.name}</h3>
+      <div class="brand">${i.brand}</div>
+      <p class="tagline">${i.tagline}</p>
+      <div class="card-foot">
+        <span>${i.date || '2025-Q4'}</span>
+        <span class="play">打开预览 →</span>
+      </div>
+    </div>
+  `).join('')
+}
+
+// ============ 渲染快捷 chips ============
+function renderChips(){
+  const root = document.getElementById('chips')
+  const items = [
+    ...DONE_NAMES.map(n => ({ name:n, done:true })),
+    ...NEW_SUGGEST.map(n => ({ name:n, done:false })),
+  ]
+  root.innerHTML = items.map(c => `<span class="chip ${c.done?'done':''}" onclick="pick('${c.name}')">${c.name}</span>`).join('')
+}
+
+function pick(name){
+  document.getElementById('ind-input').value = name
+  document.getElementById('ind-input').focus()
+  document.querySelector('.cmd').scrollIntoView({behavior:'smooth',block:'center'})
+}
+
+// ============ 模态层 ============
+function openModal(name){
+  const m = document.getElementById('modal')
+  m.classList.add('show')
+  document.body.style.overflow = 'hidden'
+  document.getElementById('run-ind').textContent = name
+  document.getElementById('cmd-ind').textContent = name
+  document.getElementById('bar').style.width = '0%'
+  document.getElementById('percent').textContent = '0% · 准备启动智能体...'
+  document.getElementById('log').innerHTML = ''
+  document.getElementById('results').className = 'results'
+  document.getElementById('results').innerHTML = ''
+  document.getElementById('demo-note').style.display = 'none'
+  document.getElementById('spin').classList.remove('done')
+  document.getElementById('run-ind').nextSibling // noop
+  document.querySelector('.run-head h3').firstChild.textContent = '正在生成 · '
+
+  // 渲染阶段
+  document.getElementById('stages').innerHTML = STAGES.map((s,idx) => `
+    <div class="stage" data-i="${idx}">
+      <div class="ico">${idx+1}</div>
+      <div class="meta">
+        <div class="label">${s.label}</div>
+        <div class="desc">${s.desc}</div>
+      </div>
+      <span class="t">--</span>
+    </div>
+  `).join('')
+
+  runFor(name)
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('show')
+  document.body.style.overflow = ''
+  if (window.__timers) window.__timers.forEach(t => clearTimeout(t))
+  window.__timers = []
+}
+
+// ============ 跑流程 ============
+function runFor(name){
+  window.__timers = []
+  const stages = document.querySelectorAll('.stage')
+  const log = document.getElementById('log')
+  const bar = document.getElementById('bar')
+  const percent = document.getElementById('percent')
+
+  let elapsed = 0
+  STAGES.forEach((s, idx) => {
+    const start = elapsed
+    elapsed += s.t
+    const end = elapsed
+    // 进入阶段
+    window.__timers.push(setTimeout(() => {
+      stages.forEach((el,i) => {
+        if (i < idx) { el.classList.remove('active'); el.classList.add('done'); el.querySelector('.ico').textContent='✓'; el.querySelector('.t').textContent = (STAGES[i].t/1000).toFixed(1)+'s' }
+        else if (i === idx) { el.classList.add('active'); el.querySelector('.t').textContent='运行中...' }
+      })
+    }, start))
+  })
+
+  // 完成最后一个阶段
+  window.__timers.push(setTimeout(() => {
+    stages.forEach(el => { el.classList.remove('active'); el.classList.add('done'); el.querySelector('.ico').textContent='✓' })
+    stages.forEach((el,i) => el.querySelector('.t').textContent = (STAGES[i].t/1000).toFixed(1)+'s')
+  }, elapsed))
+
+  // 进度条 (60fps)
+  const tick = 100
+  let now = 0
+  const total = elapsed
+  const tickerId = setInterval(() => {
+    now += tick
+    if (now >= total) { 
+      now = total
+      bar.style.width = '100%'
+      percent.textContent = '100% · 智能体已完成 · 产物落到本机'
+      clearInterval(tickerId)
+      finish(name)
+      return
+    }
+    bar.style.width = (now/total*100).toFixed(1)+'%'
+    const stage = STAGES.findIndex((_,i) => now < STAGES.slice(0,i+1).reduce((a,b)=>a+b.t,0))
+    percent.textContent = (now/total*100).toFixed(0)+'% · ' + (STAGES[stage]?.label || '收尾中...')
+  }, tick)
+  window.__timers.push({ clear:()=>clearInterval(tickerId) })
+
+  // 日志
+  logsFor(name).forEach(([t, msg, cls]) => {
+    window.__timers.push(setTimeout(() => {
+      const ts = '['+ new Date(Date.now()).toLocaleTimeString('en-GB',{hour12:false}) +']'
+      log.innerHTML += `<span class="line"><span class="ts">${ts}</span><span class="${cls}">${msg}</span></span>`
+      log.scrollTop = log.scrollHeight
+    }, t))
+  })
+}
+
+// ============ 完成后展示产物 ============
+function finish(name){
+  document.getElementById('spin').classList.add('done')
+  document.querySelector('.run-head h3').firstChild.textContent = '已生成 · '
+
+  // 是否是已交付行业?
+  const matched = INDUSTRIES.find(i => name.includes(i.name.replace(/^AI\s*/,'')) || i.name.includes(name) || name.includes(i.brand))
+  const r = document.getElementById('results')
+  r.className = 'results show'
+
+  if (matched && matched.status === 'gold'){
+    r.innerHTML = `
+      <div class="res gold">
+        <div class="ic">📘</div>
+        <h4>提示词手册</h4>
+        <p>5 步骤 + 附录 A-E · ~600 行 markdown</p>
+        <a class="b" href="${matched.md}" target="_blank">查看 MD →</a>
+      </div>
+      <div class="res gold">
+        <div class="ic">🎨</div>
+        <h4>HTML 高保真原型</h4>
+        <p>Hero + 5 Step + 5 屏 iOS + PC SaaS</p>
+        <a class="b" href="${matched.file}" target="_blank">在线预览 →</a>
+      </div>
+      ${(matched.docx||[]).map((f,i) => `
+        <div class="res">
+          <div class="ic">📄</div>
+          <h4>docx · ${['可编辑版','真实版','视觉版'][i]}</h4>
+          <p>${['文字 100% 可编辑 · 5 张图','MD + 代码块转图 · 21 张图','像素级还原 · 29 张切片'][i]} · 飞书可导入</p>
+          <a class="b" href="scripts/out/${f}" target="_blank" download>下载 docx →</a>
+        </div>
+      `).join('')}
+    `
+  } else if (matched && matched.status === 'preview') {
+    r.innerHTML = `
+      <div class="res">
+        <div class="ic">🎨</div>
+        <h4>HTML 预览</h4>
+        <p>v0 框架版 · 尚未升级到金标</p>
+        <a class="b" href="${matched.file}" target="_blank">查看预览 →</a>
+      </div>
+      <div class="res">
+        <div class="ic">⚡</div>
+        <h4>升级到金标</h4>
+        <p>需要在 Cascade 中触发 /new-industry 重生成</p>
+        <a class="b" onclick="copyCmd('${name}')">复制命令 →</a>
+      </div>
+    `
+    document.getElementById('demo-note').style.display = 'block'
+  } else {
+    r.innerHTML = `
+      <div class="res">
+        <div class="ic">🚧</div>
+        <h4>新行业 · ${name}</h4>
+        <p>当前是 DEMO 模式 · 真实产物需 LLM 接入后生成</p>
+        <a class="b" onclick="copyCmd('${name}')">复制 Cascade 命令</a>
+      </div>
+      <div class="res">
+        <div class="ic">📚</div>
+        <h4>参考已交付库</h4>
+        <p>06 心理疗愈 · 07 智能金融 是金标参考</p>
+        <a class="b" href="#library">浏览金标行业 →</a>
+      </div>
+    `
+    document.getElementById('demo-note').style.display = 'block'
+  }
+}
+
+function copyCmd(name){
+  const cmd = `/new-industry ${name}`
+  navigator.clipboard.writeText(cmd).then(() => {
+    alert('已复制到剪贴板:\n' + cmd + '\n\n粘贴到 Cascade 对话框即可触发自动生成 SOP。')
+  })
+}
+
+// ============ 提交 ============
+document.getElementById('cmd').addEventListener('submit', (e) => {
+  e.preventDefault()
+  const v = document.getElementById('ind-input').value.trim()
+  if (!v) return
+  openModal(v)
+})
+
+// ESC 关闭模态
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal() })
+
+// 初始化
+renderLib()
+renderChips()
+</script>
+</body>
+</html>
